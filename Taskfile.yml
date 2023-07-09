@@ -1,0 +1,12 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - go run ./cmd/warhammerd
+
+  gen:
+    cmds:
+      - goapi-gen -generate types,server,spec -package api --out api/warhammer.gen.go ./api/warhammer.yaml

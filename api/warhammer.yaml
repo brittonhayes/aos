@@ -1,0 +1,406 @@
+openapi: "3.1.0"
+info:
+  title: Warhammer Age of Sigmar API
+  version: 1.0.0
+  description: This is an API specification for a Unofficial Warhammer Age of Sigmar API
+servers:
+- url: http://localhost:8080
+  description: Local server
+- url: https://aos-api.com
+  description: Production server
+paths:
+  /units:
+    get:
+      summary: Get all units
+      description: Get all units
+      operationId: getUnits
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Unit'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a unit
+      description: Create a unit
+      operationId: createUnit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Unit'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /units/{id}:
+    get:
+      summary: Get unit by id
+      description: Get unit by id
+      operationId: getUnitById
+      parameters:
+      - name: id
+        in: path
+        description: id of unit to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update unit by id
+      description: Update unit by id
+      operationId: updateUnitById
+      parameters:
+      - name: id
+        in: path
+        description: id of unit to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Unit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete unit by id
+      description: Delete unit by id
+      operationId: deleteUnitById
+      parameters:
+      - name: id
+        in: path
+        description: id of unit to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unit'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /armies:
+    get:
+      summary: Get all armies
+      description: Get all armies
+      operationId: getArmies
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Army'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /armies/{id}:
+    get:
+      summary: Get army by id
+      description: Get army by id
+      operationId: getArmyById
+      parameters:
+      - name: id
+        in: path
+        description: id of army to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Army'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update army by id
+      description: Update army by id
+      operationId: updateArmyById
+      parameters:
+      - name: id
+        in: path
+        description: id of army to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              ref: '#/components/schemas/Army'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Army'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Move:
+      type: object
+      x-go-extra-tags:
+        bun: "rel:has-one,join:id=unit_id"
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-go-extra-tags:
+            bun: ',pk'
+        name:
+          type: string
+        value:
+          type: integer
+          format: int64
+    Size:
+      type: object
+      x-go-extra-tags:
+        bun: "rel:has-one,join:id=unit_id"
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-go-extra-tags:
+            bun: ',pk'
+        unit:
+          type: string
+        value:
+          type: integer
+          format: int64
+    DamageTable:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-go-extra-tags:
+            bun: ',pk'
+        wound_track_position:
+          type: integer
+          format: int64
+        move:
+          $ref: '#/components/schemas/Move'
+        min_wounds_suffered:
+          type: integer
+          format: int64
+    Ability:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-go-extra-tags:
+            bun: ',pk'
+        name:
+          type: string
+        description:
+          type: string
+    Attribute:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-go-extra-tags:
+            bun: ',pk'
+        name:
+          type: string
+        value:
+          type: integer
+          format: int64
+    Weapon:
+      type: object
+
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-go-extra-tags:
+            bun: ',pk'
+        name:
+          type: string
+        range:
+          type: integer
+          format: int64
+        attacks:
+          type: integer
+          format: int64
+        to_hit:
+          type: integer
+          format: int64
+        to_wound:
+          type: integer
+          format: int64
+        rend:
+          type: integer
+          format: int64
+        damage:
+          type: integer
+          format: int64
+    Unit:
+      type: object
+      required:
+      - name
+      properties:
+        id:
+          type: integer
+          x-go-extra-tags:
+            bun: "id,pk,autoincrement"
+          format: int64
+        name:
+          type: string
+        size:
+          $ref: '#/components/schemas/Size'
+        move:
+          $ref: '#/components/schemas/Move'
+        description:
+          type: string
+        save:
+          type: integer
+          format: int64
+        bravery:
+          type: integer
+          format: int64
+        models:
+          type: integer
+          format: int64
+        points:
+          type: integer
+          format: int64
+        wounds:
+          type: integer
+          format: int64
+        abilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ability'
+        keywords:
+          type: array
+          items:
+            type: string
+        command_abilities:
+          type: array
+          x-go-extra-tags:
+            bun: "rel:has-many,join:id=unit_id"
+          items:
+            $ref: '#/components/schemas/Attribute'
+        magic:
+          type: array
+          x-go-extra-tags:
+            bun: "rel:has-many,join:id=unit_id"
+          items:
+            $ref: '#/components/schemas/Attribute'
+        damage_table:
+          type: array
+          x-go-extra-tags:
+            bun: "rel:has-many,join:id=unit_id"
+          items:
+            $ref: '#/components/schemas/DamageTable'
+        weapons:
+          type: array
+          x-go-extra-tags:
+            bun: "rel:has-many,join:id=unit_id"
+          items:
+            $ref: '#/components/schemas/Weapon'
+    
+    Army:
+      type: object
+      required:
+      - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-go-extra-tags:
+            bun: 'id,pk,autoincrement'
+        name:
+          type: string
+        units:
+          type: array
+          items:
+            $ref: '#/components/schemas/Unit'
