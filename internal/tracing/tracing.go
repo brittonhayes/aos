@@ -2,16 +2,21 @@ package tracing
 
 import (
 	"context"
+	"sync"
 
+	"github.com/uptrace/uptrace-go/uptrace"
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/jaeger"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
-	"go.opentelemetry.io/otel/sdk/resource"
+	sdkresource "go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.18.0"
 )
+
+var resource *sdkresource.Resource
+var initResourcesOnce sync.Once
 
 func getSampler(environment string) sdktrace.Sampler {
 	switch environment {
@@ -24,8 +29,26 @@ func getSampler(environment string) sdktrace.Sampler {
 	}
 }
 
-func InitTracer(service string, endpoint string, environment string) (*sdktrace.TracerProvider, error) {
-	exporter, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(endpoint)))
+func initResource(service string) *sdkresource.Resource {
+	initResourcesOnce.Do(func() {
+		extraResources, _ := sdkresource.New(
+			context.Background(),
+			sdkresource.WithOS(),
+			sdkresource.WithProcess(),
+			sdkresource.WithContainer(),
+			sdkresource.WithHost(),
+			sdkresource.WithAttributes(attribute.Key("service.name").String(service)),
+		)
+		resource, _ = sdkresource.Merge(
+			sdkresource.Default(),
+			extraResources,
+		)
+	})
+	return resource
+}
+
+func InitTracer(service string, environment string) (*sdktrace.TracerProvider, error) {
+	exporter, err := otlptracegrpc.New(context.Background())
 	if err != nil {
 		return nil, err
 	}
@@ -35,17 +58,21 @@ func InitTracer(service string, endpoint string, environment string) (*sdktrace.
 	tp := sdktrace.NewTracerProvider(
 		sdktrace.WithSampler(getSampler(environment)),
 		sdktrace.WithBatcher(exporter),
-		sdktrace.WithResource(resource.NewWithAttributes(semconv.SchemaURL, semconv.ServiceName(service))),
+		sdktrace.WithResource(initResource(service)),
 	)
 	otel.SetTracerProvider(tp)
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
+
+	uptrace.ConfigureOpentelemetry(
+		uptrace.WithServiceName(service),
+	)
+
 	return tp, err
 }
 
-func InitMeter(endpoint string) (*sdkmetric.MeterProvider, error) {
+func InitMeter() (*sdkmetric.MeterProvider, error) {
 	exp, err := otlpmetricgrpc.New(
 		context.Background(),
-		otlpmetricgrpc.WithEndpoint(endpoint),
 	)
 	if err != nil {
 		return nil, err

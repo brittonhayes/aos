@@ -6,8 +6,8 @@ scrape_configs:
   honor_labels: true
   static_configs:
   - targets:
-    - 'otelcol:9464'
+    - 'otel_collector:9464'
 - job_name: otel-collector
   static_configs:
   - targets:
-    - 'otelcol:8888'
+    - 'otel_collector:8888'

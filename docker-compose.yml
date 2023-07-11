@@ -12,6 +12,12 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: .
+    environment:
+      - WARHAMMER_SERVICE_NAME
+      - WARHAMMER_SERVICE_PORT
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
     ports:
       - "8080:8080"
     depends_on:
@@ -21,9 +27,15 @@ services:
   otel_collector:
     image: otel/opentelemetry-collector-contrib:0.76.1
     container_name: otel_collector
-    command: --config=/etc/otel-collector-config.yaml
+    deploy:
+      resources:
+        limits:
+          memory: 125M
+    restart: unless-stopped 
+    command: [ "--config=/etc/otel-config.yaml", "--config=/etc/otel-observability.yaml" ]
     volumes:
-        - ./config/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+        - ./config/otel-config.yaml:/etc/otel-config.yaml
+        - ./config/otel-observability.yaml:/etc/otel-observability.yaml
     ports:
       - "4317"          # OTLP over gRPC receiver
       - "4318:4318"     # OTLP over HTTP receiver
@@ -35,6 +47,7 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: jaeger
+    restart: unless-stopped
     command:
       - "--memory.max-traces"
       - "10000"
@@ -42,13 +55,16 @@ services:
       - "/jaeger/ui"
       - "--prometheus.server-url"
       - "http://${PROMETHEUS_ADDR}" 
+    deploy:
+      resources:
+        limits:
+          memory: 300M
     ports:
-      - "16686:16686"
+      - "${JAEGER_SERVICE_PORT}:${JAEGER_SERVICE_PORT}"
       - "4317:4317"
     environment:
       - COLLECTOR_OTLP_ENABLED=true
       - METRICS_STORAGE_TYPE=prometheus
-      - LOG_LEVEL=debug
 
   prometheus:
     image: quay.io/prometheus/prometheus:v2.43.0

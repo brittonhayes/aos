@@ -83,9 +83,9 @@ func main() {
 			// We now register our server above as the handler for the interface
 			api.Handler(s, api.WithRouter(r))
 
-			traceProvider, err := tracing.InitTracer(c.String("service"), c.String("trace-endpoint"), c.String("environment"))
+			traceProvider, err := tracing.InitTracer(c.String("service"), c.String("environment"))
 			if err != nil {
-				log.Fatal(err)
+				return err
 			}
 			defer func() {
 				if err := traceProvider.Shutdown(c.Context); err != nil {
@@ -93,9 +93,9 @@ func main() {
 				}
 			}()
 
-			meterProvider, err := tracing.InitMeter(c.String("metrics-endpoint"))
+			meterProvider, err := tracing.InitMeter()
 			if err != nil {
-				log.Fatal(err)
+				return err
 			}
 			defer func() {
 				if err := meterProvider.Shutdown(c.Context); err != nil {
@@ -121,34 +121,20 @@ func main() {
 				Name:    "port",
 				Aliases: []string{"p"},
 				Value:   8080,
-				EnvVars: []string{"PORT"},
+				EnvVars: []string{"WARHAMMER_SERVICE_PORT"},
 				Usage:   "port to listen on",
-			},
-			&cli.StringFlag{
-				Name:    "trace-endpoint",
-				Aliases: []string{"t"},
-				Value:   "http://localhost:14268/api/traces",
-				EnvVars: []string{"TRACE_ENDPOINT"},
-				Usage:   "tracing endpoint",
-			},
-			&cli.StringFlag{
-				Name:    "metrics-endpoint",
-				Aliases: []string{"m"},
-				Value:   "localhost:4317",
-				EnvVars: []string{"METRICS_ENDPOINT"},
-				Usage:   "metrics endpoint",
 			},
 			&cli.StringFlag{
 				Name:    "service",
 				Aliases: []string{"s"},
 				Value:   "warhammerd",
-				EnvVars: []string{"SERVICE_NAME"},
+				EnvVars: []string{"WARHAMMER_SERVICE_NAME"},
 				Usage:   "customize the service name",
 			},
 			&cli.StringFlag{
 				Name:    "environment",
 				Value:   "development",
-				EnvVars: []string{"ENVIRONMENT", "ENV"},
+				EnvVars: []string{"ENVIRONMENT"},
 				Usage:   "set the environment (development or production)",
 			},
 			&cli.StringFlag{

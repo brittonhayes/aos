@@ -11,6 +11,7 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/sqliteshim"
+	"github.com/uptrace/bun/extra/bunotel"
 	"github.com/uptrace/bun/migrate"
 )
 
@@ -19,6 +20,10 @@ type warhammerRepository struct {
 	db *bun.DB
 }
 
+const (
+	DB_NAME = "warhammer"
+)
+
 func NewWarhammerRepository(connection string) warhammer.WarhammerRepository {
 	sqldb, err := sql.Open(sqliteshim.ShimName, connection)
 	if err != nil {
@@ -26,6 +31,11 @@ func NewWarhammerRepository(connection string) warhammer.WarhammerRepository {
 	}
 
 	db := bun.NewDB(sqldb, sqlitedialect.New())
+	db.AddQueryHook(bunotel.NewQueryHook(
+		bunotel.WithDBName(DB_NAME),
+		bunotel.WithFormattedQueries(true),
+	))
+
 	migrator := migrate.NewMigrator(db, migrations.Migrations)
 
 	return &warhammerRepository{
