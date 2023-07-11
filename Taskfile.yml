@@ -7,6 +7,18 @@ tasks:
     cmds:
       - go run ./cmd/warhammerd
 
+  up:
+    cmds:
+      - docker-compose up --build --force-recreate --remove-orphans --detach
+
   gen:
     cmds:
-      - goapi-gen -generate types,server,spec -package api --out api/warhammer.gen.go ./api/warhammer.yaml
+      - go generate ./...
+  
+  lint:
+    cmds:
+      - golangci-lint run ./...
+
+  test:
+    cmds:
+      - go test -v ./...

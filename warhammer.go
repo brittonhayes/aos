@@ -1,3 +1,6 @@
+// Package warhammer provides the WarhammerRepository interface for the Warhammer REST API and services
+//
+//go:generate goapi-gen -generate types,server,spec -package api --out api/warhammer.gen.go ./api/warhammer.yaml
 package warhammer
 
 import (

@@ -6,44 +6,103 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/brittonhayes/warhammer"
 	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/warhammer/internal/logging"
+	"github.com/brittonhayes/warhammer/internal/tracing"
 	"github.com/brittonhayes/warhammer/service"
 	"github.com/brittonhayes/warhammer/sqlite"
-	"github.com/discord-gophers/goapi-gen/middleware"
+
+	apimw "github.com/discord-gophers/goapi-gen/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/urfave/cli/v2"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+
+	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
+	"go.opentelemetry.io/otel/trace"
 )
 
 func main() {
 
-	// Create an instance of our handler which satisfies the generated interface
-	repo := sqlite.NewWarhammerRepository("file:warhammer.db")
-	s := service.NewWarhammerService(repo)
-
-	swagger, err := api.GetSwagger()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error loading swagger spec\n: %s", err)
-		os.Exit(1)
-	}
-
-	// Clear out the servers array in the swagger spec, that skips validating
-	// that server names match. We don't know how this thing will be run.
-	swagger.Servers = nil
-
-	r := chi.NewRouter()
-
-	// Use our validation middleware to check all requests against the
-	// OpenAPI schema.
-	r.Use(middleware.OAPIValidator(swagger))
-
-	// We now register our server above as the handler for the interface
-	api.Handler(s, api.WithRouter(r))
+	var (
+		repo warhammer.WarhammerRepository
+	)
 
 	app := &cli.App{
 		Name:    "warhammerd",
 		Usage:   "the warhammer api server",
 		Suggest: true,
+		Before: func(c *cli.Context) error {
+			if repo == nil {
+				repo = sqlite.NewWarhammerRepository(c.String("database"))
+			}
+			return nil
+		},
 		Action: func(c *cli.Context) error {
+			// Create an instance of our handler which satisfies the generated interface
+			s := service.NewWarhammerService(repo)
+
+			swagger, err := api.GetSwagger()
+			if err != nil {
+				return err
+			}
+
+			// Clear out the servers array in the swagger spec, that skips validating
+			// that server names match. We don't know how this thing will be run.
+			swagger.Servers = nil
+
+			// Create a new chi router
+			r := chi.NewRouter()
+
+			// Use our validation middleware to check all requests against the
+			// OpenAPI schema.
+			r.Use(apimw.OAPIValidator(swagger))
+			r.Use(logging.Middleware)
+
+			// Use the OpenTelemetry middleware to trace all requests
+			r.Use(func(h http.Handler) http.Handler {
+				return otelhttp.NewHandler(
+					http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+						h.ServeHTTP(w, r)
+
+						routePattern := chi.RouteContext(r.Context()).RoutePattern()
+
+						span := trace.SpanFromContext(r.Context())
+						span.SetName(routePattern)
+						span.SetAttributes(semconv.HTTPTarget(r.URL.String()), semconv.HTTPRoute(routePattern))
+
+						labeler, ok := otelhttp.LabelerFromContext(r.Context())
+						if ok {
+							labeler.Add(semconv.HTTPRoute(routePattern))
+						}
+					}),
+					"",
+				)
+			})
+
+			// We now register our server above as the handler for the interface
+			api.Handler(s, api.WithRouter(r))
+
+			traceProvider, err := tracing.InitTracer(c.String("service"), c.String("trace-endpoint"), c.String("environment"))
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer func() {
+				if err := traceProvider.Shutdown(c.Context); err != nil {
+					log.Printf("Error shutting down tracer provider: %v", err)
+				}
+			}()
+
+			meterProvider, err := tracing.InitMeter(c.String("metrics-endpoint"))
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer func() {
+				if err := meterProvider.Shutdown(c.Context); err != nil {
+					log.Printf("Error shutting down meter provider: %v", err)
+				}
+			}()
+
 			port := c.Int("port")
 			if port == 0 {
 				port = 8080
@@ -53,7 +112,8 @@ func main() {
 				Handler: r,
 				Addr:    fmt.Sprintf("0.0.0.0:%d", port),
 			}
-			fmt.Printf("listening on %s\n", httpsrv.Addr)
+
+			logging.NewLogrus(c.Context).Infof("Starting server on port %d", port)
 			return httpsrv.ListenAndServe()
 		},
 		Flags: []cli.Flag{
@@ -61,30 +121,68 @@ func main() {
 				Name:    "port",
 				Aliases: []string{"p"},
 				Value:   8080,
+				EnvVars: []string{"PORT"},
 				Usage:   "port to listen on",
+			},
+			&cli.StringFlag{
+				Name:    "trace-endpoint",
+				Aliases: []string{"t"},
+				Value:   "http://localhost:14268/api/traces",
+				EnvVars: []string{"TRACE_ENDPOINT"},
+				Usage:   "tracing endpoint",
+			},
+			&cli.StringFlag{
+				Name:    "metrics-endpoint",
+				Aliases: []string{"m"},
+				Value:   "localhost:4317",
+				EnvVars: []string{"METRICS_ENDPOINT"},
+				Usage:   "metrics endpoint",
+			},
+			&cli.StringFlag{
+				Name:    "service",
+				Aliases: []string{"s"},
+				Value:   "warhammerd",
+				EnvVars: []string{"SERVICE_NAME"},
+				Usage:   "customize the service name",
+			},
+			&cli.StringFlag{
+				Name:    "environment",
+				Value:   "development",
+				EnvVars: []string{"ENVIRONMENT", "ENV"},
+				Usage:   "set the environment (development or production)",
+			},
+			&cli.StringFlag{
+				Name:    "db",
+				Value:   "file:warhammer.db",
+				EnvVars: []string{"DATABASE_URL"},
+				Usage:   "database url",
 			},
 		},
 		Commands: []*cli.Command{
 			{
-				Name: "init",
-				Action: func(c *cli.Context) error {
-					return repo.Init(c.Context)
-				},
-			},
-			{
-				Name: "generate",
-				Action: func(c *cli.Context) error {
-					if c.Args().Len() == 0 {
-						return fmt.Errorf("missing migration name")
-					}
-
-					return repo.Generate(c.Context, c.Args().First())
-				},
-			},
-			{
-				Name: "migrate",
+				Name:  "migrate",
+				Usage: "migrate the database",
 				Action: func(c *cli.Context) error {
 					return repo.Migrate(c.Context)
+				},
+				Subcommands: []*cli.Command{
+					{
+						Name:  "init",
+						Usage: "initialize the migrations table (only needed once)",
+						Action: func(c *cli.Context) error {
+							return repo.Init(c.Context)
+						},
+					},
+					{
+						Name:  "generate",
+						Usage: "generate a new migration file with the given name",
+						Action: func(c *cli.Context) error {
+							if c.Args().Len() == 0 {
+								return fmt.Errorf("missing migration name")
+							}
+							return repo.Generate(c.Context, c.Args().First())
+						},
+					},
 				},
 			},
 		},
