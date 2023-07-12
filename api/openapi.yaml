@@ -104,6 +104,19 @@ paths:
       summary: Get all allegiances
       description: Get all allegiances
       operationId: getAllegiances
+      parameters:
+      - name: name
+        in: query
+        description: name of allegiance to filter by
+        required: false
+        schema:
+          type: string
+      - name: grand_alliance
+        in: query
+        description: id of grand alliance to filter by
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: OK

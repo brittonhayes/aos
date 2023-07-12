@@ -28,13 +28,13 @@ func (s *WarhammerService) GetAllegianceByID(w http.ResponseWriter, r *http.Requ
 	return api.GetAllegianceByIDJSON200Response(*allegiance)
 }
 
-func (s *WarhammerService) GetAllegiances(w http.ResponseWriter, r *http.Request) *api.Response {
+func (s *WarhammerService) GetAllegiances(w http.ResponseWriter, r *http.Request, params api.GetAllegiancesParams) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetAllegiances",
 	}).Info()
 
-	allegiances, err := s.repo.GetAllegiances(r.Context())
+	allegiances, err := s.repo.GetAllegiances(r.Context(), params)
 	if err != nil {
 		return api.GetAllegiancesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrAllegiancesNotFound})
 	}

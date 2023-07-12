@@ -22,7 +22,7 @@ type WarhammerRepository interface {
 	GetGrandAlliances(ctx context.Context) ([]api.GrandAlliance, error)
 
 	GetAllegianceByID(ctx context.Context, id string) (*api.Allegiance, error)
-	GetAllegiances(ctx context.Context) ([]api.Allegiance, error)
+	GetAllegiances(ctx context.Context, params api.GetAllegiancesParams) ([]api.Allegiance, error)
 
 	GetGrandStrategyByID(ctx context.Context, id string) (*api.GrandStrategy, error)
 	GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error)

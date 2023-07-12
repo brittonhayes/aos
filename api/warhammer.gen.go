@@ -126,6 +126,15 @@ type Weapon struct {
 	ToWound *int64  `json:"to_wound,omitempty"`
 }
 
+// GetAllegiancesParams defines parameters for GetAllegiances.
+type GetAllegiancesParams struct {
+	// name of allegiance to filter by
+	Name *string `json:"name,omitempty"`
+
+	// id of grand alliance to filter by
+	GrandAlliance *string `json:"grand_alliance,omitempty"`
+}
+
 // UpdateArmyByIDJSONBody defines parameters for UpdateArmyByID.
 type UpdateArmyByIDJSONBody interface{}
 
@@ -479,7 +488,7 @@ func UpdateUnitByIDJSON404Response(body Error) *Response {
 type ServerInterface interface {
 	// Get all allegiances
 	// (GET /allegiance)
-	GetAllegiances(w http.ResponseWriter, r *http.Request) *Response
+	GetAllegiances(w http.ResponseWriter, r *http.Request, params GetAllegiancesParams) *Response
 	// Get allegiance by id
 	// (GET /allegiance/{id})
 	GetAllegianceByID(w http.ResponseWriter, r *http.Request, id string) *Response
@@ -531,8 +540,27 @@ type ServerInterfaceWrapper struct {
 func (siw *ServerInterfaceWrapper) GetAllegiances(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetAllegiancesParams
+
+	// ------------- Optional query parameter "name" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "name", r.URL.Query(), &params.Name); err != nil {
+		err = fmt.Errorf("invalid format for parameter name: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "name"})
+		return
+	}
+
+	// ------------- Optional query parameter "grand_alliance" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "grand_alliance", r.URL.Query(), &params.GrandAlliance); err != nil {
+		err = fmt.Errorf("invalid format for parameter grand_alliance: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "grand_alliance"})
+		return
+	}
+
 	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		resp := siw.Handler.GetAllegiances(w, r)
+		resp := siw.Handler.GetAllegiances(w, r, params)
 		if resp != nil {
 			if resp.body != nil {
 				render.Render(w, r, resp)
@@ -997,28 +1025,28 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+RZ32/bNhD+VwRuj0rstMFQ6M1ZtiLYuhVLjT4UgUFLZ5mNSKpHyq0X+H8fSMo/Rcu0",
-	"56Q2+maLx7vjffd9pKgnkkpeSgFCK5I8EZWOgVP7szdkBdNT87NEWQJqBnYgA5UiKzWTwvzV0xJIQpRG",
-	"JnIyiwnLmo9j8u0ilxfwTSO90DS3joaVIAlhWVw+ktksJoJy8HicxfMncvgZUm1i9IoCckZFCvvnlyMV",
-	"2YAWxWL+8ZbAJWpaDBBowb2et68R4UvFEDKSfHJWD751I/cgcuyKx6QSzDUE08Dtj58RRiQhP3WWDdOp",
-	"u6XTF8xmV7uhiHS6x5q0RjasNLzEwia0qOzISCKn2kwS+pdrssiLCQ05oL/tbimnOXygw+KYyXImBl9l",
-	"JTI1UNVoBLZgARmadpvALnDeGZtZTGyEgUaaPg5KqdicHwcV4jdEic0SpDJrFPf1K3/qoBTNA7hgfS7t",
-	"fR301jC6t0LoZxWs3XIV1PY26XuNVEM+PZek39UNd9o0vWf/HjNLI4bPkGW/drueJbXb7jzlEPWdb9QN",
-	"AY7JEOkEcBqoJqnk3G6N+6ewkHBPEpkVzYGeq2aQx1Wl9fn8jnv8I0y/SszWq9Nwv5kxpzlLj1NQLjMo",
-	"1DNsEVvpWEpWHxADIio6gVDTmqhtyVkym/0LaClFeE9+tPa++rm9NpS3QbpYB2uyWWuaPoZWzjEl0Pi4",
-	"G0BMkIrg2Agi9Iii5WDsdC7M2IJzoKaaR0yMZGP/JB/GTEVMRVREvfd3kSohZSOWUjMcjSRGNOoLORqx",
-	"lNEi+khxTDkHjHo5RHIU3bOcUzRTTR5MGyEj7VYTQOViX112L7tmdbIEQUtGEvL68uqyS2JSUj22GHXo",
-	"2gtNDrq5hregI1oU0dJUEesU7TLuMmfTWxtGUIY1rhtfdbvulCY0CBuBlmVRl6HzWbkOdgQKl6pl5s1X",
-	"gE2pJn//Yayuu9d7JdIW3x1FPaH+kjr63XaTGVMV59Rshd46GosVDDpPLJvtAqK2jYbTiGXtSNxM724t",
-	"3Eg5aEBFkk+bXllmemjFr5YRgq5QENPVJLHdQuYMJjbmUpw0VhCvlGzzgPfwP3shtAVOGfJ1xBzmyGup",
-	"buecM/OBPB95AaaZl/8z45irzkqpA6iFfNpCKuTTPehkfJ0RkSzCp4voEhlzKKw8APbLjGpow9BZHAZj",
-	"ZeceD8YvFSh9I7PpXnUNAHD2YzZJE33LfPs2drH6NtYqttY8mpt7VXftxudl1Hf9kum8ZHizoh5Uduvy",
-	"upPtCr1WqHCOb7g/H9HeaIyTbQQvfiudoFbuIgP4WZuzFoLer5q8EEMXN6rnyNCVmnqACaXo3H4HReeV",
-	"2peiC/dnRtFlZ5w4RTfws52w+CDXykxn5QG8Xw88Pwm3fAs8Ze65qtlrTuUp7q8I9lBj7RrFdaN9N3To",
-	"iXJ3QX1Hyqujx4i9S88cUt3nR+qGZtE/roYbWK2DsKTEQhMzKMB9Ql53eWuf22lb9NBZmBKEK6F1p2VU",
-	"Rz11/duG7wmQsInPLN4uci0w1iq3P4ZnsoedMIYbyOy4G2jB0FkcBuNp3A0cpuQ/RJc04beTFeDEj++f",
-	"MqVF5MZJTCosSELGWpdJp1OYsbFUOnnTfdMls3hz8nuUWZXa7zseDyrpdKhUF7Rkl6nkZPYw+y8AAP//",
-	"s4ehrwsnAAA=",
+	"H4sIAAAAAAAC/+RZX2/bNhD/KgK3RyV2/2Ao9JauW1Fs3YqlQR+KwqCls8xGJNUjlVYr/N0HkpJtWbRM",
+	"G3Zmo09xxNPxeL8/pKTvJJW8lAKEViT5TlQ6B07tz5spK5iuzc8SZQmoGdiBDFSKrNRMCvOvrksgCVEa",
+	"mcjJIiYs61+OyberXF7BN430StPcJppWgiSEZXF5TxaLmAjKwZNxEbdX5PQzpNrMcVMUkDMqUti/vhyp",
+	"yCa0KJb3H28JXKKmxQSBFtybefsaEb5UDCEjyUcX9cm3buQeRI7d8ZhUgjlCMA3c/vgZYUYS8tNoRZhR",
+	"w5bRnWC2uiYNRaT1HmvSGtm00vAYC3ugRWVHZhI51eYmoX95TpZ1MaEhB/TT7hXlNIf3dFocs1jOxOSr",
+	"rESmJqqazcA2LKBCQ7cH2AXOWxOziImdYaKRpveTUirW6uOgRvyGKLHfglRmveY+e+ovHZSieYAWbM5V",
+	"vI9Br42ib9YEfVLD2m1XQbS3Rd9qpBry+lKKftsQ7rxlesv+PWaVxgxPUOVdk7ZbJbXbbltyiPu2G3XP",
+	"gGMyRfoAWAe6SSo5t1vj/iUsLdxTRGZNc6Jb1wzKuO60vpz/4x5/D/VXiVm3O730mxVzmrP0OA3lMoNC",
+	"nWCL2CrHUrLmgBgwo6IPEBraCHWoOCtms38BLaUI5+QHG+/rn9trQ3Ub5IvNZH01a03T+9DOOaUEBh93",
+	"A4gJUhE8N4IIPaJoOZk7nwsLtuAc6KnmEhMz2ds/yfs5UxFTERXRzbs3kSohZTOWUjMczSRGNLoTcjZj",
+	"KaNF9IHinHIOGN3kEMlZdMtyTtHcaupg2hgZGY56AFRu7ifX4+uxWZ0sQdCSkYQ8u35yPSYxKameW4xG",
+	"tPNAk4Pur+E16IgWRbQKVcQmRbuMN5mLuekMlxQpBw2oSPJxM6Phgil8lTHSMpqxQgNG05qYbpKEfKnM",
+	"HtJSx/2Jm0dF71licx6WmVmsJ0etJ4fMtOHiQ3N+MqRUxiCc8J6Ox+5AKjQI20xalkWD+OizcmJd5Qtz",
+	"5RVI/aedzV2J/P2HiXo+fr5XIUPzu1O3Z6q/pI5+t8IxY6rinJpd30sZE7FGt9F3li12ca5lx7SOWDZM",
+	"upf1m1e7eOf40GUdgq5QtEQwwljxwM658mGNFZySC6EUOGfIu4g5zJE3u9KwvbgwH8jtyCMoDXl9aRpz",
+	"3VlrdYC0kNcDokJe7yEnk+uChGQRPl9EV8iY82/lAfCuzKiGIQxdxGEwVvbe48H4pQKlX8qs3quvAQAu",
+	"fkyS9NG3yrdHlqv1B89Bs+2eibyu23m59Tju232fdlk2vNlRDyq7fXnjqLrVoTuNCtd4/yR8Iaa9QYyz",
+	"JYIXvzUmqLXXrgH6bMLZgEBv10MeSaHLl8eXqNC1nnqACZVoG79Dom2n9pXoMv2FSXTFjDOX6AZ+lgnL",
+	"b4+DynRRHsDvmoHTi3DLZ89z1p7rmn2jqzzN/RXBHmpsXK+5bvTODR16otzdUN+R8snR54i9S88cUuPT",
+	"I/WSZtE/rocbWHVBWEli6YkZFOC+lndTvrLX7W1b/NBFmBaEO6FNp2XUzHru/rcN3zMQYR+fRbzd5AZg",
+	"bFxufwwvZA87Yww3kNnxbmAAQxdxGIzn8W7gMCf/IVjSh9/erAAf/Pj+KVNaRG6cxKTCgiRkrnWZjEaF",
+	"GZtLpZMX4xdj0v+88g5lVqX2U5Yng0pGIyrVFS3ZdSo5WXxa/BcAAP//M16TCfYnAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
