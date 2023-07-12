@@ -14,31 +14,34 @@ const (
 )
 
 func (s *WarhammerService) GetGrandStrategyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
-	var strategy api.GrandStrategy
-	strategy.ID = &id
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":       "GetStrategyByID",
 		"strategy_id": id,
 	}).Info()
 
-	if strategy.ID == nil {
+	strategy, err := s.repo.GetGrandStrategyByID(r.Context(), id)
+	if err != nil {
 		return api.GetGrandStrategyByIDJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrGrandStrategyNotFound})
 	}
 
-	return api.GetGrandStrategyByIDJSON200Response(strategy)
+	return api.GetGrandStrategyByIDJSON200Response(api.GrandStrategy(*strategy))
 }
 
 func (s *WarhammerService) GetGrandStrategies(w http.ResponseWriter, r *http.Request) *api.Response {
-	var strategys []api.GrandStrategy
 
-	strategys = append(strategys, api.GrandStrategy{
-		Name: "Strategy 1",
-	})
+	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
+		"event": "GetStrategies",
+	}).Info()
 
-	if len(strategys) == 0 {
+	strategies, err := s.repo.GetGrandStrategies(r.Context())
+	if err != nil {
 		return api.GetArmiesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrGrandStrategiesNotFound})
 	}
 
-	return api.GetGrandStrategiesJSON200Response(strategys)
+	if len(strategies) == 0 {
+		return api.GetArmiesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrGrandStrategiesNotFound})
+	}
+
+	return api.GetGrandStrategiesJSON200Response(strategies)
 }

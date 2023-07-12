@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/brittonhayes/warhammer/api"
@@ -14,27 +15,30 @@ const (
 )
 
 func (s *WarhammerService) GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
-	var army api.Army
-	army.ID = &id
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":   "GetArmyByID",
 		"army_id": id,
 	}).Info()
 
-	if army.ID == nil {
+	army, err := s.repo.GetArmyByID(r.Context(), id)
+	if err != nil {
 		return api.GetArmyByIDJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrArmyNotFound})
 	}
 
-	return api.GetArmyByIDJSON200Response(army)
+	return api.GetArmyByIDJSON200Response(*army)
 }
 
 func (s *WarhammerService) GetArmies(w http.ResponseWriter, r *http.Request) *api.Response {
-	var armies []api.Army
 
-	armies = append(armies, api.Army{
-		Name: "Army 1",
-	})
+	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
+		"event": "GetArmies",
+	}).Info()
+
+	armies, err := s.repo.GetArmies(r.Context())
+	if err != nil {
+		return api.GetArmiesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrArmiesNotFound})
+	}
 
 	if len(armies) == 0 {
 		return api.GetArmiesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrArmiesNotFound})
@@ -44,8 +48,22 @@ func (s *WarhammerService) GetArmies(w http.ResponseWriter, r *http.Request) *ap
 }
 
 func (s *WarhammerService) UpdateArmyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
-	var army api.Army
-	army.ID = &id
 
-	return api.UpdateArmyByIDJSON200Response(army)
+	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
+		"event":   "UpdateArmyByID",
+		"army_id": id,
+	}).Info()
+
+	army := new(api.Army)
+	err := json.NewDecoder(r.Body).Decode(&army)
+	if err != nil {
+		return api.UpdateArmyByIDJSON404Response(api.Error{Code: http.StatusBadRequest, Message: err.Error()})
+	}
+
+	army, err = s.repo.UpdateArmyByID(r.Context(), id, army)
+	if err != nil {
+		return api.UpdateArmyByIDJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrArmyNotFound})
+	}
+
+	return api.UpdateArmyByIDJSON200Response(*army)
 }

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/brittonhayes/warhammer"
+	"github.com/brittonhayes/warhammer/api"
 	"github.com/brittonhayes/warhammer/internal/logging"
 	"github.com/brittonhayes/warhammer/sqlite/migrations"
 	"github.com/uptrace/bun"
@@ -92,11 +93,11 @@ func (r *warhammerRepository) LoadFixtures(ctx context.Context, fsys fs.FS, name
 	logging.NewLogrus(ctx).Info("loading fixtures")
 
 	r.db.RegisterModel(
-		(*warhammer.Army)(nil),
-		(*warhammer.GrandAlliance)(nil),
-		(*warhammer.Unit)(nil),
-		(*warhammer.Allegiance)(nil),
-		(*warhammer.GrandStrategy)(nil),
+		(*api.Army)(nil),
+		(*api.GrandAlliance)(nil),
+		(*api.Unit)(nil),
+		(*api.Allegiance)(nil),
+		(*api.GrandStrategy)(nil),
 	)
 
 	f := dbfixture.New(r.db, dbfixture.WithRecreateTables())

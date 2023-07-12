@@ -10,29 +10,22 @@ import (
 	"github.com/brittonhayes/warhammer/api"
 )
 
-type (
-	Army          api.Army
-	Allegiance    api.Allegiance
-	GrandAlliance api.GrandAlliance
-	GrandStrategy api.GrandStrategy
-	Unit          api.Unit
-)
-
 type WarhammerRepository interface {
-	GetUnitByID(ctx context.Context, id string) (*Unit, error)
-	GetUnits(ctx context.Context) ([]Unit, error)
+	GetUnitByID(ctx context.Context, id string) (*api.Unit, error)
+	GetUnits(ctx context.Context) ([]api.Unit, error)
 
-	GetArmyByID(ctx context.Context, id string) (*Army, error)
-	GetArmies(ctx context.Context) ([]Army, error)
+	GetArmyByID(ctx context.Context, id string) (*api.Army, error)
+	GetArmies(ctx context.Context) ([]api.Army, error)
+	UpdateArmyByID(ctx context.Context, id string, army *api.Army) (*api.Army, error)
 
-	GetGrandAllianceByID(ctx context.Context, id string) (*GrandAlliance, error)
-	GetGrandAlliances(ctx context.Context) ([]GrandAlliance, error)
+	GetGrandAllianceByID(ctx context.Context, id string) (*api.GrandAlliance, error)
+	GetGrandAlliances(ctx context.Context) ([]api.GrandAlliance, error)
 
-	GetAllegianceByID(ctx context.Context, id string) (*Allegiance, error)
-	GetAllegiances(ctx context.Context) ([]Allegiance, error)
+	GetAllegianceByID(ctx context.Context, id string) (*api.Allegiance, error)
+	GetAllegiances(ctx context.Context) ([]api.Allegiance, error)
 
-	GetGrandStrategyByID(ctx context.Context, id string) (*GrandStrategy, error)
-	GetGrandStrategies(ctx context.Context) ([]GrandStrategy, error)
+	GetGrandStrategyByID(ctx context.Context, id string) (*api.GrandStrategy, error)
+	GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error)
 
 	Init(ctx context.Context) error
 	Generate(ctx context.Context, name string) error

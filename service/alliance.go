@@ -14,30 +14,33 @@ const (
 )
 
 func (s *WarhammerService) GetGrandAllianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
-	var alliance api.GrandAlliance
-	alliance.ID = &id
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":       "GetGrandAllianceByID",
 		"alliance_id": id,
 	}).Info()
 
-	if alliance.ID == nil {
+	alliance, err := s.repo.GetGrandAllianceByID(r.Context(), id)
+	if err != nil {
 		return api.GetGrandAllianceByIDJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrAllianceNotFound})
 	}
 
-	return api.GetGrandAllianceByIDJSON200Response(alliance)
+	return api.GetGrandAllianceByIDJSON200Response(*alliance)
 }
 
 func (s *WarhammerService) GetGrandAlliances(w http.ResponseWriter, r *http.Request) *api.Response {
-	var alliances []api.GrandAlliance
 
-	alliances = append(alliances, api.GrandAlliance{
-		Name: "Alliance 1",
-	})
+	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
+		"event": "GetGrandAlliances",
+	}).Info()
+
+	alliances, err := s.repo.GetGrandAlliances(r.Context())
+	if err != nil {
+		return api.GetGrandAlliancesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrAlliancesNotFound})
+	}
 
 	if len(alliances) == 0 {
-		return api.GetArmiesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrAlliancesNotFound})
+		return api.GetGrandAlliancesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrAlliancesNotFound})
 	}
 
 	return api.GetGrandAlliancesJSON200Response(alliances)
