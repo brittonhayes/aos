@@ -5,9 +5,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 
 	"github.com/brittonhayes/warhammer"
 	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/warhammer/fixtures"
 	"github.com/brittonhayes/warhammer/internal/logging"
 	"github.com/brittonhayes/warhammer/internal/tracing"
 	"github.com/brittonhayes/warhammer/service"
@@ -28,14 +30,14 @@ func main() {
 		repo warhammer.WarhammerRepository
 	)
 
+	repo = sqlite.NewWarhammerRepository("file:warhammer.db")
+
 	app := &cli.App{
 		Name:    "warhammerd",
 		Usage:   "the warhammer api server",
 		Suggest: true,
 		Before: func(c *cli.Context) error {
-			if repo == nil {
-				repo = sqlite.NewWarhammerRepository(c.String("database"))
-			}
+
 			return nil
 		},
 		Action: func(c *cli.Context) error {
@@ -60,25 +62,27 @@ func main() {
 			r.Use(logging.Middleware)
 
 			// Use the OpenTelemetry middleware to trace all requests
-			r.Use(func(h http.Handler) http.Handler {
-				return otelhttp.NewHandler(
-					http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-						h.ServeHTTP(w, r)
+			if c.Bool("tracing") {
+				r.Use(func(h http.Handler) http.Handler {
+					return otelhttp.NewHandler(
+						http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+							h.ServeHTTP(w, r)
 
-						routePattern := chi.RouteContext(r.Context()).RoutePattern()
+							routePattern := chi.RouteContext(r.Context()).RoutePattern()
 
-						span := trace.SpanFromContext(r.Context())
-						span.SetName(routePattern)
-						span.SetAttributes(semconv.HTTPTarget(r.URL.String()), semconv.HTTPRoute(routePattern))
+							span := trace.SpanFromContext(r.Context())
+							span.SetName(routePattern)
+							span.SetAttributes(semconv.HTTPTarget(r.URL.String()), semconv.HTTPRoute(routePattern))
 
-						labeler, ok := otelhttp.LabelerFromContext(r.Context())
-						if ok {
-							labeler.Add(semconv.HTTPRoute(routePattern))
-						}
-					}),
-					"",
-				)
-			})
+							labeler, ok := otelhttp.LabelerFromContext(r.Context())
+							if ok {
+								labeler.Add(semconv.HTTPRoute(routePattern))
+							}
+						}),
+						"",
+					)
+				})
+			}
 
 			// We now register our server above as the handler for the interface
 			api.Handler(s, api.WithRouter(r))
@@ -143,6 +147,13 @@ func main() {
 				EnvVars: []string{"DATABASE_URL"},
 				Usage:   "database url",
 			},
+			&cli.BoolFlag{
+				Name:    "tracing",
+				Aliases: []string{"t"},
+				Value:   false,
+				EnvVars: []string{"TRACING_ENABLED"},
+				Usage:   "enable tracing",
+			},
 		},
 		Commands: []*cli.Command{
 			{
@@ -169,10 +180,41 @@ func main() {
 							return repo.Generate(c.Context, c.Args().First())
 						},
 					},
+					{
+						Name:  "lock",
+						Usage: "lock migrations",
+						Action: func(c *cli.Context) error {
+							return repo.Lock(c.Context)
+						},
+					},
+					{
+						Name:  "unlock",
+						Usage: "unlock migrations",
+						Action: func(c *cli.Context) error {
+							return repo.Unlock(c.Context)
+						},
+					},
+					{
+						Name:  "rollback",
+						Usage: "rollback the last migration group",
+						Action: func(c *cli.Context) error {
+							return repo.Rollback(c.Context)
+						},
+					},
+					{
+						Name:  "load-fixtures",
+						Usage: "load fixtures into the database",
+						Action: func(c *cli.Context) error {
+							return repo.LoadFixtures(c.Context, fixtures.FS, "fixtures.yaml")
+						},
+					},
 				},
 			},
 		},
 	}
+
+	sort.Sort(cli.FlagsByName(app.Flags))
+	sort.Sort(cli.CommandsByName(app.Commands))
 
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)

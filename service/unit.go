@@ -6,7 +6,12 @@ import (
 	"github.com/brittonhayes/warhammer/api"
 )
 
-func (s *WarhammerService) GetUnitByID(w http.ResponseWriter, r *http.Request, id int64) *api.Response {
+const (
+	ErrUnitNotFound  = "Unit not found with this ID"
+	ErrUnitsNotFound = "No units found"
+)
+
+func (s *WarhammerService) GetUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	var unit api.Unit
 
 	if unit.ID == nil {
@@ -35,12 +40,12 @@ func (s *WarhammerService) CreateUnit(w http.ResponseWriter, r *http.Request) *a
 	return api.CreateUnitJSON201Response(unit)
 }
 
-func (s *WarhammerService) UpdateUnitByID(w http.ResponseWriter, r *http.Request, id int64) *api.Response {
+func (s *WarhammerService) UpdateUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	var unit api.Unit
 	return api.UpdateUnitByIDJSON200Response(unit)
 }
 
-func (s *WarhammerService) DeleteUnitByID(w http.ResponseWriter, r *http.Request, id int64) *api.Response {
+func (s *WarhammerService) DeleteUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	var unit api.Unit
 	return api.DeleteUnitByIDJSON200Response(unit)
 }

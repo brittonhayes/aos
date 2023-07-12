@@ -24,30 +24,39 @@ import (
 // Ability defines model for Ability.
 type Ability struct {
 	Description *string `json:"description,omitempty"`
-	ID          *int64  `bun:",pk" json:"id,omitempty"`
+	ID          *string `bun:"id,pk" json:"id,omitempty"`
 	Name        *string `json:"name,omitempty"`
+}
+
+// Allegiance defines model for Allegiance.
+type Allegiance struct {
+	Description   *string `json:"description,omitempty"`
+	GrandAlliance *string `json:"grand_alliance,omitempty"`
+	ID            *string `bun:"id,pk" json:"id,omitempty"`
+	MortalRealm   *string `json:"mortal_realm,omitempty"`
+	Name          string  `json:"name"`
 }
 
 // Army defines model for Army.
 type Army struct {
-	ID    *int64 `bun:"id,pk,autoincrement" json:"id,omitempty"`
-	Name  string `json:"name"`
-	Units []Unit `json:"units,omitempty"`
+	ID    *string `bun:"id,pk" json:"id,omitempty"`
+	Name  string  `json:"name"`
+	Units []Unit  `json:"units,omitempty"`
 }
 
 // Attribute defines model for Attribute.
 type Attribute struct {
-	ID    *int64  `bun:",pk" json:"id,omitempty"`
+	ID    *string `bun:"id,pk" json:"id,omitempty"`
 	Name  *string `json:"name,omitempty"`
 	Value *int64  `json:"value,omitempty"`
 }
 
 // DamageTable defines model for DamageTable.
 type DamageTable struct {
-	ID                 *int64 `bun:",pk" json:"id,omitempty"`
-	MinWoundsSuffered  *int64 `json:"min_wounds_suffered,omitempty"`
-	Move               *Move  `bun:"rel:has-one,join:id=unit_id" json:"move,omitempty"`
-	WoundTrackPosition *int64 `json:"wound_track_position,omitempty"`
+	ID                 *string `bun:"id,pk" json:"id,omitempty"`
+	MinWoundsSuffered  *int64  `json:"min_wounds_suffered,omitempty"`
+	Move               *Move   `json:"move,omitempty"`
+	WoundTrackPosition *int64  `json:"wound_track_position,omitempty"`
 }
 
 // Error defines model for Error.
@@ -56,16 +65,30 @@ type Error struct {
 	Message string `json:"message"`
 }
 
+// GrandAlliance defines model for GrandAlliance.
+type GrandAlliance struct {
+	Description *string `json:"description,omitempty"`
+	ID          *string `bun:",pk" json:"id,omitempty"`
+	Name        string  `json:"name"`
+}
+
+// GrandStrategy defines model for GrandStrategy.
+type GrandStrategy struct {
+	Description *string `json:"description,omitempty"`
+	ID          *string `bun:",pk" json:"id,omitempty"`
+	Name        string  `json:"name"`
+}
+
 // Move defines model for Move.
 type Move struct {
-	ID    *int64  `bun:",pk" json:"id,omitempty"`
+	ID    *string `bun:"id,pk" json:"id,omitempty"`
 	Name  *string `json:"name,omitempty"`
 	Value *int64  `json:"value,omitempty"`
 }
 
 // Size defines model for Size.
 type Size struct {
-	ID    *int64  `bun:",pk" json:"id,omitempty"`
+	ID    *string `bun:"id,pk" json:"id,omitempty"`
 	Unit  *string `json:"unit,omitempty"`
 	Value *int64  `json:"value,omitempty"`
 }
@@ -74,19 +97,20 @@ type Size struct {
 type Unit struct {
 	Abilities        []Ability     `json:"abilities,omitempty"`
 	Bravery          *int64        `json:"bravery,omitempty"`
-	CommandAbilities []Attribute   `bun:"rel:has-many,join:id=unit_id" json:"command_abilities,omitempty"`
-	DamageTable      []DamageTable `bun:"rel:has-many,join:id=unit_id" json:"damage_table,omitempty"`
+	CommandAbilities []Attribute   `json:"command_abilities,omitempty"`
+	DamageTable      []DamageTable `json:"damage_table,omitempty"`
 	Description      *string       `json:"description,omitempty"`
-	ID               *int64        `bun:"id,pk,autoincrement" json:"id,omitempty"`
+	GrandAlliance    *string       `json:"grand_alliance,omitempty"`
+	ID               *string       `bun:"id,pk" json:"id,omitempty"`
 	Keywords         []string      `json:"keywords,omitempty"`
-	Magic            []Attribute   `bun:"rel:has-many,join:id=unit_id" json:"magic,omitempty"`
+	Magic            []Attribute   `json:"magic,omitempty"`
 	Models           *int64        `json:"models,omitempty"`
-	Move             *Move         `bun:"rel:has-one,join:id=unit_id" json:"move,omitempty"`
+	Move             *Move         `json:"move,omitempty"`
 	Name             string        `json:"name"`
 	Points           *int64        `json:"points,omitempty"`
 	Save             *int64        `json:"save,omitempty"`
-	Size             *Size         `bun:"rel:has-one,join:id=unit_id" json:"size,omitempty"`
-	Weapons          []Weapon      `bun:"rel:has-many,join:id=unit_id" json:"weapons,omitempty"`
+	Size             *Size         `json:"size,omitempty"`
+	Weapons          []Weapon      `json:"weapons,omitempty"`
 	Wounds           *int64        `json:"wounds,omitempty"`
 }
 
@@ -94,7 +118,7 @@ type Unit struct {
 type Weapon struct {
 	Attacks *int64  `json:"attacks,omitempty"`
 	Damage  *int64  `json:"damage,omitempty"`
-	ID      *int64  `bun:",pk" json:"id,omitempty"`
+	ID      *string `bun:",pk" json:"id,omitempty"`
 	Name    *string `json:"name,omitempty"`
 	Range   *int64  `json:"range,omitempty"`
 	Rend    *int64  `json:"rend,omitempty"`
@@ -171,6 +195,46 @@ func (resp *Response) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.Encode(resp.body)
 }
 
+// GetAllegiancesJSON200Response is a constructor method for a GetAllegiances response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetAllegiancesJSON200Response(body []Allegiance) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetAllegiancesJSON404Response is a constructor method for a GetAllegiances response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetAllegiancesJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
+// GetAllegianceByIDJSON200Response is a constructor method for a GetAllegianceByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetAllegianceByIDJSON200Response(body Allegiance) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetAllegianceByIDJSON404Response is a constructor method for a GetAllegianceByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetAllegianceByIDJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
 // GetArmiesJSON200Response is a constructor method for a GetArmies response.
 // A *Response is returned with the configured status code and content type from the spec.
 func GetArmiesJSON200Response(body []Army) *Response {
@@ -224,6 +288,86 @@ func UpdateArmyByIDJSON200Response(body Army) *Response {
 // UpdateArmyByIDJSON404Response is a constructor method for a UpdateArmyByID response.
 // A *Response is returned with the configured status code and content type from the spec.
 func UpdateArmyByIDJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
+// GetGrandAlliancesJSON200Response is a constructor method for a GetGrandAlliances response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetGrandAlliancesJSON200Response(body []GrandAlliance) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetGrandAlliancesJSON404Response is a constructor method for a GetGrandAlliances response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetGrandAlliancesJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
+// GetGrandAllianceByIDJSON200Response is a constructor method for a GetGrandAllianceByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetGrandAllianceByIDJSON200Response(body GrandAlliance) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetGrandAllianceByIDJSON404Response is a constructor method for a GetGrandAllianceByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetGrandAllianceByIDJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
+// GetGrandStrategiesJSON200Response is a constructor method for a GetGrandStrategies response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetGrandStrategiesJSON200Response(body []GrandStrategy) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetGrandStrategiesJSON404Response is a constructor method for a GetGrandStrategies response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetGrandStrategiesJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
+// GetGrandStrategyByIDJSON200Response is a constructor method for a GetGrandStrategyByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetGrandStrategyByIDJSON200Response(body GrandStrategy) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetGrandStrategyByIDJSON404Response is a constructor method for a GetGrandStrategyByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetGrandStrategyByIDJSON404Response(body Error) *Response {
 	return &Response{
 		body:        body,
 		Code:        404,
@@ -333,15 +477,33 @@ func UpdateUnitByIDJSON404Response(body Error) *Response {
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
+	// Get all allegiances
+	// (GET /allegiance)
+	GetAllegiances(w http.ResponseWriter, r *http.Request) *Response
+	// Get allegiance by id
+	// (GET /allegiance/{id})
+	GetAllegianceByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get all armies
 	// (GET /armies)
 	GetArmies(w http.ResponseWriter, r *http.Request) *Response
 	// Get army by id
 	// (GET /armies/{id})
-	GetArmyByID(w http.ResponseWriter, r *http.Request, id int64) *Response
+	GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Update army by id
 	// (PUT /armies/{id})
-	UpdateArmyByID(w http.ResponseWriter, r *http.Request, id int64) *Response
+	UpdateArmyByID(w http.ResponseWriter, r *http.Request, id string) *Response
+	// Get all grand alliances
+	// (GET /grand-alliance)
+	GetGrandAlliances(w http.ResponseWriter, r *http.Request) *Response
+	// Get grand alliance by id
+	// (GET /grand-alliance/{id})
+	GetGrandAllianceByID(w http.ResponseWriter, r *http.Request, id string) *Response
+	// Get all grand strategies
+	// (GET /grand-strategy)
+	GetGrandStrategies(w http.ResponseWriter, r *http.Request) *Response
+	// Get grand strategy by id
+	// (GET /grand-strategy/{id})
+	GetGrandStrategyByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get all units
 	// (GET /units)
 	GetUnits(w http.ResponseWriter, r *http.Request) *Response
@@ -350,19 +512,63 @@ type ServerInterface interface {
 	CreateUnit(w http.ResponseWriter, r *http.Request) *Response
 	// Delete unit by id
 	// (DELETE /units/{id})
-	DeleteUnitByID(w http.ResponseWriter, r *http.Request, id int64) *Response
+	DeleteUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get unit by id
 	// (GET /units/{id})
-	GetUnitByID(w http.ResponseWriter, r *http.Request, id int64) *Response
+	GetUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Update unit by id
 	// (PUT /units/{id})
-	UpdateUnitByID(w http.ResponseWriter, r *http.Request, id int64) *Response
+	UpdateUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
 type ServerInterfaceWrapper struct {
 	Handler          ServerInterface
 	ErrorHandlerFunc func(w http.ResponseWriter, r *http.Request, err error)
+}
+
+// GetAllegiances operation middleware
+func (siw *ServerInterfaceWrapper) GetAllegiances(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetAllegiances(w, r)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetAllegianceByID operation middleware
+func (siw *ServerInterfaceWrapper) GetAllegianceByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetAllegianceByID(w, r, id)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
 }
 
 // GetArmies operation middleware
@@ -388,7 +594,7 @@ func (siw *ServerInterfaceWrapper) GetArmyByID(w http.ResponseWriter, r *http.Re
 	ctx := r.Context()
 
 	// ------------- Path parameter "id" -------------
-	var id int64
+	var id string
 
 	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
 		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
@@ -414,7 +620,7 @@ func (siw *ServerInterfaceWrapper) UpdateArmyByID(w http.ResponseWriter, r *http
 	ctx := r.Context()
 
 	// ------------- Path parameter "id" -------------
-	var id int64
+	var id string
 
 	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
 		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
@@ -423,6 +629,94 @@ func (siw *ServerInterfaceWrapper) UpdateArmyByID(w http.ResponseWriter, r *http
 
 	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := siw.Handler.UpdateArmyByID(w, r, id)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetGrandAlliances operation middleware
+func (siw *ServerInterfaceWrapper) GetGrandAlliances(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetGrandAlliances(w, r)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetGrandAllianceByID operation middleware
+func (siw *ServerInterfaceWrapper) GetGrandAllianceByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetGrandAllianceByID(w, r, id)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetGrandStrategies operation middleware
+func (siw *ServerInterfaceWrapper) GetGrandStrategies(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetGrandStrategies(w, r)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetGrandStrategyByID operation middleware
+func (siw *ServerInterfaceWrapper) GetGrandStrategyByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetGrandStrategyByID(w, r, id)
 		if resp != nil {
 			if resp.body != nil {
 				render.Render(w, r, resp)
@@ -476,7 +770,7 @@ func (siw *ServerInterfaceWrapper) DeleteUnitByID(w http.ResponseWriter, r *http
 	ctx := r.Context()
 
 	// ------------- Path parameter "id" -------------
-	var id int64
+	var id string
 
 	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
 		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
@@ -502,7 +796,7 @@ func (siw *ServerInterfaceWrapper) GetUnitByID(w http.ResponseWriter, r *http.Re
 	ctx := r.Context()
 
 	// ------------- Path parameter "id" -------------
-	var id int64
+	var id string
 
 	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
 		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
@@ -528,7 +822,7 @@ func (siw *ServerInterfaceWrapper) UpdateUnitByID(w http.ResponseWriter, r *http
 	ctx := r.Context()
 
 	// ------------- Path parameter "id" -------------
-	var id int64
+	var id string
 
 	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
 		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
@@ -664,9 +958,15 @@ func Handler(si ServerInterface, opts ...ServerOption) http.Handler {
 	}
 
 	r.Route(options.BaseURL, func(r chi.Router) {
+		r.Get("/allegiance", wrapper.GetAllegiances)
+		r.Get("/allegiance/{id}", wrapper.GetAllegianceByID)
 		r.Get("/armies", wrapper.GetArmies)
 		r.Get("/armies/{id}", wrapper.GetArmyByID)
 		r.Put("/armies/{id}", wrapper.UpdateArmyByID)
+		r.Get("/grand-alliance", wrapper.GetGrandAlliances)
+		r.Get("/grand-alliance/{id}", wrapper.GetGrandAllianceByID)
+		r.Get("/grand-strategy", wrapper.GetGrandStrategies)
+		r.Get("/grand-strategy/{id}", wrapper.GetGrandStrategyByID)
 		r.Get("/units", wrapper.GetUnits)
 		r.Post("/units", wrapper.CreateUnit)
 		r.Delete("/units/{id}", wrapper.DeleteUnitByID)
@@ -697,25 +997,28 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/+RY32/bNhD+V4TbHpXYaYOhELCHZNmGYOtWrDX6UATGWTzbTERSPVJuvcD/+0BSzg9L",
-	"thU3xhz0zfad7o7fd/cd5VvIjSqNJu0sZLdg8ykpDB/PRrKQbu4/lmxKYicpGATZnGXppNH+q5uXBBlY",
-	"x1JPYJGCFP7nsWGFDjKQ2v10CunST2pHE2JI4evRxBzRV8d45HASQo8qDRmk5Q0sFiloVNSSYXEXy4yu",
-	"KXc+5xmrlkq/uRIp0vImxcoZqXMmRdptqiyFSssIpHSkwocfmcaQwQ+9e6B7Ncq9gZah+joMMuM8xGf6",
-	"XEkmAdmnmOuq7czOsRxVjvZw8C0UpDDDoqIuSVrpukCFE/qAo2KfxSuph19MpYUd2mo8pgBoh4pTUGZG",
-	"28h7630WKYQMQ8eY3wxLY+VyLnYC5ldmw01IciMaYL9+1V46WYuTNXPzsK9CzHv/tg57W8PwgpprQ1qm",
-	"IpuiPTKa0msjdSbFz35eh1KEQO/lv/s8rU91QKcd1OU8Pi0G0V8evYuGLddEQ8ZSGDHOiOcdZy43SqEW",
-	"wx1KuBPC1SI64KNQz1sBEkGjhm4pUp1KeShsz1rMvnfuuk13Q/MvhsVjMhrpV5lXOJH5/8yfMoIKuwfB",
-	"XytbpZH1NapDRosz6upaC9Om4oJ4+W1EWBrdfXY+Bv9nBT6u3K6C1umqU1fZlCvnML/pCnmc6I7O+99y",
-	"jLpzNUy6693FmeE0Sns350DXjhcW/5PUY9N4LYAPU2kTaRPUydm7y8SWlMuxzNGbk7HhBJOBNuOxzCUW",
-	"yUfkKSpFnJxNKDHj5L2cKGT/qK9DOi/BsNlrRmxj7pPj/nHfn86UpLGUkMHr45PjPqRQopsGjnrIqm6i",
-	"Cblm/b+TS7AoktotxOJQ/aWI5rOlhcn6kYvBXvX78cKmnZdQ36NlWdQH713b2MVx+roLpH+7ab4nrO4F",
-	"+PsP73XaP31SCZsyx/toS6q/jEt+C53jbbZSCv2mX8XNG2uoe7dSLDbjzWqejOaJFGvwnp/PLy8Ci4yK",
-	"HLGF7NNqJCl8a4RYziRMrmINvk0hC/TDciQh5LnXH8cVpQ9w2T4PV99I/nbOD5fje6785qtaKB2UAh1t",
-	"YjV67EZsFZ7dJ7GfK7Lu3Ij5k5DuQOni+2ybZj8Edbj7y2SjDkevFlkY1Ib9q/Caf2sOWYUjauFqalvA",
-	"/YUpMBL8GuBG6yCadh2H7YC2zcPJs+dIW48uIlP9/TN1jiL5J2K4wtVjEu5H4m5fCioo/sn3OORF+D08",
-	"tkZfo4eHoLu+hnDOJHXWl7c41zF+AGPZZGyRrpe9DcTWuvd0Vl/sdeiAWV3hast1aAOr0WM3Yg/1OrSb",
-	"/n8XfdNsiPCwJZ61M/6nybFIoh1SqLiADKbOlVmvV3jb1FiXvem/8S+/qw+/YyOqPLx+t0SwWa+Hxh5h",
-	"KY9zo2BxtfgvAAD//+43R5MbHAAA",
+	"H4sIAAAAAAAC/+RZ32/bNhD+VwRuj0rstMFQ6M1ZtiLYuhVLjT4UgUFLZ5mNSKpHyq0X+H8fSMo/Rcu0",
+	"56Q2+maLx7vjffd9pKgnkkpeSgFCK5I8EZWOgVP7szdkBdNT87NEWQJqBnYgA5UiKzWTwvzV0xJIQpRG",
+	"JnIyiwnLmo9j8u0ilxfwTSO90DS3joaVIAlhWVw+ktksJoJy8HicxfMncvgZUm1i9IoCckZFCvvnlyMV",
+	"2YAWxWL+8ZbAJWpaDBBowb2et68R4UvFEDKSfHJWD751I/cgcuyKx6QSzDUE08Dtj58RRiQhP3WWDdOp",
+	"u6XTF8xmV7uhiHS6x5q0RjasNLzEwia0qOzISCKn2kwS+pdrssiLCQ05oL/tbimnOXygw+KYyXImBl9l",
+	"JTI1UNVoBLZgARmadpvALnDeGZtZTGyEgUaaPg5KqdicHwcV4jdEic0SpDJrFPf1K3/qoBTNA7hgfS7t",
+	"fR301jC6t0LoZxWs3XIV1PY26XuNVEM+PZek39UNd9o0vWf/HjNLI4bPkGW/drueJbXb7jzlEPWdb9QN",
+	"AY7JEOkEcBqoJqnk3G6N+6ewkHBPEpkVzYGeq2aQx1Wl9fn8jnv8I0y/SszWq9Nwv5kxpzlLj1NQLjMo",
+	"1DNsEVvpWEpWHxADIio6gVDTmqhtyVkym/0LaClFeE9+tPa++rm9NpS3QbpYB2uyWWuaPoZWzjEl0Pi4",
+	"G0BMkIrg2Agi9Iii5WDsdC7M2IJzoKaaR0yMZGP/JB/GTEVMRVREvfd3kSohZSOWUjMcjSRGNOoLORqx",
+	"lNEi+khxTDkHjHo5RHIU3bOcUzRTTR5MGyEj7VYTQOViX112L7tmdbIEQUtGEvL68uqyS2JSUj22GHXo",
+	"2gtNDrq5hregI1oU0dJUEesU7TLuMmfTWxtGUIY1rhtfdbvulCY0CBuBlmVRl6HzWbkOdgQKl6pl5s1X",
+	"gE2pJn//Yayuu9d7JdIW3x1FPaH+kjr63XaTGVMV59Rshd46GosVDDpPLJvtAqK2jYbTiGXtSNxM724t",
+	"3Eg5aEBFkk+bXllmemjFr5YRgq5QENPVJLHdQuYMJjbmUpw0VhCvlGzzgPfwP3shtAVOGfJ1xBzmyGup",
+	"buecM/OBPB95AaaZl/8z45irzkqpA6iFfNpCKuTTPehkfJ0RkSzCp4voEhlzKKw8APbLjGpow9BZHAZj",
+	"ZeceD8YvFSh9I7PpXnUNAHD2YzZJE33LfPs2drH6NtYqttY8mpt7VXftxudl1Hf9kum8ZHizoh5Uduvy",
+	"upPtCr1WqHCOb7g/H9HeaIyTbQQvfiudoFbuIgP4WZuzFoLer5q8EEMXN6rnyNCVmnqACaXo3H4HReeV",
+	"2peiC/dnRtFlZ5w4RTfws52w+CDXykxn5QG8Xw88Pwm3fAs8Ze65qtlrTuUp7q8I9lBj7RrFdaN9N3To",
+	"iXJ3QX1Hyqujx4i9S88cUt3nR+qGZtE/roYbWK2DsKTEQhMzKMB9Ql53eWuf22lb9NBZmBKEK6F1p2VU",
+	"Rz11/duG7wmQsInPLN4uci0w1iq3P4ZnsoedMIYbyOy4G2jB0FkcBuNp3A0cpuQ/RJc04beTFeDEj++f",
+	"MqVF5MZJTCosSELGWpdJp1OYsbFUOnnTfdMls3hz8nuUWZXa7zseDyrpdKhUF7Rkl6nkZPYw+y8AAP//",
+	"s4ehrwsnAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

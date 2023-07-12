@@ -9,6 +9,7 @@ require (
 	github.com/go-chi/render v1.0.2
 	github.com/sirupsen/logrus v1.9.3
 	github.com/uptrace/bun v1.1.14
+	github.com/uptrace/bun/dbfixture v1.1.14
 	github.com/uptrace/bun/dialect/sqlitedialect v1.1.14
 	github.com/uptrace/bun/driver/sqliteshim v1.1.14
 	github.com/uptrace/bun/extra/bunotel v1.1.14

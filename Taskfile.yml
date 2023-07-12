@@ -8,17 +8,21 @@ tasks:
       - go run ./cmd/warhammerd
 
   up:
+    desc: "Start the application with docker-compose"
     cmds:
       - docker-compose up --build --force-recreate --remove-orphans --detach
 
   gen:
+    desc: "Generate code using go generate"
     cmds:
       - go generate ./...
   
   lint:
+    desc: "Run linter"
     cmds:
       - golangci-lint run ./...
 
   test:
+    desc: "Run tests"
     cmds:
       - go test -v ./...

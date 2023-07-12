@@ -1,0 +1,121 @@
+- model: GrandAlliance
+  rows:
+    - id: order
+      name: Order
+      description: The forces of Order strive to bring unity and stability to the Mortal Realms. Composed of various factions, they fight against the forces of Chaos.
+    - id: chaos
+      name: Chaos
+      description: The forces of Chaos seek to corrupt and dominate the Mortal Realms. Made up of daemons, monsters, and twisted beings, they spread destruction wherever they go.
+    - id: death
+      name: Death
+      description: Death is a Grand Alliance composed of undead and other creatures associated with the realm of death. They seek to expand their dominion over the Mortal Realms.
+    - id: destruction
+      name: Destruction
+      description: Destruction is a Grand Alliance consisting of savage and destructive forces such as orruks, ogors, and other monstrous creatures. They revel in chaos and destruction.
+
+- model: Allegiance
+  rows:
+    - id: stormcast_eternals
+      name: Stormcast Eternals
+      description: The chosen champions of Sigmar, the Stormcast Eternals are immortal warriors clad in sigmarite armor. They fight for Order and the defense of the Mortal Realms.
+      grand_alliance: order
+      mortal_realm: azyr
+    - id: kharadron_overlords
+      name: Kharadron Overlords
+      description: A faction of duardin sky-pirates, the Kharadron Overlords sail the skies in their massive airships, seeking profit and riches.
+      grand_alliance: order
+      mortal_realm: chamon
+    - id: fyreslayers
+      name: Fyreslayers
+      description: The Fyreslayers are duardin warriors who worship the ur-gold and seek to reclaim the lost relics of their fallen god, Grimnir.
+      grand_alliance: order
+      mortal_realm: aqshy
+    - id: sylvaneth
+      name: Sylvaneth
+      description: The Sylvaneth are mystical beings who protect the forests and groves of the Mortal Realms. They are led by ancient and powerful spirits known as the Treelords.
+      grand_alliance: order
+      mortal_realm: ghyran
+    - id: seraphon
+      name: Seraphon
+      description: The Seraphon, also known as the Lizardmen, are reptilian warriors summoned by the Old Ones to defend the Mortal Realms against Chaos.
+      grand_alliance: order
+      mortal_realm: ulgu
+    - id: flesh_eater_courts
+      name: Flesh-eater Courts
+      description: The Flesh-eater Courts are deluded remnants of the noble courts of old, cursed with a hunger for flesh. They believe themselves to be noble knights and kings.
+      grand_alliance: death
+      mortal_realm: shyish
+    - id: legions_of_nagash
+      name: Legions of Nagash
+      description: Led by the undead god Nagash, the Legions of Nagash are a vast army of skeletons, zombies, and other undead creatures, seeking to expand their dominion.
+      grand_alliance: death
+      mortal_realm: shyish
+    - id: nighthaunt
+      name: Nighthaunt
+      description: The Nighthaunt are a spectral army of haunted souls and vengeful spirits. They are the terror of the night and bring death to all who cross their path.
+      grand_alliance: death
+      mortal_realm: shyish
+    - id: ironjawz
+      name: Ironjawz
+      description: The Ironjawz are savage orruks who revel in battle and destruction. They are fearsome warriors who seek the thrill of combat.
+      grand_alliance: destruction
+      mortal_realm: ghur
+    - id: bonesplitterz
+      name: Bonesplitterz
+      description: The Bonesplitterz are savage orruks who are deeply connected to the wild and primal energies of the Mortal Realms. They wield crude weapons and fight with reckless abandon.
+      grand_alliance: destruction
+      mortal_realm: ghur
+    - id: beastclaw_raiders
+      name: Beastclaw Raiders
+      description: The Beastclaw Raiders are a nomadic force of ogors and monstrous beasts who ride across the realms on their massive, frost-covered creatures.
+      grand_alliance: destruction
+      mortal_realm: ghur
+    - id: disciples_of_tzeentch
+      name: Disciples of Tzeentch
+      description: The Disciples of Tzeentch are the followers of the Changer of Ways. They are masters of magic and manipulation, using sorcery to reshape the Mortal Realms.
+      grand_alliance: chaos
+      mortal_realm: hysh
+    - id: blades_of_khorne
+      name: Blades of Khorne
+      description: The Blades of Khorne are the followers of the Blood God, Khorne. They are bloodthirsty warriors who seek to spill the blood of their enemies in glorious combat.
+      grand_alliance: chaos
+      mortal_realm: aqshy
+    - id: maggotkin_of_nurgle
+      name: Maggotkin of Nurgle
+      description: The Maggotkin of Nurgle are the followers of the Plague God, Nurgle. They spread disease and decay, bringing the cycle of life and death to the Mortal Realms.
+      grand_alliance: chaos
+      mortal_realm: ulgu
+    - id: hedonites_of_slaanesh
+      name: Hedonites of Slaanesh
+      description: The Hedonites of Slaanesh are the followers of the Dark Prince, Slaanesh. They are seekers of pleasure and excess, indulging in every desire.
+      grand_alliance: chaos
+      mortal_realm: hysh
+    - id: skaven
+      name: Skaven
+      description: The Skaven are a race of cunning ratmen who thrive in the dark corners of the Mortal Realms. They are masters of deception, technology, and deadly warfare.
+      grand_alliance: chaos
+      mortal_realm: chamon
+
+- model: GrandStrategy
+  rows:
+    - id: hold_the_line
+      name: Hold the Line
+      description: Hold the majority of the objectives at the end of the fifth battle round.
+    - id: arcane_power
+      name: Arcane Power
+      description: Successfully cast 3 spells with a casting value of 7 or higher during the battle.
+    - id: total_commitment
+      name: Total Commitment
+      description: Have no models from your starting army in your territory at the end of the fifth battle round.
+    - id: dominate
+      name: Dominate
+      description: Control the objective that was worth the most victory points at the start of your turn for two consecutive turns.
+    - id: ancient_heirlooms
+      name: Ancient Heirlooms
+      description: Control all three of the designated objective markers at the end of the fifth battle round.
+    - id: assassination
+      name: Assassination
+      description: Slay the enemy general during the battle.
+    - id: savage_exemplar
+      name: Savage Exemplar
+      description: Ensure that all units from your starting army are within the enemy's territory at the end of the fifth battle round.

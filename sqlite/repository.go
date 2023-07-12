@@ -3,12 +3,14 @@ package sqlite
 import (
 	"context"
 	"database/sql"
-	"fmt"
+	"io/fs"
 	"strings"
 
 	"github.com/brittonhayes/warhammer"
+	"github.com/brittonhayes/warhammer/internal/logging"
 	"github.com/brittonhayes/warhammer/sqlite/migrations"
 	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dbfixture"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
 	"github.com/uptrace/bun/driver/sqliteshim"
 	"github.com/uptrace/bun/extra/bunotel"
@@ -45,25 +47,27 @@ func NewWarhammerRepository(connection string) warhammer.WarhammerRepository {
 }
 
 func (r *warhammerRepository) Init(ctx context.Context) error {
+	logging.NewLogrus(ctx).Info("initializing database")
 	return r.m.Init(ctx)
 }
 
 func (r *warhammerRepository) Generate(ctx context.Context, name string) error {
 
 	name = strings.ReplaceAll(name, " ", "_")
-	ms, err := r.m.CreateSQLMigrations(ctx, name)
+	m, err := r.m.CreateGoMigration(ctx, name)
 	if err != nil {
 		return err
 	}
 
-	for _, m := range ms {
-		fmt.Printf("created migration %s (%s)\n", m.Name, m.Path)
-	}
+	logging.NewLogrus(ctx).Infof("created %s", m.Name)
 
 	return nil
 }
 
 func (r *warhammerRepository) Migrate(ctx context.Context) error {
+
+	logger := logging.NewLogrus(ctx)
+
 	err := r.m.Lock(ctx)
 	if err != nil {
 		return err
@@ -76,10 +80,59 @@ func (r *warhammerRepository) Migrate(ctx context.Context) error {
 	}
 
 	if group.IsZero() {
-		fmt.Printf("there are no new migrations to run (database is up to date)\n")
+		logger.Info("there are no new migrations to run (database is up to date)")
 		return nil
 	}
 
-	fmt.Printf("migrated to %s\n", group)
+	logger.Infof("migrated to %s\n", group)
+	return nil
+}
+
+func (r *warhammerRepository) LoadFixtures(ctx context.Context, fsys fs.FS, names ...string) error {
+	logging.NewLogrus(ctx).Info("loading fixtures")
+
+	r.db.RegisterModel(
+		(*warhammer.Army)(nil),
+		(*warhammer.GrandAlliance)(nil),
+		(*warhammer.Unit)(nil),
+		(*warhammer.Allegiance)(nil),
+		(*warhammer.GrandStrategy)(nil),
+	)
+
+	f := dbfixture.New(r.db, dbfixture.WithRecreateTables())
+	return f.Load(ctx, fsys, names...)
+}
+
+func (r *warhammerRepository) Lock(ctx context.Context) error {
+	logging.NewLogrus(ctx).Info("locking database")
+	return r.m.Lock(ctx)
+}
+
+func (r *warhammerRepository) Unlock(ctx context.Context) error {
+	logging.NewLogrus(ctx).Info("unlocking database")
+	return r.m.Unlock(ctx)
+}
+
+func (r *warhammerRepository) Rollback(ctx context.Context) error {
+	logger := logging.NewLogrus(ctx)
+
+	err := r.m.Lock(ctx)
+	if err != nil {
+		return err
+	}
+	defer r.m.Unlock(ctx)
+
+	logger.Info("rolling back migration")
+	group, err := r.m.Rollback(ctx)
+	if err != nil {
+		return err
+	}
+
+	if group.IsZero() {
+		logger.Info("there are no migrations to rollback")
+		return nil
+	}
+
+	logger.Infof("rolled back to %s\n", group)
 	return nil
 }

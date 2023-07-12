@@ -6,7 +6,7 @@ import (
 	"github.com/brittonhayes/warhammer"
 )
 
-func (r *warhammerRepository) GetUnitByID(ctx context.Context, id int64) (*warhammer.Unit, error) {
+func (r *warhammerRepository) GetUnitByID(ctx context.Context, id string) (*warhammer.Unit, error) {
 	var unit warhammer.Unit
 	err := r.db.NewSelect().Model(&unit).Where("id = ?", id).Scan(ctx)
 	if err != nil {

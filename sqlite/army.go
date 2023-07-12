@@ -3,11 +3,11 @@ package sqlite
 import (
 	"context"
 
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/warhammer"
 )
 
-func (r *warhammerRepository) GetArmyByID(ctx context.Context, id int64) (*api.Army, error) {
-	var army api.Army
+func (r *warhammerRepository) GetArmyByID(ctx context.Context, id string) (*warhammer.Army, error) {
+	var army warhammer.Army
 	err := r.db.NewSelect().Model(&army).Where("id = ?", id).Scan(ctx)
 	if err != nil {
 		return nil, err
@@ -16,8 +16,8 @@ func (r *warhammerRepository) GetArmyByID(ctx context.Context, id int64) (*api.A
 	return &army, nil
 }
 
-func (r *warhammerRepository) GetArmies(ctx context.Context) ([]api.Army, error) {
-	var armies []api.Army
+func (r *warhammerRepository) GetArmies(ctx context.Context) ([]warhammer.Army, error) {
+	var armies []warhammer.Army
 	err := r.db.NewSelect().Model(&armies).Scan(ctx)
 	if err != nil {
 		return nil, err

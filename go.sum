@@ -237,6 +237,8 @@ github.com/ugorji/go/codec v1.2.7 h1:YPXUKf7fYbp/y8xloBqZOw2qaVggbfwMlI8WM3wZUJ0
 github.com/ugorji/go/codec v1.2.7/go.mod h1:WGN1fab3R1fzQlVQTkfxVtIBhWDRqOviHU95kRgeqEY=
 github.com/uptrace/bun v1.1.14 h1:S5vvNnjEynJ0CvnrBOD7MIRW7q/WbtvFXrdfy0lddAM=
 github.com/uptrace/bun v1.1.14/go.mod h1:RHk6DrIisO62dv10pUOJCz5MphXThuOTpVNYEYv7NI8=
+github.com/uptrace/bun/dbfixture v1.1.14 h1:KymZc+vV+kou1hl0HgwaqYo3Ug8IfArf6JsB5C6eW5o=
+github.com/uptrace/bun/dbfixture v1.1.14/go.mod h1:RP9sYsJnHoJPjIJX2ACrQd690Z2SSIBtFK2rtcbI3fI=
 github.com/uptrace/bun/dialect/sqlitedialect v1.1.14 h1:SlwXLxr+N1kEo8Q0cheRlnIZLZlWniEB1OI+jkiLgWE=
 github.com/uptrace/bun/dialect/sqlitedialect v1.1.14/go.mod h1:9RTEj1l4bB9a4l1Mnc9y4COTwWlFYe1dh6fyxq1rR7A=
 github.com/uptrace/bun/driver/sqliteshim v1.1.14 h1:DFPUJ6KjDP2myjq15gtYYNngmAFMww1Y2UFZv4tbUw8=

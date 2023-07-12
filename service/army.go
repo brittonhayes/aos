@@ -8,7 +8,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (s *WarhammerService) GetArmyByID(w http.ResponseWriter, r *http.Request, id int64) *api.Response {
+const (
+	ErrArmyNotFound   = "Army not found with this ID"
+	ErrArmiesNotFound = "No armies found"
+)
+
+func (s *WarhammerService) GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	var army api.Army
 	army.ID = &id
 
@@ -38,7 +43,7 @@ func (s *WarhammerService) GetArmies(w http.ResponseWriter, r *http.Request) *ap
 	return api.GetArmiesJSON200Response(armies)
 }
 
-func (s *WarhammerService) UpdateArmyByID(w http.ResponseWriter, r *http.Request, id int64) *api.Response {
+func (s *WarhammerService) UpdateArmyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	var army api.Army
 	army.ID = &id
 
