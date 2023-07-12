@@ -30,17 +30,13 @@ func main() {
 		repo warhammer.WarhammerRepository
 	)
 
-	repo = sqlite.NewWarhammerRepository("file:warhammer.db")
-
 	app := &cli.App{
 		Name:    "warhammerd",
 		Usage:   "the warhammer api server",
 		Suggest: true,
-		Before: func(c *cli.Context) error {
-
-			return nil
-		},
 		Action: func(c *cli.Context) error {
+			repo = sqlite.NewWarhammerRepository(c.String("db"))
+
 			// Create an instance of our handler which satisfies the generated interface
 			s := service.NewWarhammerService(repo)
 
@@ -62,27 +58,25 @@ func main() {
 			r.Use(logging.Middleware)
 
 			// Use the OpenTelemetry middleware to trace all requests
-			if c.Bool("tracing") {
-				r.Use(func(h http.Handler) http.Handler {
-					return otelhttp.NewHandler(
-						http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-							h.ServeHTTP(w, r)
+			r.Use(func(h http.Handler) http.Handler {
+				return otelhttp.NewHandler(
+					http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+						h.ServeHTTP(w, r)
 
-							routePattern := chi.RouteContext(r.Context()).RoutePattern()
+						routePattern := chi.RouteContext(r.Context()).RoutePattern()
 
-							span := trace.SpanFromContext(r.Context())
-							span.SetName(routePattern)
-							span.SetAttributes(semconv.HTTPTarget(r.URL.String()), semconv.HTTPRoute(routePattern))
+						span := trace.SpanFromContext(r.Context())
+						span.SetName(routePattern)
+						span.SetAttributes(semconv.HTTPTarget(r.URL.String()), semconv.HTTPRoute(routePattern))
 
-							labeler, ok := otelhttp.LabelerFromContext(r.Context())
-							if ok {
-								labeler.Add(semconv.HTTPRoute(routePattern))
-							}
-						}),
-						"",
-					)
-				})
-			}
+						labeler, ok := otelhttp.LabelerFromContext(r.Context())
+						if ok {
+							labeler.Add(semconv.HTTPRoute(routePattern))
+						}
+					}),
+					"",
+				)
+			})
 
 			// We now register our server above as the handler for the interface
 			api.Handler(s, api.WithRouter(r))
@@ -147,13 +141,6 @@ func main() {
 				EnvVars: []string{"DATABASE_URL"},
 				Usage:   "database url",
 			},
-			&cli.BoolFlag{
-				Name:    "tracing",
-				Aliases: []string{"t"},
-				Value:   false,
-				EnvVars: []string{"TRACING_ENABLED"},
-				Usage:   "enable tracing",
-			},
 		},
 		Commands: []*cli.Command{
 			{
@@ -161,6 +148,10 @@ func main() {
 				Usage: "migrate the database",
 				Action: func(c *cli.Context) error {
 					return repo.Migrate(c.Context)
+				},
+				Before: func(c *cli.Context) error {
+					repo = sqlite.NewWarhammerRepository(c.String("db"))
+					return nil
 				},
 				Subcommands: []*cli.Command{
 					{
