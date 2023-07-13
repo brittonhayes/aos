@@ -34,6 +34,27 @@ func main() {
 		Name:    "warhammerd",
 		Usage:   "the warhammer api server",
 		Suggest: true,
+		Before: func(c *cli.Context) error {
+			if c.Bool("migrate") {
+				repo = sqlite.NewWarhammerRepository(c.String("db"))
+
+				err := repo.Init(c.Context)
+				if err != nil {
+					return err
+				}
+
+				err = repo.Migrate(c.Context)
+				if err != nil {
+					return err
+				}
+
+				err = repo.Seed(c.Context, fixtures.FS, "fixtures.yaml")
+				if err != nil {
+					return err
+				}
+			}
+			return nil
+		},
 		Action: func(c *cli.Context) error {
 			repo = sqlite.NewWarhammerRepository(c.String("db"))
 
@@ -141,6 +162,13 @@ func main() {
 				EnvVars: []string{"DATABASE_URL"},
 				Usage:   "database url",
 			},
+			&cli.BoolFlag{
+				Name:    "migrate",
+				Aliases: []string{"m"},
+				Value:   false,
+				EnvVars: []string{"MIGRATE"},
+				Usage:   "run migrations before starting the server",
+			},
 		},
 		Commands: []*cli.Command{
 			{
@@ -193,10 +221,10 @@ func main() {
 						},
 					},
 					{
-						Name:  "load-fixtures",
-						Usage: "load fixtures into the database",
+						Name:  "seed",
+						Usage: "seed data into the database",
 						Action: func(c *cli.Context) error {
-							return repo.LoadFixtures(c.Context, fixtures.FS, "fixtures.yaml")
+							return repo.Seed(c.Context, fixtures.FS, "fixtures.yaml")
 						},
 					},
 				},

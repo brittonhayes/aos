@@ -20,6 +20,7 @@ services:
       - OTEL_RESOURCE_ATTRIBUTES
     ports:
       - "8080:8080"
+    command: ["--migrate"]
     depends_on:
       otel_collector:
         condition: service_started

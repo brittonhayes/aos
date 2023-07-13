@@ -9,7 +9,7 @@ servers:
 - url: https://aos-api.com
   description: Production server
 paths:
-  /grand-alliance:
+  /grand-alliances:
     get:
       summary: Get all grand alliances
       description: Get all grand alliances
@@ -29,7 +29,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /grand-alliance/{id}:
+  /grand-alliances/{id}:
     get:
       summary: Get grand alliance by id
       description: Get grand alliance by id
@@ -40,7 +40,7 @@ paths:
         description: id of grand alliance to return
         required: true
         schema:
-          type: string 
+          type: string
       responses:
         '200':
           description: OK
@@ -54,7 +54,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /grand-strategy:
+  /grand-strategies:
     get:
       summary: Get all grand strategies
       description: Get all grand strategies
@@ -74,7 +74,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /grand-strategy/{id}:
+  /grand-strategies/{id}:
     get:
       summary: Get grand strategy by id
       description: Get grand strategy by id
@@ -85,7 +85,7 @@ paths:
         description: id of grand strategy to return
         required: true
         schema:
-          type: string 
+          type: string
       responses:
         '200':
           description: OK
@@ -99,7 +99,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /allegiance:
+  /allegiances:
     get:
       summary: Get all allegiances
       description: Get all allegiances
@@ -132,7 +132,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /allegiance/{id}:
+  /allegiances/{id}:
     get:
       summary: Get allegiance by id
       description: Get allegiance by id
@@ -143,7 +143,7 @@ paths:
         description: id of allegiance to return
         required: true
         schema:
-          type: string 
+          type: string
       responses:
         '200':
           description: OK
@@ -177,28 +177,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    post:
-      summary: Create a unit
-      description: Create a unit
-      operationId: createUnit
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Unit'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unit'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /units/{id}:
     get:
       summary: Get unit by id
@@ -210,60 +188,7 @@ paths:
         description: id of unit to return
         required: true
         schema:
-          type: string 
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unit'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      summary: Update unit by id
-      description: Update unit by id
-      operationId: updateUnitById
-      parameters:
-      - name: id
-        in: path
-        description: id of unit to update
-        required: true
-        schema:
-          type: string 
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Unit'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unit'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    delete:
-      summary: Delete unit by id
-      description: Delete unit by id
-      operationId: deleteUnitById
-      parameters:
-      - name: id
-        in: path
-        description: id of unit to delete
-        required: true
-        schema:
-          type: string 
+          type: string
       responses:
         '200':
           description: OK
@@ -308,7 +233,7 @@ paths:
         description: id of army to return
         required: true
         schema:
-          type: string 
+          type: string
       responses:
         '200':
           description: OK
@@ -321,36 +246,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      summary: Update army by id
-      description: Update army by id
-      operationId: updateArmyById
-      parameters:
-      - name: id
-        in: path
-        description: id of army to update
-        required: true
-        schema:
-          type: string 
-      requestBody:
-        content:
-          application/json:
-            schema:
-              ref: '#/components/schemas/Army'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Army'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error' 
 
 components:
   schemas:
@@ -367,13 +263,7 @@ components:
           type: string
     Move:
       type: object
-      # x-go-extra-tags:
-        # bun: "rel:has-one,join:id=unit_id"
       properties:
-        id:
-          type: string 
-          x-go-extra-tags:
-            bun: 'id,pk'
         name:
           type: string
         value:
@@ -381,13 +271,7 @@ components:
           format: int64
     Size:
       type: object
-      # x-go-extra-tags:
-      #   bun: "rel:has-one,join:id=unit_id"
       properties:
-        id:
-          type: string 
-          x-go-extra-tags:
-            bun: 'id,pk'
         unit:
           type: string
         value:
@@ -396,25 +280,21 @@ components:
     DamageTable:
       type: object
       properties:
-        id:
-          type: string 
+        _id:
+          type: string
           x-go-extra-tags:
             bun: 'id,pk'
         wound_track_position:
           type: integer
-          format: int64 
+          format: int64
         move:
           $ref: '#/components/schemas/Move'
         min_wounds_suffered:
           type: integer
-          format: int64 
+          format: int64
     Ability:
       type: object
       properties:
-        id:
-          type: string 
-          x-go-extra-tags:
-            bun: 'id,pk'
         name:
           type: string
         description:
@@ -422,10 +302,6 @@ components:
     Attribute:
       type: object
       properties:
-        id:
-          type: string 
-          x-go-extra-tags:
-            bun: 'id,pk'
         name:
           type: string
         value:
@@ -434,8 +310,8 @@ components:
     Weapon:
       type: object
       properties:
-        id:
-          type: string 
+        _id:
+          type: string
           x-go-extra-tags:
             bun: ',pk'
         name:
@@ -463,39 +339,39 @@ components:
       required:
       - name
       properties:
-        id:
-          type: string 
+        _id:
+          type: string
           x-go-extra-tags:
             bun: ',pk'
         name:
           type: string
-        description: 
+        description:
           type: string
     GrandStrategy:
       type: object
       required:
       - name
       properties:
-        id:
-          type: string 
+        _id:
+          type: string
           x-go-extra-tags:
             bun: ',pk'
         name:
           type: string
-        description: 
+        description:
           type: string
     Allegiance:
       type: object
       required:
       - name
       properties:
-        id:
-          type: string 
+        _id:
+          type: string
           x-go-extra-tags:
             bun: 'id,pk'
         name:
           type: string
-        description: 
+        description:
           type: string
         grand_alliance:
           type: string
@@ -506,8 +382,8 @@ components:
       required:
       - name
       properties:
-        id:
-          type: string 
+        _id:
+          type: string
           x-go-extra-tags:
             bun: 'id,pk'
         name:
@@ -567,13 +443,13 @@ components:
           #   bun: "rel:has-many,join:id=unit_id"
           items:
             $ref: '#/components/schemas/Weapon'
-    
+
     Army:
       type: object
       required:
       - name
       properties:
-        id:
+        _id:
           type: string
           x-go-extra-tags:
             bun: 'id,pk'

@@ -16,7 +16,6 @@ type WarhammerRepository interface {
 
 	GetArmyByID(ctx context.Context, id string) (*api.Army, error)
 	GetArmies(ctx context.Context) ([]api.Army, error)
-	UpdateArmyByID(ctx context.Context, id string, army *api.Army) (*api.Army, error)
 
 	GetGrandAllianceByID(ctx context.Context, id string) (*api.GrandAlliance, error)
 	GetGrandAlliances(ctx context.Context) ([]api.GrandAlliance, error)
@@ -33,5 +32,5 @@ type WarhammerRepository interface {
 	Lock(ctx context.Context) error
 	Unlock(ctx context.Context) error
 	Rollback(ctx context.Context) error
-	LoadFixtures(ctx context.Context, fsys fs.FS, names ...string) error
+	Seed(ctx context.Context, fsys fs.FS, names ...string) error
 }

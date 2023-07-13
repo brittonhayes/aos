@@ -89,8 +89,8 @@ func (r *warhammerRepository) Migrate(ctx context.Context) error {
 	return nil
 }
 
-func (r *warhammerRepository) LoadFixtures(ctx context.Context, fsys fs.FS, names ...string) error {
-	logging.NewLogrus(ctx).Info("loading fixtures")
+func (r *warhammerRepository) Seed(ctx context.Context, fsys fs.FS, names ...string) error {
+	logging.NewLogrus(ctx).Info("seeding database")
 
 	r.db.RegisterModel(
 		(*api.Army)(nil),

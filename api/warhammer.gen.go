@@ -24,36 +24,34 @@ import (
 // Ability defines model for Ability.
 type Ability struct {
 	Description *string `json:"description,omitempty"`
-	ID          *string `bun:"id,pk" json:"id,omitempty"`
 	Name        *string `json:"name,omitempty"`
 }
 
 // Allegiance defines model for Allegiance.
 type Allegiance struct {
+	ID            *string `bun:"id,pk" json:"_id,omitempty"`
 	Description   *string `json:"description,omitempty"`
 	GrandAlliance *string `json:"grand_alliance,omitempty"`
-	ID            *string `bun:"id,pk" json:"id,omitempty"`
 	MortalRealm   *string `json:"mortal_realm,omitempty"`
 	Name          string  `json:"name"`
 }
 
 // Army defines model for Army.
 type Army struct {
-	ID    *string `bun:"id,pk" json:"id,omitempty"`
+	ID    *string `bun:"id,pk" json:"_id,omitempty"`
 	Name  string  `json:"name"`
 	Units []Unit  `json:"units,omitempty"`
 }
 
 // Attribute defines model for Attribute.
 type Attribute struct {
-	ID    *string `bun:"id,pk" json:"id,omitempty"`
 	Name  *string `json:"name,omitempty"`
 	Value *int64  `json:"value,omitempty"`
 }
 
 // DamageTable defines model for DamageTable.
 type DamageTable struct {
-	ID                 *string `bun:"id,pk" json:"id,omitempty"`
+	ID                 *string `bun:"id,pk" json:"_id,omitempty"`
 	MinWoundsSuffered  *int64  `json:"min_wounds_suffered,omitempty"`
 	Move               *Move   `json:"move,omitempty"`
 	WoundTrackPosition *int64  `json:"wound_track_position,omitempty"`
@@ -67,41 +65,39 @@ type Error struct {
 
 // GrandAlliance defines model for GrandAlliance.
 type GrandAlliance struct {
+	ID          *string `bun:",pk" json:"_id,omitempty"`
 	Description *string `json:"description,omitempty"`
-	ID          *string `bun:",pk" json:"id,omitempty"`
 	Name        string  `json:"name"`
 }
 
 // GrandStrategy defines model for GrandStrategy.
 type GrandStrategy struct {
+	ID          *string `bun:",pk" json:"_id,omitempty"`
 	Description *string `json:"description,omitempty"`
-	ID          *string `bun:",pk" json:"id,omitempty"`
 	Name        string  `json:"name"`
 }
 
 // Move defines model for Move.
 type Move struct {
-	ID    *string `bun:"id,pk" json:"id,omitempty"`
 	Name  *string `json:"name,omitempty"`
 	Value *int64  `json:"value,omitempty"`
 }
 
 // Size defines model for Size.
 type Size struct {
-	ID    *string `bun:"id,pk" json:"id,omitempty"`
 	Unit  *string `json:"unit,omitempty"`
 	Value *int64  `json:"value,omitempty"`
 }
 
 // Unit defines model for Unit.
 type Unit struct {
+	ID               *string       `bun:"id,pk" json:"_id,omitempty"`
 	Abilities        []Ability     `json:"abilities,omitempty"`
 	Bravery          *int64        `json:"bravery,omitempty"`
 	CommandAbilities []Attribute   `json:"command_abilities,omitempty"`
 	DamageTable      []DamageTable `json:"damage_table,omitempty"`
 	Description      *string       `json:"description,omitempty"`
 	GrandAlliance    *string       `json:"grand_alliance,omitempty"`
-	ID               *string       `bun:"id,pk" json:"id,omitempty"`
 	Keywords         []string      `json:"keywords,omitempty"`
 	Magic            []Attribute   `json:"magic,omitempty"`
 	Models           *int64        `json:"models,omitempty"`
@@ -116,9 +112,9 @@ type Unit struct {
 
 // Weapon defines model for Weapon.
 type Weapon struct {
+	ID      *string `bun:",pk" json:"_id,omitempty"`
 	Attacks *int64  `json:"attacks,omitempty"`
 	Damage  *int64  `json:"damage,omitempty"`
-	ID      *string `bun:",pk" json:"id,omitempty"`
 	Name    *string `json:"name,omitempty"`
 	Range   *int64  `json:"range,omitempty"`
 	Rend    *int64  `json:"rend,omitempty"`
@@ -133,34 +129,6 @@ type GetAllegiancesParams struct {
 
 	// id of grand alliance to filter by
 	GrandAlliance *string `json:"grand_alliance,omitempty"`
-}
-
-// UpdateArmyByIDJSONBody defines parameters for UpdateArmyByID.
-type UpdateArmyByIDJSONBody interface{}
-
-// CreateUnitJSONBody defines parameters for CreateUnit.
-type CreateUnitJSONBody Unit
-
-// UpdateUnitByIDJSONBody defines parameters for UpdateUnitByID.
-type UpdateUnitByIDJSONBody Unit
-
-// UpdateArmyByIDJSONRequestBody defines body for UpdateArmyByID for application/json ContentType.
-type UpdateArmyByIDJSONRequestBody UpdateArmyByIDJSONBody
-
-// CreateUnitJSONRequestBody defines body for CreateUnit for application/json ContentType.
-type CreateUnitJSONRequestBody CreateUnitJSONBody
-
-// Bind implements render.Binder.
-func (CreateUnitJSONRequestBody) Bind(*http.Request) error {
-	return nil
-}
-
-// UpdateUnitByIDJSONRequestBody defines body for UpdateUnitByID for application/json ContentType.
-type UpdateUnitByIDJSONRequestBody UpdateUnitByIDJSONBody
-
-// Bind implements render.Binder.
-func (UpdateUnitByIDJSONRequestBody) Bind(*http.Request) error {
-	return nil
 }
 
 // Response is a common response struct for all the API calls.
@@ -284,26 +252,6 @@ func GetArmyByIDJSON404Response(body Error) *Response {
 	}
 }
 
-// UpdateArmyByIDJSON200Response is a constructor method for a UpdateArmyByID response.
-// A *Response is returned with the configured status code and content type from the spec.
-func UpdateArmyByIDJSON200Response(body Army) *Response {
-	return &Response{
-		body:        body,
-		Code:        200,
-		contentType: "application/json",
-	}
-}
-
-// UpdateArmyByIDJSON404Response is a constructor method for a UpdateArmyByID response.
-// A *Response is returned with the configured status code and content type from the spec.
-func UpdateArmyByIDJSON404Response(body Error) *Response {
-	return &Response{
-		body:        body,
-		Code:        404,
-		contentType: "application/json",
-	}
-}
-
 // GetGrandAlliancesJSON200Response is a constructor method for a GetGrandAlliances response.
 // A *Response is returned with the configured status code and content type from the spec.
 func GetGrandAlliancesJSON200Response(body []GrandAlliance) *Response {
@@ -404,46 +352,6 @@ func GetUnitsJSON404Response(body Error) *Response {
 	}
 }
 
-// CreateUnitJSON201Response is a constructor method for a CreateUnit response.
-// A *Response is returned with the configured status code and content type from the spec.
-func CreateUnitJSON201Response(body Unit) *Response {
-	return &Response{
-		body:        body,
-		Code:        201,
-		contentType: "application/json",
-	}
-}
-
-// CreateUnitJSON400Response is a constructor method for a CreateUnit response.
-// A *Response is returned with the configured status code and content type from the spec.
-func CreateUnitJSON400Response(body Error) *Response {
-	return &Response{
-		body:        body,
-		Code:        400,
-		contentType: "application/json",
-	}
-}
-
-// DeleteUnitByIDJSON200Response is a constructor method for a DeleteUnitByID response.
-// A *Response is returned with the configured status code and content type from the spec.
-func DeleteUnitByIDJSON200Response(body Unit) *Response {
-	return &Response{
-		body:        body,
-		Code:        200,
-		contentType: "application/json",
-	}
-}
-
-// DeleteUnitByIDJSON404Response is a constructor method for a DeleteUnitByID response.
-// A *Response is returned with the configured status code and content type from the spec.
-func DeleteUnitByIDJSON404Response(body Error) *Response {
-	return &Response{
-		body:        body,
-		Code:        404,
-		contentType: "application/json",
-	}
-}
-
 // GetUnitByIDJSON200Response is a constructor method for a GetUnitByID response.
 // A *Response is returned with the configured status code and content type from the spec.
 func GetUnitByIDJSON200Response(body Unit) *Response {
@@ -464,33 +372,13 @@ func GetUnitByIDJSON404Response(body Error) *Response {
 	}
 }
 
-// UpdateUnitByIDJSON200Response is a constructor method for a UpdateUnitByID response.
-// A *Response is returned with the configured status code and content type from the spec.
-func UpdateUnitByIDJSON200Response(body Unit) *Response {
-	return &Response{
-		body:        body,
-		Code:        200,
-		contentType: "application/json",
-	}
-}
-
-// UpdateUnitByIDJSON404Response is a constructor method for a UpdateUnitByID response.
-// A *Response is returned with the configured status code and content type from the spec.
-func UpdateUnitByIDJSON404Response(body Error) *Response {
-	return &Response{
-		body:        body,
-		Code:        404,
-		contentType: "application/json",
-	}
-}
-
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Get all allegiances
-	// (GET /allegiance)
+	// (GET /allegiances)
 	GetAllegiances(w http.ResponseWriter, r *http.Request, params GetAllegiancesParams) *Response
 	// Get allegiance by id
-	// (GET /allegiance/{id})
+	// (GET /allegiances/{id})
 	GetAllegianceByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get all armies
 	// (GET /armies)
@@ -498,36 +386,24 @@ type ServerInterface interface {
 	// Get army by id
 	// (GET /armies/{id})
 	GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *Response
-	// Update army by id
-	// (PUT /armies/{id})
-	UpdateArmyByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get all grand alliances
-	// (GET /grand-alliance)
+	// (GET /grand-alliances)
 	GetGrandAlliances(w http.ResponseWriter, r *http.Request) *Response
 	// Get grand alliance by id
-	// (GET /grand-alliance/{id})
+	// (GET /grand-alliances/{id})
 	GetGrandAllianceByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get all grand strategies
-	// (GET /grand-strategy)
+	// (GET /grand-strategies)
 	GetGrandStrategies(w http.ResponseWriter, r *http.Request) *Response
 	// Get grand strategy by id
-	// (GET /grand-strategy/{id})
+	// (GET /grand-strategies/{id})
 	GetGrandStrategyByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get all units
 	// (GET /units)
 	GetUnits(w http.ResponseWriter, r *http.Request) *Response
-	// Create a unit
-	// (POST /units)
-	CreateUnit(w http.ResponseWriter, r *http.Request) *Response
-	// Delete unit by id
-	// (DELETE /units/{id})
-	DeleteUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get unit by id
 	// (GET /units/{id})
 	GetUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
-	// Update unit by id
-	// (PUT /units/{id})
-	UpdateUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -631,32 +507,6 @@ func (siw *ServerInterfaceWrapper) GetArmyByID(w http.ResponseWriter, r *http.Re
 
 	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := siw.Handler.GetArmyByID(w, r, id)
-		if resp != nil {
-			if resp.body != nil {
-				render.Render(w, r, resp)
-			} else {
-				w.WriteHeader(resp.Code)
-			}
-		}
-	})
-
-	handler(w, r.WithContext(ctx))
-}
-
-// UpdateArmyByID operation middleware
-func (siw *ServerInterfaceWrapper) UpdateArmyByID(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	// ------------- Path parameter "id" -------------
-	var id string
-
-	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
-		return
-	}
-
-	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		resp := siw.Handler.UpdateArmyByID(w, r, id)
 		if resp != nil {
 			if resp.body != nil {
 				render.Render(w, r, resp)
@@ -775,50 +625,6 @@ func (siw *ServerInterfaceWrapper) GetUnits(w http.ResponseWriter, r *http.Reque
 	handler(w, r.WithContext(ctx))
 }
 
-// CreateUnit operation middleware
-func (siw *ServerInterfaceWrapper) CreateUnit(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		resp := siw.Handler.CreateUnit(w, r)
-		if resp != nil {
-			if resp.body != nil {
-				render.Render(w, r, resp)
-			} else {
-				w.WriteHeader(resp.Code)
-			}
-		}
-	})
-
-	handler(w, r.WithContext(ctx))
-}
-
-// DeleteUnitByID operation middleware
-func (siw *ServerInterfaceWrapper) DeleteUnitByID(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	// ------------- Path parameter "id" -------------
-	var id string
-
-	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
-		return
-	}
-
-	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		resp := siw.Handler.DeleteUnitByID(w, r, id)
-		if resp != nil {
-			if resp.body != nil {
-				render.Render(w, r, resp)
-			} else {
-				w.WriteHeader(resp.Code)
-			}
-		}
-	})
-
-	handler(w, r.WithContext(ctx))
-}
-
 // GetUnitByID operation middleware
 func (siw *ServerInterfaceWrapper) GetUnitByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -833,32 +639,6 @@ func (siw *ServerInterfaceWrapper) GetUnitByID(w http.ResponseWriter, r *http.Re
 
 	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := siw.Handler.GetUnitByID(w, r, id)
-		if resp != nil {
-			if resp.body != nil {
-				render.Render(w, r, resp)
-			} else {
-				w.WriteHeader(resp.Code)
-			}
-		}
-	})
-
-	handler(w, r.WithContext(ctx))
-}
-
-// UpdateUnitByID operation middleware
-func (siw *ServerInterfaceWrapper) UpdateUnitByID(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	// ------------- Path parameter "id" -------------
-	var id string
-
-	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
-		return
-	}
-
-	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		resp := siw.Handler.UpdateUnitByID(w, r, id)
 		if resp != nil {
 			if resp.body != nil {
 				render.Render(w, r, resp)
@@ -986,20 +766,16 @@ func Handler(si ServerInterface, opts ...ServerOption) http.Handler {
 	}
 
 	r.Route(options.BaseURL, func(r chi.Router) {
-		r.Get("/allegiance", wrapper.GetAllegiances)
-		r.Get("/allegiance/{id}", wrapper.GetAllegianceByID)
+		r.Get("/allegiances", wrapper.GetAllegiances)
+		r.Get("/allegiances/{id}", wrapper.GetAllegianceByID)
 		r.Get("/armies", wrapper.GetArmies)
 		r.Get("/armies/{id}", wrapper.GetArmyByID)
-		r.Put("/armies/{id}", wrapper.UpdateArmyByID)
-		r.Get("/grand-alliance", wrapper.GetGrandAlliances)
-		r.Get("/grand-alliance/{id}", wrapper.GetGrandAllianceByID)
-		r.Get("/grand-strategy", wrapper.GetGrandStrategies)
-		r.Get("/grand-strategy/{id}", wrapper.GetGrandStrategyByID)
+		r.Get("/grand-alliances", wrapper.GetGrandAlliances)
+		r.Get("/grand-alliances/{id}", wrapper.GetGrandAllianceByID)
+		r.Get("/grand-strategies", wrapper.GetGrandStrategies)
+		r.Get("/grand-strategies/{id}", wrapper.GetGrandStrategyByID)
 		r.Get("/units", wrapper.GetUnits)
-		r.Post("/units", wrapper.CreateUnit)
-		r.Delete("/units/{id}", wrapper.DeleteUnitByID)
 		r.Get("/units/{id}", wrapper.GetUnitByID)
-		r.Put("/units/{id}", wrapper.UpdateUnitByID)
 	})
 	return r
 }
@@ -1025,28 +801,26 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"xd3i/wAAAP//Ml3oFFcfAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
