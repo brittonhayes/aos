@@ -1,3 +1,4 @@
 Dockerfile linguist-vendored
 *.sh linguist-vendored
+*.html linguist-vendored
 Makefile linguist-vendored
