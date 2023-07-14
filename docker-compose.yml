@@ -1,5 +1,7 @@
 version: "3.7"
 
+volumes:
+  grafana_data:
 
 networks:
   default:
@@ -93,7 +95,7 @@ services:
           memory: 300M
     ports:
       - "${JAEGER_SERVICE_PORT}"
-      - "4317:4317"
+      - "4317"
     environment:
       - COLLECTOR_OTLP_ENABLED=true
       - METRICS_STORAGE_TYPE=prometheus
@@ -124,3 +126,22 @@ services:
           memory: 300M
     ports:
       - "${PROMETHEUS_SERVICE_PORT}"
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
+      - "traefik.http.routers.grafana.entrypoints=web"
+      - "traefik.docker.network=web"
+      - "traefik.http.services.grafana.loadbalancer.server.port=${GRAFANA_SERVICE_PORT}"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    restart: unless-stopped
+    ports:
+      - "3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/grafana-datasources.yaml
