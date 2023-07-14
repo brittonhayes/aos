@@ -26,6 +26,8 @@ type WarhammerRepository interface {
 	GetGrandStrategyByID(ctx context.Context, id string) (*api.GrandStrategy, error)
 	GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error)
 
+	GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error)
+
 	Init(ctx context.Context) error
 	Generate(ctx context.Context, name string) error
 	Migrate(ctx context.Context) error

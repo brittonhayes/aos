@@ -17,6 +17,11 @@ tasks:
     cmds:
       - go generate ./...
   
+  docs:
+    desc: "Generate documentation"
+    cmds:
+      - redocly build-docs api/openapi.yaml -o web/index.html
+
   lint:
     desc: "Run linter"
     cmds:

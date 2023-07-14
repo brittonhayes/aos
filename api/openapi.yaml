@@ -4,11 +4,24 @@ info:
   version: 1.0.0
   description: This is an API specification for a Unofficial Warhammer Age of Sigmar API
 servers:
-- url: http://localhost:8080
+- url: http://warhammer.localhost
   description: Local server
 - url: https://aos-api.com
   description: Production server
 paths:
+  /docs:
+    get:
+      summary: Get API documentation
+      description: Get API documentation
+      operationId: getDocs
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+                format: binary
   /grand-alliances:
     get:
       summary: Get all grand alliances
@@ -157,6 +170,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /cities:
+    get:
+      summary: Get all cities
+      description: Get all cities
+      operationId: getCities
+      parameters:
+      - name: name
+        in: query
+        description: name of city to filter by
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/City'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /units:
     get:
       summary: Get all units
@@ -260,6 +300,17 @@ components:
           type: integer
           format: int32
         message:
+          type: string
+    City:
+      type: object
+      properties:
+        _id:
+          type: string
+          x-go-extra-tags:
+            bun: 'id,pk'
+        name:
+          type: string
+        description:
           type: string
     Move:
       type: object

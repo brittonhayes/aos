@@ -37,6 +37,7 @@ Monitoring and observability is instrumented with OpenTelemetry and available in
 
 When running with docker-compose, the following services are available:
 
-- API is available at [http://localhost:8080](http://localhost:8080)
-- Prometheus is available at [http://localhost:9090](http://localhost:9090)
-- Jaeger is available at [http://localhost:16686](http://localhost:16686)
+- API is available at [http://warhammer.localhost](http://warhammer.localhost)
+- API Docs are available at [http://warhammer.localhost/docs](http://warhammer.localhost/docs)
+- Prometheus is available at [http://prometheus.localhost](http://prometheus.localhost)
+- Jaeger is available at [http://jaeger.localhost](http://jaeger.localhost)

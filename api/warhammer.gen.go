@@ -49,6 +49,13 @@ type Attribute struct {
 	Value *int64  `json:"value,omitempty"`
 }
 
+// City defines model for City.
+type City struct {
+	ID          *string `bun:"id,pk" json:"_id,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+}
+
 // DamageTable defines model for DamageTable.
 type DamageTable struct {
 	ID                 *string `bun:"id,pk" json:"_id,omitempty"`
@@ -129,6 +136,12 @@ type GetAllegiancesParams struct {
 
 	// id of grand alliance to filter by
 	GrandAlliance *string `json:"grand_alliance,omitempty"`
+}
+
+// GetCitiesParams defines parameters for GetCities.
+type GetCitiesParams struct {
+	// name of city to filter by
+	Name *string `json:"name,omitempty"`
 }
 
 // Response is a common response struct for all the API calls.
@@ -245,6 +258,26 @@ func GetArmyByIDJSON200Response(body Army) *Response {
 // GetArmyByIDJSON404Response is a constructor method for a GetArmyByID response.
 // A *Response is returned with the configured status code and content type from the spec.
 func GetArmyByIDJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
+// GetCitiesJSON200Response is a constructor method for a GetCities response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetCitiesJSON200Response(body []City) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetCitiesJSON404Response is a constructor method for a GetCities response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetCitiesJSON404Response(body Error) *Response {
 	return &Response{
 		body:        body,
 		Code:        404,
@@ -386,6 +419,12 @@ type ServerInterface interface {
 	// Get army by id
 	// (GET /armies/{id})
 	GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *Response
+	// Get all cities
+	// (GET /cities)
+	GetCities(w http.ResponseWriter, r *http.Request, params GetCitiesParams) *Response
+	// Get API documentation
+	// (GET /docs)
+	GetDocs(w http.ResponseWriter, r *http.Request) *Response
 	// Get all grand alliances
 	// (GET /grand-alliances)
 	GetGrandAlliances(w http.ResponseWriter, r *http.Request) *Response
@@ -507,6 +546,53 @@ func (siw *ServerInterfaceWrapper) GetArmyByID(w http.ResponseWriter, r *http.Re
 
 	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := siw.Handler.GetArmyByID(w, r, id)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetCities operation middleware
+func (siw *ServerInterfaceWrapper) GetCities(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetCitiesParams
+
+	// ------------- Optional query parameter "name" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "name", r.URL.Query(), &params.Name); err != nil {
+		err = fmt.Errorf("invalid format for parameter name: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "name"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetCities(w, r, params)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetDocs operation middleware
+func (siw *ServerInterfaceWrapper) GetDocs(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetDocs(w, r)
 		if resp != nil {
 			if resp.body != nil {
 				render.Render(w, r, resp)
@@ -770,6 +856,8 @@ func Handler(si ServerInterface, opts ...ServerOption) http.Handler {
 		r.Get("/allegiances/{id}", wrapper.GetAllegianceByID)
 		r.Get("/armies", wrapper.GetArmies)
 		r.Get("/armies/{id}", wrapper.GetArmyByID)
+		r.Get("/cities", wrapper.GetCities)
+		r.Get("/docs", wrapper.GetDocs)
 		r.Get("/grand-alliances", wrapper.GetGrandAlliances)
 		r.Get("/grand-alliances/{id}", wrapper.GetGrandAllianceByID)
 		r.Get("/grand-strategies", wrapper.GetGrandStrategies)
@@ -801,26 +889,27 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/9RZ32/bNhD+VwRuj07stsFQ6M1DtyLYuhVIgz4UgXGWTjIbkVSPlFst8P8+kJL8S7RN",
-	"Nz9gP8UxT3fH+77vjqIfWKJEqSRKo1n8wHQyQwHu43jKC25q+7EkVSIZjm4hRZ0QLw1X0v5r6hJZzLQh",
-	"LnO2GDAJAj0Li0H3jZp+xcRY03FRYM5BJtgPM+Fp38uA/bjI1QX+MAQXBnJnOa0kixlPB+W9C3MowZxA",
-	"phMoimXknolQZKCYEEIhjtwk4beKE6Ys/tJY3fk2TqJ+yi3vSGfAKskbZLlB4T78SpixmP0yXCE/bGEf",
-	"3kru0mvdABHUR2zKGOLTynjA3JnfHIrKrWSKBBi7KWl+u2JL91wazJH8/HkHAnL8BNPiSQkkuJx8V5VM",
-	"9URXWYZu4wEpWt7M8VCRP1ibxYC5CBNDkNxPSqV5x9efqsQfRIr6NUhU2qvum9f+1FFryANI7Xyu7H1M",
-	"eG8VNl4T2OOQCRX2I0Xpsr4xBAbz+myy/tBS7kUEd8P/8wSzTeYZgt22bp9K1uAmWusmqB92M7DXEgds",
-	"SjBHqgP7QqKEcEPn+BSWTdWTROr638R0DTDI43rT9Pl8/PS8x/q7onRzkz2r7cACcp48TV2ESrHQz9Cz",
-	"d8qqVLw9QgVE1DDHUNNWcPuSc6K0AwWhVDKcWp+dva9+zfALFW5Qm2qDPVlXBWMguQ+teCOUQOOdIBPI",
-	"YCeEMvTQYNRk1nS6MGOHzk92VfsVl5nqHeTZpxnXEdcRyGj88TrSJSY84wnY5ShTFEF0K1WW8YRDEX0G",
-	"moEQSNE4x0hl0Q3PBZB91ObBjW1IbL/VHEk3sV9dji5HdneqRAklZzF7c/nqcsQGrAQzcygPYfmy4P7P",
-	"0fQ38R5NBEURrds6r+T2cZ02NuON5RIIBBokzeIv2x4tGWzmK4+RUVHGC4MUTWtmy8li9q2yw6DjTvNn",
-	"0L5OeYf7dhye2iiuuUZdcw2JtNWO98W8s6zUtkU0FXw9GjVnRGlQumJCWRYt5MOvupHryl9YX1690vVf",
-	"JLbHC/v3L2t1Nbo6KpF98ZuDsCfUP8pEfzrl2DVdCQF2fHspYy3W+TZ84OniEOk6ekzriKf7Wfd7ff3u",
-	"EPEaQmzSjtBUJDsmWGmsiOBirlqxoQqfkwyhHDhlzDcRa0AnwUP6S2PmA7lbeQGpkajPTWRNddZKHSAt",
-	"EvUeUZGoj5CT9XVGQnIIny6iK2Qcom4WXXSz6LCKNqedV04bNwkvI6vNy4vz0td2RX2wHFbc1ilkp/Y2",
-	"KhUuwv4h50zkuMWMk2WCF781KujmjosHS3TtgV00uFk3eSGRLu/qzlGkazX1QhMq0/aJ+oBMu1odK9Ol",
-	"+zOT6YobJy7TLfwcF5a/2uzVZmPlAfy2XXh+Ge74weiU1ddUbVXmwzqzZrvVZUsQLirn63yk1OB7sniu",
-	"IeOe1Ehzf/X/VgkUUbPOBqyigsVsZkwZD4eFXZspbeK3o7cj1r+b+UgqrRJ3EebxoOPhEJS+gJJfJkqw",
-	"xd3i/wAAAP//Ml3oFFcfAAA=",
+	"H4sIAAAAAAAC/9RZ32/bNhD+VwRuj47ttsEe/OYlWxFs3QqkQR+KwDhLZ5mNSKpHyokW+H8fSEn+Jdqm",
+	"Gyewn+KYp7vjfd93R8rPLFYiVxKl0WzwzHQ8RQHu43DMM25K+zEnlSMZjm4hQR0Tzw1X0v5ryhzZgGlD",
+	"XKZs3mESBHoW5p3mGzX+jrGxpsMsw5SDjLEdZsSTtpcOe7pI1QU+GYILA6mzHBeSDRhPOvmDC7MvwZRA",
+	"JiPIskXklolQZCAbEUImDtwk4Y+CEyZs8K2yuvdtnER5zC1vSafDCskrZLlB4T78SjhhA/ZLb4l8r4a9",
+	"dye5S692A0RQHrApY4iPC+MBc2t+M8gKtzJRJMDYTUnz2yVbuOfSYIrk58+Vl6Cvx5wDqH0NAlL8AuPs",
+	"qNwWXI4eVSETPdLFZIIOk4DqWUrPcB/+n6zNvMNchJEhiB9GudK8KchPgfQHkaJ2DWKVtID/8N6fOmoN",
+	"aYDenM+lvY+kH634hyvafxkyL2dOkLRc1reGwGBank3Wn2rKvUkvuOX/eYLZ/vcKwe5qt8eSNbhhW7sJ",
+	"atXNeG516w4bE8yQysC+ECsh3Dw8PIVFv/ckkbj+NzJNAwzyuNo0fT5fPtgfsHxUlKxvsmW1GVhAyuPj",
+	"1EWoBDP9Cj17q6xyxevTXUBEDTMMNa0Ftys5J0o7UBByJcOp9dXZ++pXDb9Q4Qa1qTrY0boqGAPxQ2jF",
+	"K6EEGm8FmUAGOyGUoYcGo0bTqtOFGTt0frKr2q+4nKjWHYN9mXIdcR2BjIafbyKdY8wnPAa7HE0URRDd",
+	"STWZ8JhDFn0FmoIQSNEwxUhNolueCiD7qM2DG9uQ2G6rGZKuYr/r9rt9uzuVo4ScswH70H3X7bMOy8FM",
+	"Hco9WNxj3P8pmvYmPqKJIMuiVVvnldw+bpLKZri2nAOBQIOk2eDbpkdLBpv50mNkVDThmUGKxiWz5WQD",
+	"9qOww6DhTvWnU9/0vMN9Mw5PbBTXXKOmuYZE2mjHu2LeW1Zq2yKqCr7v96szojQoXTEhz7Ma8t53Xcl1",
+	"6S+sLy9vm+07zuZ4Yf/+Za0u+5cHJbIrfnUQ9oT6R5noT6ccu6YLIcCOby9lrMUq33rPPJnvI11Dj3EZ",
+	"8WQ3634vb673Ea8ixDrtCE1BsmGClcaSCC7mshUbKvA1yRDKgVPGfB2xCnQSPKS/VGY+kJuVN5AaifLc",
+	"RFZVZ6XUAdIiUe4QFYnyADlZX2ckJIfw6SK6RMYhGi+uNjvFU5t5wLxqVoJGcsxNeZRh/CaD8cp7kTxp",
+	"tdZAOWwTFe9G1h4aExUXAqVxWfoAvrZe9lbb4JPpTY3I1ve4OO6OuQQH8CaQ3mK2ttbO1O3QnaQumpPU",
+	"fhqvn9W8fF57D/Y2Q2H91dt58W2zoj5Y9s+LjTP01smxVqnwEdI+op/JMNlgxskywYvfChV09YaWB0t0",
+	"5YFtNLhdNXkjkS7eNJ+jSFdq6oUmVKb1E+UemTa1OlSmC/dnJtMlN05cphv4OS4sfg7dqc3KygP4Xb3w",
+	"+jLc8kvsKauvqtqyzPt1Zs22q8uWIFxUztf5SKnC92TxXEHGPamRZv7q/61iyKJqnXVYQRkbsKkx+aDX",
+	"e2zesXYzazVV2nJ608NnUkkRu3e5Hjd60OuB0heQ826sBJvfz/8PAAD//4SZqom1IgAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

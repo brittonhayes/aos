@@ -120,6 +120,40 @@
       name: Savage Exemplar
       description: Ensure that all units from your starting army are within the enemy's territory at the end of the fifth battle round.
 
+- model: City
+  rows:
+    - id: anvilgard
+      name: Anvilgard
+      description: Anvilgard is a city situated on the eastern coast of the realm of Aqshy. It is a bustling port and a center of trade, but it is also known for its dark underbelly and connections to nefarious activities.
+    - id: hammerhal
+      name: Hammerhal
+      description: Hammerhal is a twin city, consisting of Hammerhal Aqsha and Hammerhal Ghyra. These cities are found in the realms of Aqshy and Ghyran, respectively. They are great bastions of civilization and are known for their strategic importance.
+    - id: hallowheart
+      name: Hallowheart
+      description: Hallowheart is a city located in the realm of Aqshy. It is a city of arcane knowledge and magic, where the greatest sorcerers and wizards of the Cities of Sigmar gather to study and practice their craft.
+    - id: tempests_eye
+      name: Tempest's Eye
+      description: Tempest's Eye is a city situated in the realm of Aqshy. It is a militaristic city known for its disciplined forces and powerful artillery. The soldiers of Tempest's Eye are skilled in siegecraft and excel in long-range warfare.
+    - id: living_city
+      name: Living City
+      description: The Living City is a unique city formed by the union of the sylvaneth and the humans of the Freeguilds. It is a city that embraces nature and is situated in the realm of Ghyran. The inhabitants live in harmony with the surrounding wilderness.
+    - id: phoenicium
+      name: Phoenicium
+      description: Phoenicium is a city located in the realm of Hysh. It is a center of enlightenment and learning, dedicated to the pursuit of knowledge and wisdom. Phoenicium is known for its scholars and the luminark devices that harness the light of Hysh.
+    - id: greywater_fastness
+      name: Greywater Fastness
+      description: Greywater Fastness is a city located in the realm of Chamon. It is a hub of industry and invention, known for its technological advancements and engineering prowess. The city is home to skilled engineers and artisans who create powerful war machines.
+    - id: the_phoenicium
+      name: The Phoenicium
+      description: The Phoenicium is a city located in the realm of Aqshy. It is a sprawling metropolis, marked by grand temples and palaces. The city is dedicated to the worship of the Phoenix deities and is a beacon of faith and piety.
+    - id: the_lumineth_realm_lords
+      name: The Lumineth Realm-Lords
+      description: The Lumineth Realm-Lords are a faction of aelves who reside in the realm of Hysh. While not a traditional city, they are a powerful and influential force in the Cities of Sigmar, embodying the ideals of light, enlightenment, and order.
+    - id: the_misthavn
+      name: The Misthavn
+      description: The Misthavn is a city located in the realm of Ulgu. It is shrouded in mist and shadows, known for its clandestine activities and secret dealings. The city is a haven for spies, assassins, and those who thrive in the shadows.
+
+
 - model: Unit
   rows:
     - id: lord_celestant

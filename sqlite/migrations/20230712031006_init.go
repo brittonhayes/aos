@@ -37,6 +37,11 @@ func init() {
 			return err
 		}
 
+		_, err = db.NewCreateTable().Model((*api.City)(nil)).IfNotExists().Exec(ctx)
+		if err != nil {
+			return err
+		}
+
 		return nil
 	}, func(ctx context.Context, db *bun.DB) error {
 		fmt.Print(" [down migration] ")
@@ -62,6 +67,11 @@ func init() {
 		}
 
 		_, err = db.NewDropTable().Model((*api.GrandStrategy)(nil)).Exec(ctx)
+		if err != nil {
+			return err
+		}
+
+		_, err = db.NewDropTable().Model((*api.City)(nil)).Exec(ctx)
 		if err != nil {
 			return err
 		}
