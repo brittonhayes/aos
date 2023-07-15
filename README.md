@@ -43,3 +43,8 @@ When running with docker-compose, the following services are available:
 - Prometheus is available at [http://prometheus.localhost](http://prometheus.localhost)
 - Grafana is available at [http://grafana.localhost](http://grafana.localhost)
 - Jaeger is available at [http://jaeger.localhost](http://jaeger.localhost)
+
+## FAQ
+
+- **Q: Where is X {unit,alliance,etc}?** - A: Waiting for you to add it! See the [fixtures/](https://github.com/brittonhayes/warhammer/blob/main/fixtures/) directory for more information.
+- **Q: The \*.localhost domains aren't working on Windows** - A: Run `net stop http` in Powershell as Administrator to stop the Windows HTTP service that is reserving port 80.
