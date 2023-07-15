@@ -46,7 +46,10 @@ func (s *WarhammerService) GetWarscrolls(w http.ResponseWriter, r *http.Request,
 
 	response, err := s.repo.GetWarscrolls(r.Context(), params)
 	if err != nil {
+		return api.GetWarscrollsJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrWarscrollsNotFound})
+	}
 
+	if len(response) == 0 {
 		return api.GetWarscrollsJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrWarscrollsNotFound})
 	}
 
