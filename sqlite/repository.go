@@ -24,7 +24,9 @@ type warhammerRepository struct {
 }
 
 const (
-	DB_NAME = "warhammer"
+	DB_NAME        = "warhammer"
+	DEFAULT_LIMIT  = 100
+	DEFAULT_OFFSET = 0
 )
 
 func NewWarhammerRepository(connection string) warhammer.WarhammerRepository {
@@ -90,17 +92,27 @@ func (r *warhammerRepository) Migrate(ctx context.Context) error {
 }
 
 func (r *warhammerRepository) Seed(ctx context.Context, fsys fs.FS, names ...string) error {
-	logging.NewLogrus(ctx).Info("seeding database")
+	logger := logging.NewLogrus(ctx)
 
-	r.db.RegisterModel(
+	models := []interface{}{
 		(*api.Army)(nil),
-		(*api.GrandAlliance)(nil),
-		(*api.Unit)(nil),
 		(*api.Allegiance)(nil),
+		(*api.City)(nil),
+		(*api.GrandAlliance)(nil),
 		(*api.GrandStrategy)(nil),
-	)
+		(*api.Unit)(nil),
+		(*api.Warscroll)(nil),
+	}
 
+	for _, m := range models {
+		logger.Infof("registering model %T", m)
+	}
+
+	r.db.RegisterModel(models...)
+
+	logger.Info("seeding database")
 	f := dbfixture.New(r.db, dbfixture.WithRecreateTables())
+
 	return f.Load(ctx, fsys, names...)
 }
 

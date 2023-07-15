@@ -11,22 +11,25 @@ import (
 )
 
 type WarhammerRepository interface {
-	GetUnitByID(ctx context.Context, id string) (*api.Unit, error)
-	GetUnits(ctx context.Context) ([]api.Unit, error)
-
 	GetArmyByID(ctx context.Context, id string) (*api.Army, error)
 	GetArmies(ctx context.Context) ([]api.Army, error)
-
-	GetGrandAllianceByID(ctx context.Context, id string) (*api.GrandAlliance, error)
-	GetGrandAlliances(ctx context.Context) ([]api.GrandAlliance, error)
 
 	GetAllegianceByID(ctx context.Context, id string) (*api.Allegiance, error)
 	GetAllegiances(ctx context.Context, params api.GetAllegiancesParams) ([]api.Allegiance, error)
 
+	GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error)
+
+	GetGrandAllianceByID(ctx context.Context, id string) (*api.GrandAlliance, error)
+	GetGrandAlliances(ctx context.Context) ([]api.GrandAlliance, error)
+
 	GetGrandStrategyByID(ctx context.Context, id string) (*api.GrandStrategy, error)
 	GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error)
 
-	GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error)
+	GetUnitByID(ctx context.Context, id string) (*api.Unit, error)
+	GetUnits(ctx context.Context) ([]api.Unit, error)
+
+	GetWarscrollByID(ctx context.Context, id string) (*api.Warscroll, error)
+	GetWarscrolls(ctx context.Context, params api.GetWarscrollsParams) ([]api.Warscroll, error)
 
 	Init(ctx context.Context) error
 	Generate(ctx context.Context, name string) error

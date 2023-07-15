@@ -1,0 +1,23 @@
+- model: GrandStrategy
+  rows:
+    - id: hold_the_line
+      name: Hold the Line
+      description: Hold the majority of the objectives at the end of the fifth battle round.
+    - id: arcane_power
+      name: Arcane Power
+      description: Successfully cast 3 spells with a casting value of 7 or higher during the battle.
+    - id: total_commitment
+      name: Total Commitment
+      description: Have no models from your starting army in your territory at the end of the fifth battle round.
+    - id: dominate
+      name: Dominate
+      description: Control the objective that was worth the most victory points at the start of your turn for two consecutive turns.
+    - id: ancient_heirlooms
+      name: Ancient Heirlooms
+      description: Control all three of the designated objective markers at the end of the fifth battle round.
+    - id: assassination
+      name: Assassination
+      description: Slay the enemy general during the battle.
+    - id: savage_exemplar
+      name: Savage Exemplar
+      description: Ensure that all units from your starting army are within the enemy's territory at the end of the fifth battle round.

@@ -117,6 +117,20 @@ type Unit struct {
 	Wounds           *int64        `json:"wounds,omitempty"`
 }
 
+// Warscroll defines model for Warscroll.
+type Warscroll struct {
+	ID              *string        `bun:",pk" json:"_id,omitempty"`
+	Allegiance      *Allegiance    `json:"allegiance,omitempty"`
+	AllegianceID    *string        `json:"allegiance_id,omitempty"`
+	BattlefieldRole *string        `json:"battlefield_role,omitempty"`
+	GrandAlliance   *GrandAlliance `json:"grand_alliance,omitempty"`
+	GrandAllianceID *string        `json:"grand_alliance_id,omitempty"`
+	Name            *string        `json:"name,omitempty"`
+	Notes           *string        `json:"notes,omitempty"`
+	Points          *int64         `json:"points,omitempty"`
+	Size            *int64         `json:"size,omitempty"`
+}
+
 // Weapon defines model for Weapon.
 type Weapon struct {
 	ID      *string `bun:",pk" json:"_id,omitempty"`
@@ -142,6 +156,24 @@ type GetAllegiancesParams struct {
 type GetCitiesParams struct {
 	// name of city to filter by
 	Name *string `json:"name,omitempty"`
+}
+
+// GetWarscrollsParams defines parameters for GetWarscrolls.
+type GetWarscrollsParams struct {
+	// name of warscroll to filter by
+	Name *string `json:"name,omitempty"`
+
+	// points of warscroll to filter by
+	Points *int `json:"points,omitempty"`
+
+	// battlefield_role of warscroll to filter by
+	BattlefieldRole *string `json:"battlefield_role,omitempty"`
+
+	// size of warscroll to filter by
+	Size *string `json:"size,omitempty"`
+
+	// notes of warscroll to filter by
+	Notes *string `json:"notes,omitempty"`
 }
 
 // Response is a common response struct for all the API calls.
@@ -405,6 +437,46 @@ func GetUnitByIDJSON404Response(body Error) *Response {
 	}
 }
 
+// GetWarscrollsJSON200Response is a constructor method for a GetWarscrolls response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetWarscrollsJSON200Response(body []Warscroll) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetWarscrollsJSON404Response is a constructor method for a GetWarscrolls response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetWarscrollsJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
+// GetWarscrollByIDJSON200Response is a constructor method for a GetWarscrollByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetWarscrollByIDJSON200Response(body Warscroll) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetWarscrollByIDJSON404Response is a constructor method for a GetWarscrollByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetWarscrollByIDJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Get all allegiances
@@ -443,6 +515,12 @@ type ServerInterface interface {
 	// Get unit by id
 	// (GET /units/{id})
 	GetUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
+	// Get all warscrolls
+	// (GET /warscrolls)
+	GetWarscrolls(w http.ResponseWriter, r *http.Request, params GetWarscrollsParams) *Response
+	// Get warscroll by id
+	// (GET /warscrolls/{id})
+	GetWarscrollByID(w http.ResponseWriter, r *http.Request, id string) *Response
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -737,6 +815,93 @@ func (siw *ServerInterfaceWrapper) GetUnitByID(w http.ResponseWriter, r *http.Re
 	handler(w, r.WithContext(ctx))
 }
 
+// GetWarscrolls operation middleware
+func (siw *ServerInterfaceWrapper) GetWarscrolls(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetWarscrollsParams
+
+	// ------------- Optional query parameter "name" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "name", r.URL.Query(), &params.Name); err != nil {
+		err = fmt.Errorf("invalid format for parameter name: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "name"})
+		return
+	}
+
+	// ------------- Optional query parameter "points" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "points", r.URL.Query(), &params.Points); err != nil {
+		err = fmt.Errorf("invalid format for parameter points: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "points"})
+		return
+	}
+
+	// ------------- Optional query parameter "battlefield_role" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "battlefield_role", r.URL.Query(), &params.BattlefieldRole); err != nil {
+		err = fmt.Errorf("invalid format for parameter battlefield_role: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "battlefield_role"})
+		return
+	}
+
+	// ------------- Optional query parameter "size" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "size", r.URL.Query(), &params.Size); err != nil {
+		err = fmt.Errorf("invalid format for parameter size: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "size"})
+		return
+	}
+
+	// ------------- Optional query parameter "notes" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "notes", r.URL.Query(), &params.Notes); err != nil {
+		err = fmt.Errorf("invalid format for parameter notes: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "notes"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetWarscrolls(w, r, params)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetWarscrollByID operation middleware
+func (siw *ServerInterfaceWrapper) GetWarscrollByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetWarscrollByID(w, r, id)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
 type UnescapedCookieParamError struct {
 	err       error
 	paramName string
@@ -864,6 +1029,8 @@ func Handler(si ServerInterface, opts ...ServerOption) http.Handler {
 		r.Get("/grand-strategies/{id}", wrapper.GetGrandStrategyByID)
 		r.Get("/units", wrapper.GetUnits)
 		r.Get("/units/{id}", wrapper.GetUnitByID)
+		r.Get("/warscrolls", wrapper.GetWarscrolls)
+		r.Get("/warscrolls/{id}", wrapper.GetWarscrollByID)
 	})
 	return r
 }
@@ -889,27 +1056,30 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

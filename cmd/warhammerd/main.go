@@ -48,7 +48,16 @@ func main() {
 					return err
 				}
 
-				err = repo.Seed(c.Context, fixtures.FS, "fixtures.yaml")
+				data := []string{
+					fixtures.ALLEGIANCES,
+					fixtures.ALLIANCES,
+					fixtures.CITIES,
+					fixtures.STRATEGIES,
+					fixtures.UNITS,
+					fixtures.WARSCROLLS,
+				}
+
+				err = repo.Seed(c.Context, fixtures.FS, data...)
 				if err != nil {
 					return err
 				}

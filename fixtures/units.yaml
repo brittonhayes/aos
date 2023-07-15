@@ -1,0 +1,82 @@
+- model: Unit
+  rows:
+    - id: lord_celestant
+      name: Lord-Celestant
+      grand_alliance: order
+      size:
+        unit: Single
+        value: 1
+      move:
+        name: Move
+        value: 5
+      description: A mighty warrior and leader of the Stormcast Eternals, wielding a powerful weapon and inspiring nearby units.
+      save: 3
+      bravery: 9
+      models: 1
+      points: 100
+      wounds: 5
+      abilities:
+        - name: Thunderstrike
+          description: Re-roll hit rolls of 1 for attacks made by friendly THUNDERSTRIKE units while they are wholly within 12" of this model.
+      keywords:
+        - ORDER
+        - CELESTIAL
+        - HUMAN
+        - STORMCAST ETERNALS
+      command_abilities:
+        - name: Lord of the Host
+          value: 1
+      magic: []
+      damage_table:
+        - wound_track_position: 0
+          move:
+            name: Move
+            value: 5
+          min_wounds_suffered: 0
+      weapons:
+        - name: Celestine Hammer
+          range: 1
+          attacks: 4
+          to_hit: 3
+          to_wound: 3
+          rend: -1
+          damage: 2
+    - id: liberators
+      name: Liberators
+      grand_alliance: order
+      size:
+        unit: Multiple
+        value: 5
+      move:
+        name: Move
+        value: 5
+      description: Mighty warriors armed with powerful warhammers and shields, forming the backbone of the Stormcast Eternals forces.
+      save: 4
+      bravery: 7
+      models: 5
+      points: 100
+      wounds: 1
+      abilities:
+        - name: Sigmarite Shields
+          description: Roll a dice for each wound or mortal wound allocated to a model armed with a Sigmarite Shield. On a 6, the wound is negated.
+      keywords:
+        - ORDER
+        - CELESTIAL
+        - HUMAN
+        - STORMCAST ETERNALS
+      command_abilities: []
+      magic: []
+      damage_table:
+        - wound_track_position: 0
+          move:
+            name: Move
+            value: 5
+          min_wounds_suffered: 0
+      weapons:
+        - name: Warhammer
+          range: 1
+          attacks: 1
+          to_hit: 4
+          to_wound: 3
+          rend: -1
+          damage: 1

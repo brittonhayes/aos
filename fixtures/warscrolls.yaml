@@ -1,0 +1,755 @@
+- model: Warscroll
+  rows:
+    - id: helstorm_rocket_battery
+      name: Helstorm Rocket Battery
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 130
+      battlefield_role: Artillery
+      notes: Single
+    - id: bleakswords
+      name: Bleakswords
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 90
+      battlefield_role: Battleline
+    - id: darkshards
+      name: Darkshards
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 115
+      battlefield_role: Battleline
+    - id: dreadspears
+      name: Dreadspears
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 85
+      battlefield_role: Battleline
+    - id: eternal_guard
+      name: Eternal Guard
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 120
+      battlefield_role: Battleline
+    - id: freeguild_crossbowmen
+      name: Freeguild Crossbowmen
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 100
+      battlefield_role: Battleline
+    - id: freeguild_guard
+      name: Freeguild Guard
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 85
+      battlefield_role: Battleline
+    - id: freeguild_handgunners
+      name: Freeguild Handgunners
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 100
+      battlefield_role: Battleline
+    - id: ironbreakers
+      name: Ironbreakers
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 110
+      battlefield_role: Battleline
+    - id: longbeards
+      name: Longbeards
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 105
+      battlefield_role: Battleline
+    - id: celestial_hurricanum
+      name: Celestial Hurricanum
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 245
+      battlefield_role: Behemoth
+      notes: Single
+    - id: flamespyre_phoenix
+      name: Flamespyre Phoenix
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 205
+      battlefield_role: Behemoth
+      notes: Single
+    - id: frostheart_phoenix
+      name: Frostheart Phoenix
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 220
+      battlefield_role: Behemoth
+      notes: Single
+    - id: kharibdyss
+      name: Kharibdyss
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 150
+      battlefield_role: Behemoth
+      notes: Single. Battleline in an Anvilgard army
+    - id: luminark_of_hysh
+      name: Luminark of Hysh
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 230
+      battlefield_role: Behemoth
+      notes: Single
+    - id: steam_tank
+      name: Steam Tank
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 195
+      battlefield_role: Behemoth
+      notes: Single. Battleline if general is a Steam Tank with Commander
+    - id: war_hydra
+      name: War Hydra
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 165
+      battlefield_role: Behemoth
+      notes: Single. Battleline in an Anvilgard army
+    - id: anointed
+      name: Anointed
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 110
+      battlefield_role: Leader
+      notes: Single
+    - id: assassin
+      name: Assassin
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 80
+      battlefield_role: Leader
+      notes: Single
+    - id: battlemage
+      name: Battlemage
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 100
+      battlefield_role: Leader
+      notes: Single
+    - id: black_ark_fleetmaster
+      name: Black Ark Fleetmaster
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 70
+      battlefield_role: Leader
+      notes: Single
+    - id: cogsmith
+      name: Cogsmith
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 70
+      battlefield_role: Leader
+      notes: Single
+    - id: dark_riders
+      name: Dark Riders
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 5
+      points: 120
+      battlefield_role: Battleline
+      notes: Battleline if general is Shadowblades
+    - id: demigryph_knights
+      name: Demigryph Knights
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 3
+      points: 175
+      battlefield_role: Battleline
+      notes: Battleline if general is Freeguild
+    - id: drakespawn_chariots
+      name: Drakespawn Chariots
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 75
+      battlefield_role: Battleline
+      notes: Battleline if general is Order Serpentis
+    - id: drakespawn_knights
+      name: Drakespawn Knights
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 5
+      points: 120
+      battlefield_role: Battleline
+      notes: Battleline if general is Order Serpentis
+    - id: executioners
+      name: Executioners
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 130
+      battlefield_role: Battleline
+      notes: Battleline if general is Darkling Covens
+    - id: flagellants
+      name: Flagellants
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 80
+      battlefield_role: Battleline
+      notes: Battleline if general is Human
+    - id: freeguild_greatswords
+      name: Freeguild Greatswords
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 150
+      battlefield_role: Battleline
+      notes: Battleline if general is Freeguild
+    - id: freeguild_outriders
+      name: Freeguild Outriders
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 5
+      points: 115
+      battlefield_role: Battleline
+      notes: Battleline in a Tempest's Eye army
+    - id: freeguild_pistoliers
+      name: Freeguild Pistoliers
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 5
+      points: 110
+      battlefield_role: Battleline
+      notes: Battleline in a Tempest's Eye army
+    - id: gyrobombers
+      name: Gyrobombers
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 90
+      battlefield_role: None
+    - id: gyrocopters
+      name: Gyrocopters
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 80
+      battlefield_role: None
+    - id: hammerers
+      name: Hammerers
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 145
+      battlefield_role: Battleline
+      notes: Battleline if general is Dispossessed
+    - id: irondrakes
+      name: Irondrakes
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 170
+      battlefield_role: Battleline
+      notes: Battleline if general is Duardin
+    - id: phoenix_guard
+      name: Phoenix Guard
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 175
+      battlefield_role: Battleline
+      notes: Battleline if general is Phoenix Temple
+    - id: scourgerunner_chariots
+      name: Scourgerunner Chariots
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 1
+      points: 85
+      battlefield_role: Battleline
+      notes: Battleline if general is Scourge Privateers
+    - id: shadow_warriors
+      name: Shadow Warriors
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 120
+      battlefield_role: Battleline
+      notes: Battleline if general is Shadowblades
+    - id: sisters_of_the_thorn
+      name: Sisters of the Thorn
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 5
+      points: 130
+      battlefield_role: Battleline
+      notes: Battleline if general is Wanderers
+    - id: sisters_of_the_watch
+      name: Sisters of the Watch
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 180
+      battlefield_role: Battleline
+      notes: Battleline if general is Wanderers
+    - id: wild_riders
+      name: Wild Riders
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 5
+      points: 120
+      battlefield_role: Battleline
+      notes: Battleline if general is Wanderers
+    - id: wildwood_rangers
+      name: Wildwood Rangers
+      allegiance_id: cities_of_sigmar
+      grand_alliance_id: order
+      size: 10
+      points: 135
+      battlefield_role: Battleline
+      notes: Battleline if general is Wanderers
+    - id: sisters_of_slaughter
+      name: Sisters of Slaughter
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 10
+      points: 135
+      battlefield_role: Battleline
+    - id: witch_aelves
+      name: Witch Aelves
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 10
+      points: 115
+      battlefield_role: Battleline
+    - id: avatar_of_khaine
+      name: Avatar of Khaine
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 155
+      battlefield_role: Behemoth
+      notes: Single
+    - id: bloodwrack_medusa
+      name: Bloodwrack Medusa
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 130
+      battlefield_role: Leader
+      notes: Single
+    - id: bloodwrack_shrine
+      name: Bloodwrack Shrine
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 200
+      battlefield_role: Leader
+      notes: Single
+    - id: hag_queen
+      name: Hag Queen
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 110
+      battlefield_role: Leader
+      notes: Single
+    - id: high_gladiatrix
+      name: High Gladiatrix
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 90
+      battlefield_role: Leader
+      notes: Single
+    - id: melusai_ironscale
+      name: Melusai Ironscale
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 115
+      battlefield_role: Leader
+      notes: Single
+    - id: morathi_khaine
+      name: Morathi Khaine
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 680
+      battlefield_role: Leader
+      notes: Single, Unique. These units must be taken as a set. Although taken as a set, each is a separate unit.
+    - id: the_shadow_queen
+      name: The Shadow Queen
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 680
+      battlefield_role: Leader, Behemoth
+    - id: morgwaeth_the_bloodied
+      name: Morgwaeth the Bloodied
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 185
+      battlefield_role: Leader
+      notes: Single, Unique. These units must be taken as a set. Although taken as a set, each is a separate unit.
+    - id: the_blade_coven
+      name: The Blade-coven
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 4
+      points: 185
+      battlefield_role: Leader
+    - id: slythael_shadestalker
+      name: Slythael Shadestalker
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 290
+      battlefield_role: Leader
+      notes: Single, Unique. These units must be taken as a set. Although taken as a set, each is a separate unit.
+    - id: the_shadeborn
+      name: The Shadeborn
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 3
+      points: 290
+      battlefield_role: Leader
+    - id: slaughter_queen
+      name: Slaughter Queen
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 130
+      battlefield_role: Leader
+      notes: Single
+    - id: hag_queen_on_cauldron_of_blood
+      name: Hag Queen on Cauldron of Blood
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 270
+      battlefield_role: Leader, Behemoth
+      notes: A Hagg Nar army can include 1 Cauldron of Blood in addition to the other Behemoth units it can include.
+    - id: slaughter_queen_on_cauldron_of_blood
+      name: Slaughter Queen on Cauldron of Blood
+      allegiance_id: daughters_of_khaine
+      grand_alliance_id: order
+      size: 1
+      points: 315
+      battlefield_role: Leader, Behemoth
+    - id: vulkite_berzerkers_fyresteel_handaxes
+      name: Vulkite Berzerkers with Fyresteel Handaxes
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 10
+      points: 170
+      battlefield_role: Battleline
+    - id: vulkite_berzerkers_bladed_slingshields
+      name: Vulkite Berzerkers with Bladed Slingshields
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 10
+      points: 160
+      battlefield_role: Battleline
+    - id: auric_flamekeeper
+      name: Auric Flamekeeper
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 90
+      battlefield_role: Leader
+      notes: Single
+    - id: auric_runefather
+      name: Auric Runefather
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 125
+      battlefield_role: Leader
+      notes: Single
+    - id: auric_runemaster
+      name: Auric Runemaster
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 125
+      battlefield_role: Leader
+      notes: Single
+    - id: auric_runesmiter
+      name: Auric Runesmiter
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 135
+      battlefield_role: Leader
+      notes: Single
+    - id: auric_runeson
+      name: Auric Runeson
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 80
+      battlefield_role: Leader
+      notes: Single
+    - id: battlesmith
+      name: Battlesmith
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 150
+      battlefield_role: Leader
+      notes: Single
+    - id: fjul_grimnir
+      name: Fjul-Grimnir
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 180
+      battlefield_role: Leader
+      notes: Single, Unique. These units must be taken as a set. Although taken as a set, each is a separate unit.
+    - id: the_chosen_axes
+      name: The Chosen Axes
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 3
+      points: 180
+      battlefield_role: None
+    - id: auric_runefather_on_magmadroth
+      name: Auric Runefather on Magmadroth
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 360
+      battlefield_role: Leader, Behemoth
+      notes: Single
+    - id: auric_runesmiter_on_magmadroth
+      name: Auric Runesmiter on Magmadroth
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 340
+      battlefield_role: Leader, Behemoth
+      notes: Single
+    - id: auric_runeson_on_magmadroth
+      name: Auric Runeson on Magmadroth
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 320
+      battlefield_role: Leader, Behemoth
+      notes: Single, Battleline in a Lofnir army
+    - id: auric_hearthguard
+      name: Auric Hearthguard
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 5
+      points: 125
+      battlefield_role: Battleline
+      notes: Battleline in a Hermdar army or if general is a Fyreslayers Priest
+    - id: doomseeker
+      name: Doomseeker
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 110
+      battlefield_role: Leader
+      notes: Single
+    - id: magmadroth
+      name: Magmadroth
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 270
+      battlefield_role: Behemoth
+      notes: Single
+    - id: rune_smiter
+      name: Rune-smith
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 90
+      battlefield_role: Leader
+      notes: Single
+    - id: doomseeker_with_fyresteel_throwing_axes
+      name: Doomseeker with Fyresteel Throwing Axes
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 115
+      battlefield_role: Leader
+      notes: Single
+    - id: fyreslayer_vexillor
+      name: Fyreslayer Vexillor
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 90
+      battlefield_role: Leader
+      notes: Single
+    - id: grimwrath_berzerker
+      name: Grimwrath Berzerker
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 125
+      battlefield_role: Leader
+      notes: Single
+    - id: hearthguard_berzerkers
+      name: Hearthguard Berzerkers
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 5
+      points: 170
+      battlefield_role: Battleline
+      notes: Battleline in a Hermdar army or if general is a Fyreslayers Priest
+    - id: vulkite_berzerkers
+      name: Vulkite Berzerkers
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 10
+      points: 160
+      battlefield_role: Battleline
+    - id: grimwrath_berzerker_with_fyresteel_throwing_axes
+      name: Grimwrath Berzerker with Fyresteel Throwing Axes
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 135
+      battlefield_role: Leader
+      notes: Single
+    - id: auric_runefather_on_magmadroth_with_runic_iron
+      name: Auric Runefather on Magmadroth with Runic Iron
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 360
+      battlefield_role: Leader, Behemoth
+      notes: Single
+    - id: auric_runesmiter_on_magmadroth_with_runic_iron
+      name: Auric Runesmiter on Magmadroth with Runic Iron
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 340
+      battlefield_role: Leader, Behemoth
+      notes: Single
+    - id: auric_runeson_on_magmadroth_with_runic_iron
+      name: Auric Runeson on Magmadroth with Runic Iron
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 320
+      battlefield_role: Leader, Behemoth
+      notes: Single, Battleline in a Lofnir army
+    - id: doomseeker_with_fyresteel_throwing_axes_and_whirlwind_axe
+      name: Doomseeker with Fyresteel Throwing Axes and Whirlwind Axe
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 135
+      battlefield_role: Leader
+      notes: Single
+    - id: fyreslayer_vexillor_with_runic_banner
+      name: Fyreslayer Vexillor with Runic Banner
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 90
+      battlefield_role: Leader
+      notes: Single
+    - id: grimwrath_berzerker_with_fyresteel_throwing_axes_and_whirlwind_axe
+      name: Grimwrath Berzerker with Fyresteel Throwing Axes and Whirlwind Axe
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 135
+      battlefield_role: Leader
+      notes: Single
+    - id: hearthguard_berzerkers_with_broadaxes
+      name: Hearthguard Berzerkers with Broadaxes
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 5
+      points: 170
+      battlefield_role: Battleline
+      notes: Battleline in a Hermdar army or if general is a Fyreslayers Priest
+    - id: hearthguard_berzerkers_with_poleaxes
+      name: Hearthguard Berzerkers with Poleaxes
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 5
+      points: 170
+      battlefield_role: Battleline
+      notes: Battleline in a Hermdar army or if general is a Fyreslayers Priest
+    - id: auric_runefather_on_magmadroth_with_runic_iron_and_lodestone_ancient
+      name: Auric Runefather on Magmadroth with Runic Iron and Lodestone Ancient
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 380
+      battlefield_role: Leader, Behemoth
+      notes: Single
+    - id: auric_runesmiter_on_magmadroth_with_runic_iron_and_lodestone_ancient
+      name: Auric Runesmiter on Magmadroth with Runic Iron and Lodestone Ancient
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 360
+      battlefield_role: Leader, Behemoth
+      notes: Single
+    - id: auric_runeson_on_magmadroth_with_runic_iron_and_lodestone_ancient
+      name: Auric Runeson on Magmadroth with Runic Iron and Lodestone Ancient
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 340
+      battlefield_role: Leader, Behemoth
+      notes: Single, Battleline in a Lofnir army
+    - id: battle_smith
+      name: Battle-smith
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 90
+      battlefield_role: Leader
+      notes: Single
+    - id: fyreslayer_doomseeker
+      name: Fyreslayer Doomseeker
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 110
+      battlefield_role: Leader
+      notes: Single
+    - id: magmic_invocation
+      name: Magmic Invocation
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 0
+      battlefield_role: EndlessSpell
+    - id: magmic_battleforge
+      name: Magmic Battleforge
+      allegiance_id: fyreslayers
+      grand_alliance_id: order
+      size: 1
+      points: 200
+      battlefield_role: EndlessSpell

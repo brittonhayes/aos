@@ -27,7 +27,7 @@ API documentation is available in YAML format within the repository. The OpenAPI
 
 ## 🗄️ Adding or Editing Data
 
-All application data used to seed the database is editable in [fixtures/fixtures.yaml](https://github.com/brittonhayes/warhammer/blob/main/fixtures/fixtures.yaml). The API is built to be self-seeding and read-only, so if there is a need to add more data, simply add it to the fixtures file, rebuild and redeploy the API.
+All application data used to seed the database is editable in the [fixtures/](https://github.com/brittonhayes/warhammer/blob/main/fixtures/) directory. The API is built to be self-seeding and read-only, so if there is a need to add more data, simply add it to the fixtures files, rebuild and redeploy the API.
 
 - [View the data](https://github.com/brittonhayes/warhammer/blob/main/fixtures/fixtures.yaml)
 

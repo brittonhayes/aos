@@ -1,0 +1,14 @@
+- model: GrandAlliance
+  rows:
+    - id: order
+      name: Order
+      description: The forces of Order strive to bring unity and stability to the Mortal Realms. Composed of various factions, they fight against the forces of Chaos.
+    - id: chaos
+      name: Chaos
+      description: The forces of Chaos seek to corrupt and dominate the Mortal Realms. Made up of daemons, monsters, and twisted beings, they spread destruction wherever they go.
+    - id: death
+      name: Death
+      description: Death is a Grand Alliance composed of undead and other creatures associated with the realm of death. They seek to expand their dominion over the Mortal Realms.
+    - id: destruction
+      name: Destruction
+      description: Destruction is a Grand Alliance consisting of savage and destructive forces such as orruks, ogors, and other monstrous creatures. They revel in chaos and destruction.

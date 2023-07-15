@@ -9,6 +9,136 @@ servers:
 - url: https://aos-api.com
   description: Production server
 paths:
+  /allegiances:
+      get:
+        summary: Get all allegiances
+        description: Get all allegiances
+        operationId: getAllegiances
+        parameters:
+        - name: name
+          in: query
+          description: name of allegiance to filter by
+          required: false
+          schema:
+            type: string
+        - name: grand_alliance
+          in: query
+          description: id of grand alliance to filter by
+          required: false
+          schema:
+            type: string
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Allegiance'
+          '404':
+            description: Not Found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+  /allegiances/{id}:
+    get:
+      summary: Get allegiance by id
+      description: Get allegiance by id
+      operationId: getAllegianceById
+      parameters:
+      - name: id
+        in: path
+        description: id of allegiance to return
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Allegiance'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /armies:
+    get:
+      summary: Get all armies
+      description: Get all armies
+      operationId: getArmies
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Army'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /armies/{id}:
+    get:
+      summary: Get army by id
+      description: Get army by id
+      operationId: getArmyById
+      parameters:
+      - name: id
+        in: path
+        description: id of army to return
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Army'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
+  /cities:
+    get:
+      summary: Get all cities
+      description: Get all cities
+      operationId: getCities
+      parameters:
+      - name: name
+        in: query
+        description: name of city to filter by
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/City'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /docs:
     get:
       summary: Get API documentation
@@ -111,92 +241,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-  /allegiances:
-    get:
-      summary: Get all allegiances
-      description: Get all allegiances
-      operationId: getAllegiances
-      parameters:
-      - name: name
-        in: query
-        description: name of allegiance to filter by
-        required: false
-        schema:
-          type: string
-      - name: grand_alliance
-        in: query
-        description: id of grand alliance to filter by
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Allegiance'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /allegiances/{id}:
-    get:
-      summary: Get allegiance by id
-      description: Get allegiance by id
-      operationId: getAllegianceById
-      parameters:
-      - name: id
-        in: path
-        description: id of allegiance to return
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Allegiance'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /cities:
-    get:
-      summary: Get all cities
-      description: Get all cities
-      operationId: getCities
-      parameters:
-      - name: name
-        in: query
-        description: name of city to filter by
-        required: false
-        schema:
-          type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/City'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error' 
   /units:
     get:
       summary: Get all units
@@ -242,11 +287,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /armies:
+  /warscrolls:
     get:
-      summary: Get all armies
-      description: Get all armies
-      operationId: getArmies
+      summary: Get all warscrolls
+      description: Get all warscrolls
+      operationId: getWarscrolls
+      parameters:
+        - name: name
+          in: query
+          description: name of warscroll to filter by
+          required: false
+          schema:
+            type: string
+        - name: points
+          in: query
+          description: points of warscroll to filter by
+          required: false
+          schema:
+            type: integer
+        - name: battlefield_role
+          in: query
+          description: battlefield_role of warscroll to filter by
+          required: false
+          schema:
+            type: string
+        - name: size
+          in: query
+          description: size of warscroll to filter by
+          required: false
+          schema:
+            type: string
+        - name: notes
+          in: query
+          description: notes of warscroll to filter by
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -255,22 +331,22 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Army'
+                  $ref: '#/components/schemas/Warscroll'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /armies/{id}:
+  /warscrolls/{id}:
     get:
-      summary: Get army by id
-      description: Get army by id
-      operationId: getArmyById
+      summary: Get warscroll by id
+      description: Get warscroll by id
+      operationId: getWarscrollById
       parameters:
       - name: id
         in: path
-        description: id of army to return
+        description: id of warscroll to return
         required: true
         schema:
           type: string
@@ -280,13 +356,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Army'
+                $ref: '#/components/schemas/Warscroll'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error' 
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -301,6 +377,37 @@ components:
           format: int32
         message:
           type: string
+    Warscroll:
+      type: object
+      properties:
+        _id:
+          type: string
+          x-go-extra-tags:
+            bun: ',pk' 
+        name:
+          type: string
+        allegiance_id:
+          type: string
+        allegiance: 
+          $ref: '#/components/schemas/Allegiance' 
+          x-go-extra-tags:
+            bun: 'rel:belongs-to,join:allegiance_id=id'
+        grand_alliance_id:
+          type: string
+        grand_alliance:
+          $ref: '#/components/schemas/GrandAlliance' 
+          x-go-extra-tags:
+            bun: 'rel:belongs-to,join:grand_alliance_id=id'
+        size:
+          type: integer
+          format: int64
+        points:
+          type: integer
+          format: int64
+        battlefield_role:
+          type: string
+        notes:
+          type: string 
     City:
       type: object
       properties:
