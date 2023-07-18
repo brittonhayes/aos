@@ -33,7 +33,7 @@ All application data used to seed the database is editable in the [fixtures/](ht
 
 ## 📈 Monitoring
 
-Application observability is instrumented with OpenTelemetry and available in Grafana, Prometheus, and Jaeger. All application services are behind a traefik reverse proxy.
+Application observability is instrumented with OpenTelemetry and telemetry is available in [Grafana](https://grafana.com/grafana/) and [Prometheus](https://prometheus.io/). Application tracing is power by [Grafana Tempo](https://grafana.com/oss/tempo/). All application services are behind [Traefik](https://doc.traefik.io/traefik/) reverse proxy.
 
 When running with docker-compose, the following services are available:
 
@@ -42,7 +42,6 @@ When running with docker-compose, the following services are available:
 - Traefik is available at [http://localhost:8080](http://localhost:8080)
 - Prometheus is available at [http://prometheus.localhost:8090](http://prometheus.localhost:8090)
 - Grafana is available at [http://grafana.localhost:8090](http://grafana.localhost:8090)
-- Jaeger is available at [http://jaeger.localhost:8090](http://jaeger.localhost:8090)
 
 ## FAQ
 

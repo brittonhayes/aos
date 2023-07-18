@@ -3,6 +3,9 @@
 
 
 receivers:
+  httpcheck/warhammer:
+    endpoint: http://warhammer:8080/healthz
+    method: GET
   otlp:
     protocols:
       grpc:
@@ -27,7 +30,7 @@ processors:
 exporters:
   logging:
   otlp:
-    endpoint: "jaeger:4317"
+    endpoint: "tempo:4317"
     tls:
       insecure: true
   prometheus:
@@ -45,7 +48,7 @@ service:
       processors: [batch, attributes]
       exporters: [logging, loki]
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, httpcheck/warhammer]
       processors: [batch]
       exporters: [prometheus, logging]
     traces:

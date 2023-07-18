@@ -9,21 +9,19 @@ datasources:
   isDefault: true
   editable: true
  
+- name: Tempo
+  type: tempo
+  access: proxy
+  url: http://tempo:3200
+  basicAuth: false
+  editable: false
+  uid: tempo
+  jsonData:
+    httpMethod: GET
+    serviceMap:
+      datasourceUid: prometheus0
+
 - name: Loki
   type: loki
   access: proxy
   url: http://loki:3100
-  jsonData:
-    maxLines: 5000
-    derivedFields:
-      - datasourceUid: jaeger
-        matcherRegex: \"traceId\":\"([^"]+)\"
-        name: traceId
-        url: $${__value.raw}
-
-- name: Jaeger
-  type: jaeger
-  uid: jaeger
-  url: http://jaeger:16686
-  access: proxy
-  editable: true

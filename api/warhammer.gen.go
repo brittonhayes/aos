@@ -84,6 +84,11 @@ type GrandStrategy struct {
 	Name        string  `json:"name"`
 }
 
+// Health defines model for Health.
+type Health struct {
+	Status string `json:"status"`
+}
+
 // Move defines model for Move.
 type Move struct {
 	Name  *string `json:"name,omitempty"`
@@ -397,6 +402,16 @@ func GetGrandStrategyByIDJSON404Response(body Error) *Response {
 	}
 }
 
+// GetHealthzJSON200Response is a constructor method for a GetHealthz response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetHealthzJSON200Response(body Health) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
 // GetUnitsJSON200Response is a constructor method for a GetUnits response.
 // A *Response is returned with the configured status code and content type from the spec.
 func GetUnitsJSON200Response(body []Unit) *Response {
@@ -509,6 +524,9 @@ type ServerInterface interface {
 	// Get grand strategy by id
 	// (GET /grand-strategies/{id})
 	GetGrandStrategyByID(w http.ResponseWriter, r *http.Request, id string) *Response
+	// Get health status
+	// (GET /healthz)
+	GetHealthz(w http.ResponseWriter, r *http.Request) *Response
 	// Get all units
 	// (GET /units)
 	GetUnits(w http.ResponseWriter, r *http.Request) *Response
@@ -759,6 +777,24 @@ func (siw *ServerInterfaceWrapper) GetGrandStrategyByID(w http.ResponseWriter, r
 
 	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := siw.Handler.GetGrandStrategyByID(w, r, id)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetHealthz operation middleware
+func (siw *ServerInterfaceWrapper) GetHealthz(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetHealthz(w, r)
 		if resp != nil {
 			if resp.body != nil {
 				render.Render(w, r, resp)
@@ -1027,6 +1063,7 @@ func Handler(si ServerInterface, opts ...ServerOption) http.Handler {
 		r.Get("/grand-alliances/{id}", wrapper.GetGrandAllianceByID)
 		r.Get("/grand-strategies", wrapper.GetGrandStrategies)
 		r.Get("/grand-strategies/{id}", wrapper.GetGrandStrategyByID)
+		r.Get("/healthz", wrapper.GetHealthz)
 		r.Get("/units", wrapper.GetUnits)
 		r.Get("/units/{id}", wrapper.GetUnitByID)
 		r.Get("/warscrolls", wrapper.GetWarscrolls)
@@ -1056,30 +1093,31 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"lb6gGbuMlSDrj+v/AgAA//8jUaiEbisAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

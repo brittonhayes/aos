@@ -9,39 +9,51 @@ servers:
 - url: https://aos-api.com
   description: Production server
 paths:
+  /healthz:
+    get:
+      summary: Get health status
+      description: Get health status
+      operationId: getHealthz
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
   /allegiances:
-      get:
-        summary: Get all allegiances
-        description: Get all allegiances
-        operationId: getAllegiances
-        parameters:
-        - name: name
-          in: query
-          description: name of allegiance to filter by
-          required: false
-          schema:
-            type: string
-        - name: grand_alliance
-          in: query
-          description: id of grand alliance to filter by
-          required: false
-          schema:
-            type: string
-        responses:
-          '200':
-            description: OK
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Allegiance'
-          '404':
-            description: Not Found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
+    get:
+      summary: Get all allegiances
+      description: Get all allegiances
+      operationId: getAllegiances
+      parameters:
+      - name: name
+        in: query
+        description: name of allegiance to filter by
+        required: false
+        schema:
+          type: string
+      - name: grand_alliance
+        in: query
+        description: id of grand alliance to filter by
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Allegiance'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /allegiances/{id}:
     get:
       summary: Get allegiance by id
@@ -111,7 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error' 
+                $ref: '#/components/schemas/Error'
   /cities:
     get:
       summary: Get all cities
@@ -241,7 +253,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error' 
+                $ref: '#/components/schemas/Error'
   /units:
     get:
       summary: Get all units
@@ -293,36 +305,36 @@ paths:
       description: Get all warscrolls
       operationId: getWarscrolls
       parameters:
-        - name: name
-          in: query
-          description: name of warscroll to filter by
-          required: false
-          schema:
-            type: string
-        - name: points
-          in: query
-          description: points of warscroll to filter by
-          required: false
-          schema:
-            type: integer
-        - name: battlefield_role
-          in: query
-          description: battlefield_role of warscroll to filter by
-          required: false
-          schema:
-            type: string
-        - name: size
-          in: query
-          description: size of warscroll to filter by
-          required: false
-          schema:
-            type: string
-        - name: notes
-          in: query
-          description: notes of warscroll to filter by
-          required: false
-          schema:
-            type: string
+      - name: name
+        in: query
+        description: name of warscroll to filter by
+        required: false
+        schema:
+          type: string
+      - name: points
+        in: query
+        description: points of warscroll to filter by
+        required: false
+        schema:
+          type: integer
+      - name: battlefield_role
+        in: query
+        description: battlefield_role of warscroll to filter by
+        required: false
+        schema:
+          type: string
+      - name: size
+        in: query
+        description: size of warscroll to filter by
+        required: false
+        schema:
+          type: string
+      - name: notes
+        in: query
+        description: notes of warscroll to filter by
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: OK
@@ -366,6 +378,13 @@ paths:
 
 components:
   schemas:
+    Health:
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
     Error:
       required:
       - code
@@ -383,19 +402,19 @@ components:
         _id:
           type: string
           x-go-extra-tags:
-            bun: ',pk' 
+            bun: ',pk'
         name:
           type: string
         allegiance_id:
           type: string
-        allegiance: 
-          $ref: '#/components/schemas/Allegiance' 
+        allegiance:
+          $ref: '#/components/schemas/Allegiance'
           x-go-extra-tags:
             bun: 'rel:belongs-to,join:allegiance_id=id'
         grand_alliance_id:
           type: string
         grand_alliance:
-          $ref: '#/components/schemas/GrandAlliance' 
+          $ref: '#/components/schemas/GrandAlliance'
           x-go-extra-tags:
             bun: 'rel:belongs-to,join:grand_alliance_id=id'
         size:
@@ -407,7 +426,7 @@ components:
         battlefield_role:
           type: string
         notes:
-          type: string 
+          type: string
     City:
       type: object
       properties:

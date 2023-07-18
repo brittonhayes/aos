@@ -2,6 +2,7 @@ version: "3.7"
 
 volumes:
   grafana_data:
+  tempo_data:
 
 networks:
   default:
@@ -74,42 +75,55 @@ services:
       - "8888"          # metrics endpoint
       - "3500"          # Loki over HTTP receiver
     depends_on:
-      - jaeger
+      - tempo 
 
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: jaeger
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jaeger.rule=Host(`jaeger.localhost`)"
-      - "traefik.http.routers.jaeger.entrypoints=web"
-      - "traefik.docker.network=web"
-      - "traefik.http.services.jaeger.loadbalancer.server.port=${JAEGER_SERVICE_PORT}"
-    restart: unless-stopped
-    command:
-      - "--memory.max-traces"
-      - "10000"
-      - "--query.base-path"
-      - "/jaeger/ui"
-      - "--prometheus.server-url"
-      - "http://${PROMETHEUS_ADDR}" 
-    deploy:
-      resources:
-        limits:
-          memory: 300M
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./config/tempo.yaml:/etc/tempo.yaml
+      - tempo_data:/tmp/tempo
     ports:
-      - "${JAEGER_SERVICE_PORT}"
-      - 5775/udp
-      - 6831/udp
-      - 6832/udp
-      - "5778"
-      - "16685"
-      - "9411"
-      - "4317"
-      - "4318"
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
-      - METRICS_STORAGE_TYPE=prometheus
+      - "14268"  # jaeger ingest
+      - "3200"   # tempo
+      - "4317"  # otlp grpc
+      - "4318"  # otlp http
+
+  # jaeger:
+  #   image: jaegertracing/all-in-one:latest
+  #   container_name: jaeger
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.jaeger.rule=Host(`jaeger.localhost`)"
+  #     - "traefik.http.routers.jaeger.entrypoints=web"
+  #     - "traefik.docker.network=web"
+  #     - "traefik.http.services.jaeger.loadbalancer.server.port=${JAEGER_SERVICE_PORT}"
+  #   restart: unless-stopped
+  #   command:
+  #     - "--memory.max-traces"
+  #     - "10000"
+  #     - "--query.base-path"
+  #     - "/jaeger/ui"
+  #     - "--prometheus.server-url"
+  #     - "http://${PROMETHEUS_ADDR}" 
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 300M
+  #   ports:
+  #     - "${JAEGER_SERVICE_PORT}"
+  #     - 5775/udp
+  #     - 6831/udp
+  #     - 6832/udp
+  #     - "5778"
+  #     - "16685"
+  #     - "9411"
+  #     - "4317"
+  #     - "4318"
+  #   environment:
+  #     - COLLECTOR_OTLP_ENABLED=true
+  #     - METRICS_STORAGE_TYPE=prometheus
 
   prometheus:
     image: quay.io/prometheus/prometheus:v2.43.0
@@ -150,6 +164,8 @@ services:
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor 
     restart: unless-stopped
     ports:
       - "3000"
