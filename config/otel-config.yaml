@@ -7,37 +7,48 @@ receivers:
     protocols:
       grpc:
       http:
-        cors:
-          allowed_origins:
-            - "http://*"
-            - "https://*"
+  loki:
+    protocols:
+      http:
+    use_incoming_timestamp: true
 
-exporters:
-  logging:
 
 processors:
   batch:
-  filter:
-    metrics:
-      exclude:
-        match_type: strict
-        metric_names:
-          - queueSize
-
-connectors:
-  spanmetrics:
+  attributes:
+    actions:
+      - action: insert
+        key: loki.attribute.labels
+        value: container
+      - action: insert
+        key: loki.format
+        value: raw
+ 
+exporters:
+  logging:
+  otlp:
+    endpoint: "jaeger:4317"
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: "otel_collector:9464"
+    resource_to_telemetry_conversion:
+      enabled: true
+    enable_open_metrics: true
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
 
 service:
   pipelines:
+    logs:
+      receivers: [otlp, loki]
+      processors: [batch, attributes]
+      exporters: [logging, loki]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheus, logging]
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, spanmetrics]
-    metrics:
-      receivers: [otlp, spanmetrics]
-      processors: [filter, batch]
-      exporters: [logging]
-    logs:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [logging]
+      exporters: [otlp, logging]

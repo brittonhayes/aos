@@ -37,14 +37,13 @@ Application observability is instrumented with OpenTelemetry and available in Gr
 
 When running with docker-compose, the following services are available:
 
-- API is available at [http://warhammer.localhost](http://warhammer.localhost)
-- Documentation is available at [http://warhammer.localhost/docs](http://warhammer.localhost/docs)
+- API is available at [http://warhammer.localhost:8090](http://warhammer.localhost:8090)
+- Documentation is available at [http://warhammer.localhost:8090/docs](http://warhammer.localhost:8090/docs)
 - Traefik is available at [http://localhost:8080](http://localhost:8080)
-- Prometheus is available at [http://prometheus.localhost](http://prometheus.localhost)
-- Grafana is available at [http://grafana.localhost](http://grafana.localhost)
-- Jaeger is available at [http://jaeger.localhost](http://jaeger.localhost)
+- Prometheus is available at [http://prometheus.localhost:8090](http://prometheus.localhost:8090)
+- Grafana is available at [http://grafana.localhost:8090](http://grafana.localhost:8090)
+- Jaeger is available at [http://jaeger.localhost:8090](http://jaeger.localhost:8090)
 
 ## FAQ
 
 - **Q: Where is X {unit,alliance,etc}?** - A: Waiting for you to add it! See the [fixtures/](https://github.com/brittonhayes/warhammer/blob/main/fixtures/) directory for more information.
-- **Q: The \*.localhost domains aren't working on Windows** - A: Run `net stop http` in Powershell as Administrator to stop the Windows HTTP service that is reserving port 80.

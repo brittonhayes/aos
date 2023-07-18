@@ -17,9 +17,9 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.address=:8090"
     ports:
-      - "80:80"
+      - "8090:8090"
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -42,6 +42,10 @@ services:
       - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       - OTEL_RESOURCE_ATTRIBUTES
     command: ["--migrate"]
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
     depends_on:
       otel_collector:
         condition: service_started
@@ -60,15 +64,15 @@ services:
         limits:
           memory: 125M
     restart: unless-stopped 
-    command: [ "--config=/etc/otel-config.yaml", "--config=/etc/otel-observability.yaml" ]
+    command: [ "--config=/etc/otel-config.yaml"]
     volumes:
         - ./config/otel-config.yaml:/etc/otel-config.yaml
-        - ./config/otel-observability.yaml:/etc/otel-observability.yaml
     ports:
       - "4317"          # OTLP over gRPC receiver
       - "4318"          # OTLP over HTTP receiver
       - "9464"          # Prometheus exporter
       - "8888"          # metrics endpoint
+      - "3500"          # Loki over HTTP receiver
     depends_on:
       - jaeger
 
@@ -95,7 +99,14 @@ services:
           memory: 300M
     ports:
       - "${JAEGER_SERVICE_PORT}"
+      - 5775/udp
+      - 6831/udp
+      - 6832/udp
+      - "5778"
+      - "16685"
+      - "9411"
       - "4317"
+      - "4318"
     environment:
       - COLLECTOR_OTLP_ENABLED=true
       - METRICS_STORAGE_TYPE=prometheus
@@ -145,3 +156,27 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./config/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/grafana-datasources.yaml
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./config/promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yaml
+
+  fluentbit:
+    image: fluent/fluent-bit
+    container_name: fluentbit
+    volumes:
+      - ./config/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf 
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
