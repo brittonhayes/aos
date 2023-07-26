@@ -21,4 +21,5 @@ COPY --from=builder --chown=nonroot:nonroot /bin/warhammerd /bin/warhammerd
 EXPOSE 8080
 
 ENTRYPOINT [ "/bin/warhammerd" ]
+
 CMD ["/bin/warhammerd"]
