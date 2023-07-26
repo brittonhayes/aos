@@ -1,4 +1,4 @@
 [deploy]
-startCommand = "/bin/warhammerd --migrate"
+startCommand = "/bin/warhammerd --migrate --tracing=false"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 5
