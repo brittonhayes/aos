@@ -57,7 +57,7 @@ func main() {
 					fixtures.WARSCROLLS,
 				}
 
-				err = repo.Seed(c.Context, fixtures.FS, data...)
+				err = repo.Seed(c.Context, warhammer.FIXTURES, data...)
 				if err != nil {
 					return err
 				}
@@ -233,7 +233,16 @@ func main() {
 						Name:  "seed",
 						Usage: "seed data into the database",
 						Action: func(c *cli.Context) error {
-							return repo.Seed(c.Context, fixtures.FS, "fixtures.yaml")
+							data := []string{
+								fixtures.ALLEGIANCES,
+								fixtures.ALLIANCES,
+								fixtures.CITIES,
+								fixtures.STRATEGIES,
+								fixtures.UNITS,
+								fixtures.WARSCROLLS,
+							}
+
+							return repo.Seed(c.Context, warhammer.FIXTURES, data...)
 						},
 					},
 				},
