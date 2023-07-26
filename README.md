@@ -5,6 +5,11 @@
 
 > A Warhammer REST API built with Go and Sqlite.
 
+## ✨ Try the API (hosted)
+
+- API: https://aos-api.up.railway.app
+- Documentation: https://aos-api.up.railway.app/docs
+
 ## ⚡ Quick Start (self-hosted)
 
 Get started with docker-compose to seed the database and start the API server.
