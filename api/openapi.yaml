@@ -421,6 +421,9 @@ components:
           format: int32
         message:
           type: string
+      example:
+        code: 404
+        message: Not Found
     Warscroll:
       type: object
       properties:
