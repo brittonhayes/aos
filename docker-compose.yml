@@ -26,7 +26,8 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   warhammer:
-    container_name: warhammer 
+    container_name: warhammer
+    image: ghcr.io:brittonhayes/warhammer:latest
     build:
       dockerfile: ./Dockerfile
       context: .
