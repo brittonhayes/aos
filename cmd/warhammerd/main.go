@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"time"
 
 	"github.com/brittonhayes/warhammer"
 	"github.com/brittonhayes/warhammer/api"
@@ -17,6 +18,7 @@ import (
 
 	apimw "github.com/discord-gophers/goapi-gen/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/urfave/cli/v2"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 
@@ -84,6 +86,8 @@ func main() {
 
 			// Use our validation middleware to check all requests against the
 			// OpenAPI schema.
+			r.Use(middleware.Recoverer)
+			r.Use(middleware.Timeout(5 * time.Second))
 			r.Use(apimw.OAPIValidator(swagger))
 			r.Use(logging.Middleware)
 
