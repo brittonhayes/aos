@@ -20,7 +20,7 @@ tasks:
   docs:
     desc: "Generate documentation"
     cmds:
-      - redocly build-docs api/openapi.yaml -o web/index.html
+      - npx @redocly/cli build-docs api/openapi.yaml -o web/index.html
 
   lint:
     desc: "Run linter"
