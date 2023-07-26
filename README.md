@@ -3,7 +3,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/brittonhayes/warhammer.svg)](https://pkg.go.dev/github.com/brittonhayes/warhammer)
 [![Go Report Card](https://goreportcard.com/badge/github.com/brittonhayes/warhammer)](https://goreportcard.com/report/github.com/brittonhayes/warhammer)
 
-> A Warhammer REST API built with Go and Sqlite.
+> A Warhammer: Age of Sigmar REST API built with Go and Sqlite.
 
 ## ✨ Try the API (hosted)
 
@@ -82,6 +82,21 @@ When running with docker-compose, the following services are available:
 - Prometheus is available at [http://prometheus.localhost:8090](http://prometheus.localhost:8090)
 - Grafana is available at [http://grafana.localhost:8090](http://grafana.localhost:8090)
 
-## FAQ
+## 🙋 FAQ
 
 - **Q: Where is X {unit,alliance,etc}?** - A: Waiting for you to add it! See the [fixtures/](https://github.com/brittonhayes/warhammer/blob/main/fixtures/) directory for more information.
+
+## ⚖️ Copyright and Data Ownership
+
+Any changes to the data hosted by this repository must respect the licensing rules documented by Games Workshop
+here [Intellectual Property Policy](https://www.games-workshop.com/en-US/Intellectual-Property-Policy).
+
+We are in no way affiliated with Games Workshop and the Warhammer Age of Sigmar data is the sole property of Games
+Workshop. We are abiding by their `Celebrating the Hobby` section of the agreement and not commercializing this data in
+any way. This API is purely to help allow users to engage with the wonderful world of Warhammer in a programattic way
+through a REST interface rather than the usual PDF.
+
+If you consume the data served through this API, be aware that you are also obligated to respect
+[Games Workshop's](https://www.games-workshop.com) [intellectual property guidelines](https://www.games-workshop.com/en-US/Intellectual-Property-Guidelines).
+
+For more information, view our [Contributing Guidelines](https://github.com/brittonhayes/warhammer/blob/main/CONTRIBUTING.md).
