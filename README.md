@@ -7,8 +7,8 @@
 
 ## ✨ Try the API (hosted)
 
-- API: https://aos-api.up.railway.app
-- Documentation: https://aos-api.up.railway.app/docs
+- API: https://aos-api.com/
+- Documentation: https://aos-api.com/docs
 
 ## ⚡ Quick Start (self-hosted)
 
