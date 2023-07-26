@@ -88,48 +88,52 @@ func main() {
 			r.Use(logging.Middleware)
 
 			// Use the OpenTelemetry middleware to trace all requests
-			r.Use(func(h http.Handler) http.Handler {
-				return otelhttp.NewHandler(
-					http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-						h.ServeHTTP(w, r)
+			if c.Bool("tracing") {
+				r.Use(func(h http.Handler) http.Handler {
+					return otelhttp.NewHandler(
+						http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+							h.ServeHTTP(w, r)
 
-						routePattern := chi.RouteContext(r.Context()).RoutePattern()
+							routePattern := chi.RouteContext(r.Context()).RoutePattern()
 
-						span := trace.SpanFromContext(r.Context())
-						span.SetName(routePattern)
-						span.SetAttributes(semconv.HTTPTarget(r.URL.String()), semconv.HTTPRoute(routePattern))
+							span := trace.SpanFromContext(r.Context())
+							span.SetName(routePattern)
+							span.SetAttributes(semconv.HTTPTarget(r.URL.String()), semconv.HTTPRoute(routePattern))
 
-						labeler, ok := otelhttp.LabelerFromContext(r.Context())
-						if ok {
-							labeler.Add(semconv.HTTPRoute(routePattern))
-						}
-					}),
-					"",
-				)
-			})
+							labeler, ok := otelhttp.LabelerFromContext(r.Context())
+							if ok {
+								labeler.Add(semconv.HTTPRoute(routePattern))
+							}
+						}),
+						"",
+					)
+				})
+			}
 
 			// We now register our server above as the handler for the interface
 			api.Handler(s, api.WithRouter(r))
 
-			traceProvider, err := tracing.InitTracer(c.String("service"), c.String("environment"))
-			if err != nil {
-				return err
-			}
-			defer func() {
-				if err := traceProvider.Shutdown(c.Context); err != nil {
-					log.Printf("Error shutting down tracer provider: %v", err)
+			if c.Bool("tracing") {
+				traceProvider, err := tracing.InitTracer(c.String("service"), c.String("environment"))
+				if err != nil {
+					return err
 				}
-			}()
+				defer func() {
+					if err := traceProvider.Shutdown(c.Context); err != nil {
+						log.Printf("Error shutting down tracer provider: %v", err)
+					}
+				}()
 
-			meterProvider, err := tracing.InitMeter()
-			if err != nil {
-				return err
-			}
-			defer func() {
-				if err := meterProvider.Shutdown(c.Context); err != nil {
-					log.Printf("Error shutting down meter provider: %v", err)
+				meterProvider, err := tracing.InitMeter()
+				if err != nil {
+					return err
 				}
-			}()
+				defer func() {
+					if err := meterProvider.Shutdown(c.Context); err != nil {
+						log.Printf("Error shutting down meter provider: %v", err)
+					}
+				}()
+			}
 
 			port := c.Int("port")
 			if port == 0 {
@@ -149,14 +153,14 @@ func main() {
 				Name:    "port",
 				Aliases: []string{"p"},
 				Value:   8080,
-				EnvVars: []string{"WARHAMMER_SERVICE_PORT"},
+				EnvVars: []string{"WARHAMMER_SERVICE_PORT", "PORT"},
 				Usage:   "port to listen on",
 			},
 			&cli.StringFlag{
 				Name:    "service",
 				Aliases: []string{"s"},
 				Value:   "warhammerd",
-				EnvVars: []string{"WARHAMMER_SERVICE_NAME"},
+				EnvVars: []string{"WARHAMMER_SERVICE_NAME", "SERVICE_NAME"},
 				Usage:   "customize the service name",
 			},
 			&cli.StringFlag{
@@ -170,6 +174,13 @@ func main() {
 				Value:   "file:warhammer.db",
 				EnvVars: []string{"DATABASE_URL"},
 				Usage:   "database url",
+			},
+			&cli.BoolFlag{
+				Name:    "tracing",
+				Aliases: []string{"t"},
+				Value:   true,
+				EnvVars: []string{"TRACING"},
+				Usage:   "enable tracing",
 			},
 			&cli.BoolFlag{
 				Name:    "migrate",
