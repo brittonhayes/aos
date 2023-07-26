@@ -1,0 +1,4 @@
+[deploy]
+startCommand = "/bin/warhammerd --migrate"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
