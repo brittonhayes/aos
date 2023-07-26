@@ -5,7 +5,7 @@
 
 > A Warhammer REST API built with Go and Sqlite.
 
-## ⚡ Quick Start
+## ⚡ Quick Start (self-hosted)
 
 Get started with docker-compose to seed the database and start the API server.
 
@@ -29,17 +29,51 @@ API documentation is available in YAML format within the repository. The OpenAPI
 
 All application data used to seed the database is editable in the [fixtures/](https://github.com/brittonhayes/warhammer/blob/main/fixtures/) directory. The API is built to be self-seeding and read-only, so if there is a need to add more data, simply add it to the fixtures files, rebuild and redeploy the API.
 
+### Example - Adding a new alliance
+
+To add a new entry to the database, just add a new object to the appropriate yaml fixtures file. In this case, `fixtures/alliances.yaml`. This processes is the same for all data types.
+
+```diff
+# fixtures/alliances.yaml
+    - model: GrandAlliance
+      rows:
+        - id: order
+          name: Order
+          description: The forces of Order strive to bring unity and stability to the Mortal Realms. Composed of various factions, they fight against the forces of Chaos.
++       - id: chaos
++         name: Chaos
++         description: The forces of Chaos seek to corrupt and dominate the Mortal Realms. Made up of daemons, monsters, and twisted beings, they spread destruction wherever theygo.
+```
+
 - [View the data](https://github.com/brittonhayes/warhammer/blob/main/fixtures/fixtures.yaml)
 
-## 📈 Monitoring
+## API Endpoints
 
-Application observability is instrumented with OpenTelemetry and telemetry is available in [Grafana](https://grafana.com/grafana/) and [Prometheus](https://prometheus.io/). Application tracing is power by [Grafana Tempo](https://grafana.com/oss/tempo/). All application services are behind [Traefik](https://doc.traefik.io/traefik/) reverse proxy.
+*The API is read-only so all endpoints are GET requests.*
+
+✅=Available
+🚧=Under Construction
+
+- ✅ `/api/cities` - Get all cities
+- ✅ `/api/cities/{id}` - Get a city by ID
+- ✅ `/api/grand-alliances` - Get all grand alliances
+- ✅ `/api/grand-alliances/{id}` - Get a grand alliance by ID
+- ✅ `/api/grand-strategies/` - Get all grand strategies
+- ✅ `/api/grand-strategies/{id}` - Get a grand strategy by ID
+- 🚧 `/api/units` - Get all units
+- 🚧 `/api/units/{id}` - Get a unit by ID
+- 🚧 `/api/warscrolls/` - Get all warscrolls
+- 🚧 `/api/warscrolls/{id}` - Get a warscroll by ID
+
+## 📈 Monitoring (self-hosted)
+
+Application observability is instrumented with OpenTelemetry. Telemetry is available in [Grafana](https://grafana.com/grafana/) and [Prometheus](https://prometheus.io/). Application tracing is powered by [Grafana Tempo](https://grafana.com/oss/tempo/). All application services are behind [Traefik](https://doc.traefik.io/traefik/) reverse proxy.
 
 When running with docker-compose, the following services are available:
 
 - API is available at [http://warhammer.localhost:8090](http://warhammer.localhost:8090)
 - Documentation is available at [http://warhammer.localhost:8090/docs](http://warhammer.localhost:8090/docs)
-- Traefik is available at [http://localhost:8080](http://localhost:8080)
+- Traefik Dashboard is available at [http://localhost:8080](http://localhost:8080)
 - Prometheus is available at [http://prometheus.localhost:8090](http://prometheus.localhost:8090)
 - Grafana is available at [http://grafana.localhost:8090](http://grafana.localhost:8090)
 

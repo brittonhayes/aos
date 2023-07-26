@@ -18,6 +18,7 @@ type WarhammerRepository interface {
 	GetAllegiances(ctx context.Context, params api.GetAllegiancesParams) ([]api.Allegiance, error)
 
 	GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error)
+	GetCityByID(ctx context.Context, id string) (*api.City, error)
 
 	GetGrandAllianceByID(ctx context.Context, id string) (*api.GrandAlliance, error)
 	GetGrandAlliances(ctx context.Context) ([]api.GrandAlliance, error)

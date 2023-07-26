@@ -32,9 +32,13 @@ services:
       context: .
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.warhammer.rule=Host(`warhammer.localhost`)"
-      - "traefik.http.routers.warhammer.entrypoints=web"
       - "traefik.docker.network=web"
+      - "traefik.http.routers.warhammer.rule=Host(`warhammer.localhost`) && PathPrefix(`/api`) && Method(`GET`, `OPTIONS`)"
+      - "traefik.http.routers.warhammer.entrypoints=web"
+      - "traefik.http.middlewares.warhammer-ratelimit.ratelimit.average=250"
+      - "traefik.http.middlewares.warhammer-ratelimit.ratelimit.burst=100"
+      - "traefik.http.middlewares.warhammer-strip-api.stripprefix.prefixes=/api"
+      - "traefik.http.routers.warhammer.middlewares=warhammer-strip-api"
       - "traefik.http.services.warhammer.loadbalancer.server.port=8080"
     environment:
       - WARHAMMER_SERVICE_NAME
@@ -89,41 +93,6 @@ services:
       - "3200"   # tempo
       - "4317"  # otlp grpc
       - "4318"  # otlp http
-
-  # jaeger:
-  #   image: jaegertracing/all-in-one:latest
-  #   container_name: jaeger
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.jaeger.rule=Host(`jaeger.localhost`)"
-  #     - "traefik.http.routers.jaeger.entrypoints=web"
-  #     - "traefik.docker.network=web"
-  #     - "traefik.http.services.jaeger.loadbalancer.server.port=${JAEGER_SERVICE_PORT}"
-  #   restart: unless-stopped
-  #   command:
-  #     - "--memory.max-traces"
-  #     - "10000"
-  #     - "--query.base-path"
-  #     - "/jaeger/ui"
-  #     - "--prometheus.server-url"
-  #     - "http://${PROMETHEUS_ADDR}" 
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         memory: 300M
-  #   ports:
-  #     - "${JAEGER_SERVICE_PORT}"
-  #     - 5775/udp
-  #     - 6831/udp
-  #     - 6832/udp
-  #     - "5778"
-  #     - "16685"
-  #     - "9411"
-  #     - "4317"
-  #     - "4318"
-  #   environment:
-  #     - COLLECTOR_OTLP_ENABLED=true
-  #     - METRICS_STORAGE_TYPE=prometheus
 
   prometheus:
     image: quay.io/prometheus/prometheus:v2.43.0

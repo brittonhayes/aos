@@ -322,6 +322,26 @@ func GetCitiesJSON404Response(body Error) *Response {
 	}
 }
 
+// GetCityByIDJSON200Response is a constructor method for a GetCityByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetCityByIDJSON200Response(body City) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetCityByIDJSON404Response is a constructor method for a GetCityByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetCityByIDJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
 // GetGrandAlliancesJSON200Response is a constructor method for a GetGrandAlliances response.
 // A *Response is returned with the configured status code and content type from the spec.
 func GetGrandAlliancesJSON200Response(body []GrandAlliance) *Response {
@@ -509,6 +529,9 @@ type ServerInterface interface {
 	// Get all cities
 	// (GET /cities)
 	GetCities(w http.ResponseWriter, r *http.Request, params GetCitiesParams) *Response
+	// Get city by id
+	// (GET /cities/{id})
+	GetCityByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get API documentation
 	// (GET /docs)
 	GetDocs(w http.ResponseWriter, r *http.Request) *Response
@@ -671,6 +694,32 @@ func (siw *ServerInterfaceWrapper) GetCities(w http.ResponseWriter, r *http.Requ
 
 	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := siw.Handler.GetCities(w, r, params)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
+// GetCityByID operation middleware
+func (siw *ServerInterfaceWrapper) GetCityByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetCityByID(w, r, id)
 		if resp != nil {
 			if resp.body != nil {
 				render.Render(w, r, resp)
@@ -1058,6 +1107,7 @@ func Handler(si ServerInterface, opts ...ServerOption) http.Handler {
 		r.Get("/armies", wrapper.GetArmies)
 		r.Get("/armies/{id}", wrapper.GetArmyByID)
 		r.Get("/cities", wrapper.GetCities)
+		r.Get("/cities/{id}", wrapper.GetCityByID)
 		r.Get("/docs", wrapper.GetDocs)
 		r.Get("/grand-alliances", wrapper.GetGrandAlliances)
 		r.Get("/grand-alliances/{id}", wrapper.GetGrandAllianceByID)
@@ -1093,31 +1143,31 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"lb6gGbuMlSDrj+v/AgAA//8jUaiEbisAAA==",
+	"H4sIAAAAAAAC/9RaS3PbNhD+Kxy0R9lyHtODbm7SJpk2bWYcjw+ZjAYiVxRiPBgAdMJk9N87AEjxBZFg",
+	"IrnSybKw3F3s930LgNB3FAuWCQ5cK7T4jlS8AYbtx+sVoUQX5mMmRQZSE7ADCahYkkwTwc2/usgALZDS",
+	"kvAUbWeIYwaege2s+kasPkGsjek1pZASzGPoh1mSpO9lhr5epOICvmqJLzROreUq52iBSDLL7m2YsQRT",
+	"iXmyxJTuIvdMmJAa06UETNnESUr4nBMJCVp8cFYffROXrDjklPekM0M5Jw5ZooHZD79KWKMF+mVeIz8v",
+	"YZ/fcmLTK91gKXExYVJaS7LKtQfMvfk9YJrbkbWQDGszKa5/e4527gnXkIL08+eFl6DHY84Ear/EDKfw",
+	"Hq/oQbnNCF9+ETlP1FLl6zVYTAKqZyj9AGP4vzU22xmyEZZa4vh+mQlFqoL8EEh/SClkvwaxSHrAP3vq",
+	"Tx2UwmmA3qzP2t5H0ldG/NcN7f8cMj/PnCBp2axvtMQa0uJssn4NmOpNP12lsc7VuOPSzuf6bcnmR2kz",
+	"N+SbJ5hprUcIdlu6PVTHwHYdL90ErQLVyt9bCGZoJfEDyCKw5cSCMbvUTk9ht5R4kkhsa13qqrcGeWz2",
+	"Y5/Pn98z3EPxRcikPcmeVTcwwymJD1MXJhKg6gjLwV5ZZYKUG8eAiAo/QKhpKbih5KwozVoFOBM8nFp3",
+	"1t5XP7euhgo3qAPeYaliKSg9XM/GrT3zIFlqy9Zz3shG3FhrCmsCNFlKQSFQCEMptFfb3uP7MtlLOC40",
+	"qANQseTXDzXokkCHA1RrHN+Hpu6aX6Dx3jpKzIOdSOChe0wtlhu3eoUZW8X9IBDmK8LXonckRe83REVE",
+	"RZhH1+/eRCqDmKxJjM1wtBYywtEtF+s1iQmm0R2WG8wYyOg6hUisoxuSMizNoyYPoo0Q0LDVA0jlYj+5",
+	"vLq8MrMTGXCcEbRAzy6fXF6hGcqw3liU57UU7f8p6P4kXoGOMKVR09Z6lXYebxJnc90azrDEDDRIhRYf",
+	"uh4NGUzmtcdIi2hNqAYZrQpkyokW6HNuFviKO+7PrHwx4N2ydeOQxESxQo8qoYdE6nSWoZgfDSuVafuu",
+	"gk+vrtyRgmvgtpg4y2gJ+fyTcnKt/YWtta322TkSd7cM6N+/jNXzq+eTEhmK785NnlD/CB39aZVjxlTO",
+	"GDZbMi9ljEWTb/PvJNmOka6ix6qISDLMut+LNy/HiOcI0aadBJ1LXjHBSKMmgo1ZL69a5nBMMoRy4JQx",
+	"byPmQJeMhPQXZ+YDuRp5BKlJVpybyFx1GqUOkJZkxYCoJCsmyMn4OiMhWYRPF9EaGYtovDuuDoqnNPOA",
+	"+aIaCVqSY6KLgyzGj7IwvvC+HDhptZZANbAdV6sFZa9aTRHC1VoBfCZqdQifLKINZCyiiYiHtWqOAYmI",
+	"cwZc2yx9iL40XkaLquGrnm80o+057g4wK8KxlWwXL28xe1PrZ2pnaPfGF9XeeLwxtXff3g7VOpo/zjLf",
+	"extwRh2kW1EfLOM9pXMq2ttdWpUKbzP9Q9eZNJwOM06WCV78GlRQ7oqGBEu08cA+Gtw0TR5JpLurpnMU",
+	"aaOmXmhCZVo+UYzItKrVVJnu3J+ZTGtunLhMO/hZLmzsleS3QfSdTVTePnpgf106OWKly6vT0G1DO2U7",
+	"090vPwa7kLPyzPG2HDh+w9nzo5NT7jOuanWZxzuKMdvfR0wJwtuH9XU+TcPhe7J4NpCxgH6pruzGxdMw",
+	"9YB61xwNeg2w83ecF/PuimxyoPJmzROqcTvTjdW9S5wctXcZOWmqinybHtLeCk4KY68jpyNnLzH/99c4",
+	"9d30eTXfhuo6gh1vwzVOe3vxrizhDbmF/pl05Qb6J4t2Fy37uAL54AfjbxFjGrlxNEO5pGiBNlpni7kh",
+	"ibu/vaTGaiOU2XN0PbyTIslje0/scaMW8zkW6gJn5DIWDG0/bv8LAAD//7099AxALQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

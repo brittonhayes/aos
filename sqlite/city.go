@@ -31,3 +31,14 @@ func (r *warhammerRepository) GetCities(ctx context.Context, params api.GetCitie
 
 	return cities, nil
 }
+
+func (r *warhammerRepository) GetCityByID(ctx context.Context, id string) (*api.City, error) {
+	var city api.City
+
+	err := r.db.NewSelect().Model(&city).Where("id = ?", id).Scan(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &city, nil
+}

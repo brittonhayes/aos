@@ -2,7 +2,7 @@ openapi: "3.1.0"
 info:
   title: Warhammer Age of Sigmar API
   version: 1.0.0
-  description: This is an API specification for a Unofficial Warhammer Age of Sigmar API
+  description: API specification for a Unofficial Warhammer Age of Sigmar API
 servers:
 - url: http://warhammer.localhost
   description: Local server
@@ -145,6 +145,31 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/City'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /cities/{id}:
+    get:
+      summary: Get city by id
+      description: Get city by id
+      operationId: getCityById
+      parameters:
+      - name: id
+        in: path
+        description: id of city to return
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'
         '404':
           description: Not Found
           content:

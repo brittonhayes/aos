@@ -21,3 +21,15 @@ func (s *WarhammerService) GetCities(w http.ResponseWriter, r *http.Request, par
 
 	return api.GetCitiesJSON200Response(cities)
 }
+
+func (s *WarhammerService) GetCityByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+	city, err := s.repo.GetCityByID(r.Context(), id)
+	if err != nil {
+		return api.GetCityByIDJSON404Response(api.Error{
+			Code:    http.StatusNotFound,
+			Message: ErrCitiesNotFound,
+		})
+	}
+
+	return api.GetCityByIDJSON200Response(*city)
+}
