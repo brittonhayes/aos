@@ -1,4 +1,6 @@
 [deploy]
 startCommand = "/bin/warhammerd --migrate"
+healthcheckPath = "/healthz"
+healthcheckTimeout = 100 
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 5

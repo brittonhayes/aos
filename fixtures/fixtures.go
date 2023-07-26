@@ -1,10 +1,10 @@
 package fixtures
 
 const (
-	ALLEGIANCES = "allegiances.yaml"
-	ALLIANCES   = "alliances.yaml"
-	CITIES      = "cities.yaml"
-	STRATEGIES  = "strategies.yaml"
-	UNITS       = "units.yaml"
-	WARSCROLLS  = "warscrolls.yaml"
+	ALLEGIANCES = "fixtures/allegiances.yaml"
+	ALLIANCES   = "fixtures/alliances.yaml"
+	CITIES      = "fixtures/cities.yaml"
+	STRATEGIES  = "fixtures/strategies.yaml"
+	UNITS       = "fixtures/units.yaml"
+	WARSCROLLS  = "fixtures/warscrolls.yaml"
 )
