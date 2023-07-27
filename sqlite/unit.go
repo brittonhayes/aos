@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/brittonhayes/warhammer/api"
+	"github.com/uptrace/bun"
 )
 
 func (r *warhammerRepository) GetUnitByID(ctx context.Context, id string) (*api.Unit, error) {
@@ -16,9 +17,35 @@ func (r *warhammerRepository) GetUnitByID(ctx context.Context, id string) (*api.
 	return &unit, nil
 }
 
-func (r *warhammerRepository) GetUnits(ctx context.Context) ([]api.Unit, error) {
+func (r *warhammerRepository) unitsFilterQuery(query *bun.SelectQuery, params api.GetUnitsParams) (*bun.SelectQuery, error) {
+	if params.Name != nil {
+		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
+	}
+
+	if params.Points != nil {
+		query = query.Where("? LIKE ?", bun.Ident("points"), *params.Points)
+	}
+
+	if params.GrandAlliance != nil {
+		query = query.Where("? LIKE ?", bun.Ident("grand_alliance"), *params.GrandAlliance+"%")
+	}
+
+	if params.GrandStrategy != nil {
+		query = query.Where("? LIKE ?", bun.Ident("grand_strategy"), *params.GrandStrategy+"%")
+	}
+
+	return query, nil
+}
+
+func (r *warhammerRepository) GetUnits(ctx context.Context, params api.GetUnitsParams) ([]api.Unit, error) {
 	var units []api.Unit
-	err := r.db.NewSelect().Model(&units).Scan(ctx)
+
+	query, err := r.unitsFilterQuery(r.db.NewSelect().Model(&units), params)
+	if err != nil {
+		return nil, err
+	}
+
+	err = query.Scan(ctx, &units)
 	if err != nil {
 		return nil, err
 	}

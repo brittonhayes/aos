@@ -284,6 +284,31 @@ paths:
       summary: Get all units
       description: Get all units
       operationId: getUnits
+      parameters:
+        - name: name
+          in: query
+          description: name of unit to filter by
+          required: false
+          schema:
+            type: string
+        - name: grand_alliance
+          in: query
+          description: grand alliance of unit to filter by
+          required: false
+          schema:
+            type: string
+        - name: grand_strategy
+          in: query
+          description: grand strategy of unit to filter by
+          required: false
+          schema:
+            type: string
+        - name: points
+          in: query
+          description: points of unit to filter by
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
           description: OK
