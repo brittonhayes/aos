@@ -595,6 +595,8 @@ components:
           type: string
         grand_alliance:
           type: string
+        champion:
+          type: string
         size:
           $ref: '#/components/schemas/Size'
         move:
