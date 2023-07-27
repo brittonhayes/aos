@@ -1,30 +1,25 @@
 name: CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         go-version: [1.19.x]
         os: [ubuntu-latest]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Go ${{ matrix.go-version }}
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v3
       with:
         go-version: ${{ matrix.go-version }}
 
     - name: Build
       run: go build -o bin/warhammerd ./cmd/warhammerd
-
-    - name: golangci-lint
-      uses: reviewdog/action-golangci-lint@v2
 
     - name: Test
       run: |
@@ -32,3 +27,39 @@ jobs:
 
     - name: Coverage
       run: go tool cover -func cover.out
+
+  generate:
+    needs: ci
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [1.19.x]
+        os: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Set up Go ${{ matrix.go-version }}
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.go-version }}
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Setup tools
+      run: |
+        go install github.com/discord-gophers/goapi-gen@latest
+
+    - name: Generate
+      run: |
+        go generate ./...
+  
+    - uses: EndBug/add-and-commit@v9
+      with:
+        add: 'web/index.html'
