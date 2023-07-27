@@ -642,10 +642,12 @@ components:
           #   bun: "rel:has-many,join:id=unit_id"
           items:
             $ref: '#/components/schemas/DamageTable'
-        weapons:
+        missile_weapons:
           type: array
-          # x-go-extra-tags:
-          #   bun: "rel:has-many,join:id=unit_id"
+          items:
+            $ref: '#/components/schemas/Weapon'
+        melee_weapons:
+          type: array
           items:
             $ref: '#/components/schemas/Weapon'
 
