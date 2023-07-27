@@ -33,7 +33,7 @@
             name: Move
             value: 5
           min_wounds_suffered: 0
-      weapons:
+      melee_weapons:
         - name: Celestine Hammer
           range: 1
           attacks: 4
@@ -41,6 +41,7 @@
           to_wound: 3
           rend: -1
           damage: 2
+      missile_weapons: []
     - id: liberators
       name: Liberators
       grand_alliance: order
@@ -72,7 +73,7 @@
             name: Move
             value: 5
           min_wounds_suffered: 0
-      weapons:
+      melee_weapons:
         - name: Warhammer
           range: 1
           attacks: 1
@@ -80,3 +81,4 @@
           to_wound: 3
           rend: -1
           damage: 1
+      missile_weapons: []
