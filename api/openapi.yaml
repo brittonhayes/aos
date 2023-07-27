@@ -349,6 +349,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /units/{id}/abilities:
+    get:
+      summary: Get abilities for unit by id
+      description: Get abilities for unit by id
+      operationId: getAbilitiesForUnitById
+      parameters:
+      - name: id
+        in: path
+        description: id of unit to return abilities for
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ability'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /warscrolls:
     get:
       summary: Get all warscrolls

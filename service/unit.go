@@ -28,3 +28,12 @@ func (s *WarhammerService) GetUnits(w http.ResponseWriter, r *http.Request, para
 
 	return api.GetUnitsJSON200Response(units)
 }
+
+func (s *WarhammerService) GetAbilitiesForUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+	abilities, err := s.repo.GetAbilitiesForUnitByID(r.Context(), id)
+	if err != nil {
+		return api.GetAbilitiesForUnitByIDJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrUnitNotFound})
+	}
+
+	return api.GetAbilitiesForUnitByIDJSON200Response(abilities)
+}

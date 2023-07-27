@@ -87,6 +87,7 @@ func main() {
 			// Use our validation middleware to check all requests against the
 			// OpenAPI schema.
 			r.Use(middleware.Recoverer)
+			r.Use(middleware.RedirectSlashes)
 			r.Use(middleware.Timeout(5 * time.Second))
 			r.Use(apimw.OAPIValidator(swagger))
 			r.Use(logging.Middleware)

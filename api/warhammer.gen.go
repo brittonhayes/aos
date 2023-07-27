@@ -489,6 +489,26 @@ func GetUnitByIDJSON404Response(body Error) *Response {
 	}
 }
 
+// GetAbilitiesForUnitByIDJSON200Response is a constructor method for a GetAbilitiesForUnitByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetAbilitiesForUnitByIDJSON200Response(body []Ability) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetAbilitiesForUnitByIDJSON404Response is a constructor method for a GetAbilitiesForUnitByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetAbilitiesForUnitByIDJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
 // GetWarscrollsJSON200Response is a constructor method for a GetWarscrolls response.
 // A *Response is returned with the configured status code and content type from the spec.
 func GetWarscrollsJSON200Response(body []Warscroll) *Response {
@@ -573,6 +593,9 @@ type ServerInterface interface {
 	// Get unit by id
 	// (GET /units/{id})
 	GetUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
+	// Get abilities for unit by id
+	// (GET /units/{id}/abilities)
+	GetAbilitiesForUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get all warscrolls
 	// (GET /warscrolls)
 	GetWarscrolls(w http.ResponseWriter, r *http.Request, params GetWarscrollsParams) *Response
@@ -952,6 +975,32 @@ func (siw *ServerInterfaceWrapper) GetUnitByID(w http.ResponseWriter, r *http.Re
 	handler(w, r.WithContext(ctx))
 }
 
+// GetAbilitiesForUnitByID operation middleware
+func (siw *ServerInterfaceWrapper) GetAbilitiesForUnitByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetAbilitiesForUnitByID(w, r, id)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
 // GetWarscrolls operation middleware
 func (siw *ServerInterfaceWrapper) GetWarscrolls(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -1168,6 +1217,7 @@ func Handler(si ServerInterface, opts ...ServerOption) http.Handler {
 		r.Get("/healthz", wrapper.GetHealthz)
 		r.Get("/units", wrapper.GetUnits)
 		r.Get("/units/{id}", wrapper.GetUnitByID)
+		r.Get("/units/{id}/abilities", wrapper.GetAbilitiesForUnitByID)
 		r.Get("/warscrolls", wrapper.GetWarscrolls)
 		r.Get("/warscrolls/{id}", wrapper.GetWarscrollByID)
 	})
@@ -1195,33 +1245,33 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"AAA=",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
