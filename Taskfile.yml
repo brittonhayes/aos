@@ -13,14 +13,9 @@ tasks:
       - docker-compose up --build --force-recreate --remove-orphans --detach
 
   gen:
-    desc: "Generate code using go generate"
+    desc: "Generate code and documentation using go generate"
     cmds:
-      - go generate ./...
-  
-  docs:
-    desc: "Generate documentation"
-    cmds:
-      - npx @redocly/cli build-docs api/openapi.yaml -o web/index.html
+      - go generate ./... 
 
   lint:
     desc: "Run linter"
