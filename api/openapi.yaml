@@ -1,8 +1,12 @@
 openapi: "3.1.0"
 info:
-  title: Warhammer Age of Sigmar API
+  title: Warhammer Age of Sigmar API (Unofficial)
   version: 1.0.0
-  description: API specification for a Unofficial Warhammer Age of Sigmar API
+  description: API specification for a Warhammer Age of Sigmar API (Unofficial)
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+security: []
 servers:
 - url: http://warhammer.localhost
   description: Local server
@@ -21,6 +25,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Health'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /allegiances:
     get:
       summary: Get all allegiances
@@ -189,6 +199,12 @@ paths:
               schema:
                 type: string
                 format: binary
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /grand-alliances:
     get:
       summary: Get all grand alliances
@@ -285,30 +301,30 @@ paths:
       description: Get all units
       operationId: getUnits
       parameters:
-        - name: name
-          in: query
-          description: name of unit to filter by
-          required: false
-          schema:
-            type: string
-        - name: grand_alliance
-          in: query
-          description: grand alliance of unit to filter by
-          required: false
-          schema:
-            type: string
-        - name: grand_strategy
-          in: query
-          description: grand strategy of unit to filter by
-          required: false
-          schema:
-            type: string
-        - name: points
-          in: query
-          description: points of unit to filter by
-          required: false
-          schema:
-            type: integer
+      - name: name
+        in: query
+        description: name of unit to filter by
+        required: false
+        schema:
+          type: string
+      - name: grand_alliance
+        in: query
+        description: grand alliance of unit to filter by
+        required: false
+        schema:
+          type: string
+      - name: grand_strategy
+        in: query
+        description: grand strategy of unit to filter by
+        required: false
+        schema:
+          type: string
+      - name: points
+        in: query
+        description: points of unit to filter by
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: OK
