@@ -61,5 +61,3 @@ jobs:
         go generate ./...
   
     - uses: EndBug/add-and-commit@v9
-      with:
-        add: 'web/index.html'
