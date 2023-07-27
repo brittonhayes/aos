@@ -52,3 +52,13 @@ func (r *warhammerRepository) GetUnits(ctx context.Context, params api.GetUnitsP
 
 	return units, nil
 }
+
+func (r *warhammerRepository) GetAbilitiesForUnitByID(ctx context.Context, id string) ([]api.Ability, error) {
+	var unit api.Unit
+	err := r.db.NewSelect().Model(&unit).Where("id = ?", id).Scan(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return unit.Abilities, nil
+}
