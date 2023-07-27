@@ -28,7 +28,7 @@ type WarhammerRepository interface {
 	GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error)
 
 	GetUnitByID(ctx context.Context, id string) (*api.Unit, error)
-	GetUnits(ctx context.Context) ([]api.Unit, error)
+	GetUnits(ctx context.Context, params api.GetUnitsParams) ([]api.Unit, error)
 
 	GetWarscrollByID(ctx context.Context, id string) (*api.Warscroll, error)
 	GetWarscrolls(ctx context.Context, params api.GetWarscrollsParams) ([]api.Warscroll, error)

@@ -165,6 +165,21 @@ type GetCitiesParams struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// GetUnitsParams defines parameters for GetUnits.
+type GetUnitsParams struct {
+	// name of unit to filter by
+	Name *string `json:"name,omitempty"`
+
+	// grand alliance of unit to filter by
+	GrandAlliance *string `json:"grand_alliance,omitempty"`
+
+	// grand strategy of unit to filter by
+	GrandStrategy *string `json:"grand_strategy,omitempty"`
+
+	// points of unit to filter by
+	Points *int `json:"points,omitempty"`
+}
+
 // GetWarscrollsParams defines parameters for GetWarscrolls.
 type GetWarscrollsParams struct {
 	// name of warscroll to filter by
@@ -554,7 +569,7 @@ type ServerInterface interface {
 	GetHealthz(w http.ResponseWriter, r *http.Request) *Response
 	// Get all units
 	// (GET /units)
-	GetUnits(w http.ResponseWriter, r *http.Request) *Response
+	GetUnits(w http.ResponseWriter, r *http.Request, params GetUnitsParams) *Response
 	// Get unit by id
 	// (GET /units/{id})
 	GetUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
@@ -862,8 +877,43 @@ func (siw *ServerInterfaceWrapper) GetHealthz(w http.ResponseWriter, r *http.Req
 func (siw *ServerInterfaceWrapper) GetUnits(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetUnitsParams
+
+	// ------------- Optional query parameter "name" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "name", r.URL.Query(), &params.Name); err != nil {
+		err = fmt.Errorf("invalid format for parameter name: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "name"})
+		return
+	}
+
+	// ------------- Optional query parameter "grand_alliance" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "grand_alliance", r.URL.Query(), &params.GrandAlliance); err != nil {
+		err = fmt.Errorf("invalid format for parameter grand_alliance: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "grand_alliance"})
+		return
+	}
+
+	// ------------- Optional query parameter "grand_strategy" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "grand_strategy", r.URL.Query(), &params.GrandStrategy); err != nil {
+		err = fmt.Errorf("invalid format for parameter grand_strategy: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "grand_strategy"})
+		return
+	}
+
+	// ------------- Optional query parameter "points" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "points", r.URL.Query(), &params.Points); err != nil {
+		err = fmt.Errorf("invalid format for parameter points: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "points"})
+		return
+	}
+
 	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		resp := siw.Handler.GetUnits(w, r)
+		resp := siw.Handler.GetUnits(w, r, params)
 		if resp != nil {
 			if resp.body != nil {
 				render.Render(w, r, resp)
@@ -1146,31 +1196,32 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 var swaggerSpec = []string{
 
 	"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",
-	"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",
-	"nWKhLnBKLmPB0POX578DAAD//0nuzG/XLQAA",
+	"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",
+	"AAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

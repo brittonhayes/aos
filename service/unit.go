@@ -20,8 +20,8 @@ func (s *WarhammerService) GetUnitByID(w http.ResponseWriter, r *http.Request, i
 	return api.GetUnitByIDJSON200Response(*unit)
 }
 
-func (s *WarhammerService) GetUnits(w http.ResponseWriter, r *http.Request) *api.Response {
-	units, err := s.repo.GetUnits(r.Context())
+func (s *WarhammerService) GetUnits(w http.ResponseWriter, r *http.Request, params api.GetUnitsParams) *api.Response {
+	units, err := s.repo.GetUnits(r.Context(), params)
 	if err != nil {
 		return api.GetUnitsJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrUnitsNotFound})
 	}
