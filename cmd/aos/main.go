@@ -38,7 +38,7 @@ func main() {
 		Suggest: true,
 		Before: func(c *cli.Context) error {
 			if c.Bool("migrate") {
-				repo = sqlite.NewaosRepository(c.String("db"))
+				repo = sqlite.NewRepository(c.String("db"))
 
 				err := repo.Init(c.Context)
 				if err != nil {
@@ -67,7 +67,7 @@ func main() {
 			return nil
 		},
 		Action: func(c *cli.Context) error {
-			repo = sqlite.NewaosRepository(c.String("db"))
+			repo = sqlite.NewRepository(c.String("db"))
 
 			// Create an instance of our handler which satisfies the generated interface
 			s := service.New(repo)
@@ -203,7 +203,7 @@ func main() {
 					return repo.Migrate(c.Context)
 				},
 				Before: func(c *cli.Context) error {
-					repo = sqlite.NewaosRepository(c.String("db"))
+					repo = sqlite.NewRepository(c.String("db"))
 					return nil
 				},
 				Subcommands: []*cli.Command{

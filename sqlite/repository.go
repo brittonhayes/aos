@@ -29,7 +29,7 @@ const (
 	DEFAULT_OFFSET = 0
 )
 
-func NewaosRepository(connection string) aos.Repository {
+func NewRepository(connection string) aos.Repository {
 	sqldb, err := sql.Open(sqliteshim.ShimName, connection)
 	if err != nil {
 		panic(err)
