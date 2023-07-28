@@ -3,8 +3,8 @@ package service
 import (
 	"net/http"
 
-	"github.com/brittonhayes/warhammer/api"
-	"github.com/brittonhayes/warhammer/internal/logging"
+	"github.com/brittonhayes/aos/api"
+	"github.com/brittonhayes/aos/internal/logging"
 	"github.com/sirupsen/logrus"
 )
 
@@ -13,7 +13,7 @@ const (
 	ErrAlliancesNotFound = "No alliances found"
 )
 
-func (s *WarhammerService) GetGrandAllianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *aosService) GetGrandAllianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":       "GetGrandAllianceByID",
@@ -28,7 +28,7 @@ func (s *WarhammerService) GetGrandAllianceByID(w http.ResponseWriter, r *http.R
 	return api.GetGrandAllianceByIDJSON200Response(*alliance)
 }
 
-func (s *WarhammerService) GetGrandAlliances(w http.ResponseWriter, r *http.Request) *api.Response {
+func (s *aosService) GetGrandAlliances(w http.ResponseWriter, r *http.Request) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetGrandAlliances",

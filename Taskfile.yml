@@ -5,7 +5,7 @@ version: '3'
 tasks:
   default:
     cmds:
-      - go run ./cmd/warhammerd
+      - go run ./cmd/aos
 
   up:
     desc: "Start the application with docker-compose"

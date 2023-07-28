@@ -3,10 +3,10 @@ package sqlite
 import (
 	"context"
 
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/aos/api"
 )
 
-func (r *warhammerRepository) GetGrandStrategyByID(ctx context.Context, id string) (*api.GrandStrategy, error) {
+func (r *aosRepository) GetGrandStrategyByID(ctx context.Context, id string) (*api.GrandStrategy, error) {
 	var strategy api.GrandStrategy
 	err := r.db.NewSelect().Model(&strategy).Where("id = ?", id).Scan(ctx)
 	if err != nil {
@@ -16,7 +16,7 @@ func (r *warhammerRepository) GetGrandStrategyByID(ctx context.Context, id strin
 	return &strategy, nil
 }
 
-func (r *warhammerRepository) GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error) {
+func (r *aosRepository) GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error) {
 	var strategies []api.GrandStrategy
 	err := r.db.NewSelect().Model(&strategies).Scan(ctx)
 	if err != nil {

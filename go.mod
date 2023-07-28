@@ -1,4 +1,4 @@
-module github.com/brittonhayes/warhammer
+module github.com/brittonhayes/aos
 
 go 1.20
 

@@ -1,1 +1,1 @@
-process: /bin/warhammerd
+process: /bin/aos

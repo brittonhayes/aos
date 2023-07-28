@@ -3,8 +3,8 @@ package service
 import (
 	"net/http"
 
-	"github.com/brittonhayes/warhammer/api"
-	"github.com/brittonhayes/warhammer/internal/logging"
+	"github.com/brittonhayes/aos/api"
+	"github.com/brittonhayes/aos/internal/logging"
 	"github.com/sirupsen/logrus"
 )
 
@@ -13,7 +13,7 @@ const (
 	ErrArmiesNotFound = "No armies found"
 )
 
-func (s *WarhammerService) GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *aosService) GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":   "GetArmyByID",
@@ -28,7 +28,7 @@ func (s *WarhammerService) GetArmyByID(w http.ResponseWriter, r *http.Request, i
 	return api.GetArmyByIDJSON200Response(*army)
 }
 
-func (s *WarhammerService) GetArmies(w http.ResponseWriter, r *http.Request) *api.Response {
+func (s *aosService) GetArmies(w http.ResponseWriter, r *http.Request) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetArmies",

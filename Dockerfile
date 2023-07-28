@@ -9,17 +9,17 @@ COPY go.mod ./
 RUN go mod download
 
 COPY . /src/
-RUN CGO_ENABLED=0 go build -o /bin/warhammerd cmd/warhammerd/main.go
+RUN CGO_ENABLED=0 go build -o /bin/aos cmd/aos/main.go
 
 # STAGE 2
 FROM gcr.io/distroless/static-debian11:nonroot
 
 LABEL maintainer="brittonhayes"
 
-COPY --from=builder --chown=nonroot:nonroot /bin/warhammerd /bin/warhammerd
+COPY --from=builder --chown=nonroot:nonroot /bin/aos /bin/aos
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/bin/warhammerd" ]
+ENTRYPOINT [ "/bin/aos" ]
 
-CMD ["/bin/warhammerd"]
+CMD ["/bin/aos"]

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/aos/api"
 	"github.com/uptrace/bun"
 )
 

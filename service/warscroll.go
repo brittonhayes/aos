@@ -3,7 +3,7 @@ package service
 import (
 	"net/http"
 
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/aos/api"
 	"go.opentelemetry.io/otel/attribute"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 	"go.opentelemetry.io/otel/trace"
@@ -14,7 +14,7 @@ const (
 	ErrWarscrollsNotFound = "No warscrolls found"
 )
 
-func (s *WarhammerService) GetWarscrollByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *aosService) GetWarscrollByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	span := trace.SpanFromContext(r.Context())
 	defer span.End()
 
@@ -40,7 +40,7 @@ func (s *WarhammerService) GetWarscrollByID(w http.ResponseWriter, r *http.Reque
 	return api.GetWarscrollByIDJSON200Response(*warscroll)
 }
 
-func (s *WarhammerService) GetWarscrolls(w http.ResponseWriter, r *http.Request, params api.GetWarscrollsParams) *api.Response {
+func (s *aosService) GetWarscrolls(w http.ResponseWriter, r *http.Request, params api.GetWarscrollsParams) *api.Response {
 	span := trace.SpanFromContext(r.Context())
 	defer span.End()
 
