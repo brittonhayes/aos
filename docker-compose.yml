@@ -6,7 +6,7 @@ volumes:
 
 networks:
   default:
-    name: warhammer
+    name: aos 
     driver: bridge
 
 services:
@@ -25,25 +25,25 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  warhammer:
-    container_name: warhammer
-    image: ghcr.io:brittonhayes/warhammer:latest
+  aos:
+    container_name: aos
+    image: ghcr.io:brittonhayes/aos:latest
     build:
       dockerfile: ./Dockerfile
       context: .
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=web"
-      - "traefik.http.routers.warhammer.rule=Host(`warhammer.localhost`) && PathPrefix(`/api`) && Method(`GET`, `OPTIONS`)"
-      - "traefik.http.routers.warhammer.entrypoints=web"
-      - "traefik.http.middlewares.warhammer-ratelimit.ratelimit.average=250"
-      - "traefik.http.middlewares.warhammer-ratelimit.ratelimit.burst=100"
-      - "traefik.http.middlewares.warhammer-strip-api.stripprefix.prefixes=/api"
-      - "traefik.http.routers.warhammer.middlewares=warhammer-strip-api"
-      - "traefik.http.services.warhammer.loadbalancer.server.port=8080"
+      - "traefik.http.routers.aos-api.rule=Host(`aos-api.localhost`) && PathPrefix(`/api`) && Method(`GET`, `OPTIONS`)"
+      - "traefik.http.routers.aos-api.entrypoints=web"
+      - "traefik.http.middlewares.aos-api-ratelimit.ratelimit.average=250"
+      - "traefik.http.middlewares.aos-api-ratelimit.ratelimit.burst=100"
+      - "traefik.http.middlewares.aos-api-strip-api.stripprefix.prefixes=/api"
+      - "traefik.http.routers.aos-api.middlewares=aos-api-strip-api"
+      - "traefik.http.services.aos-api.loadbalancer.server.port=8080"
     environment:
-      - WARHAMMER_SERVICE_NAME
-      - WARHAMMER_SERVICE_PORT
+      - SERVICE_NAME
+      - SERVICE_PORT
       - OTEL_EXPORTER_OTLP_ENDPOINT
       - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       - OTEL_RESOURCE_ATTRIBUTES

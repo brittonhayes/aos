@@ -1,18 +1,18 @@
 package service
 
 import (
-	"github.com/brittonhayes/warhammer"
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/aos"
+	"github.com/brittonhayes/aos/api"
 )
 
-type WarhammerService struct {
-	repo warhammer.WarhammerRepository
+type Service struct {
+	repo aos.Repository
 }
 
-var _ api.ServerInterface = (*WarhammerService)(nil)
+var _ api.ServerInterface = (*Service)(nil)
 
-func NewWarhammerService(repository warhammer.WarhammerRepository) api.ServerInterface {
-	return &WarhammerService{
+func New(repository aos.Repository) api.ServerInterface {
+	return &Service{
 		repo: repository,
 	}
 }

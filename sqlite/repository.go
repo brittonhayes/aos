@@ -6,10 +6,10 @@ import (
 	"io/fs"
 	"strings"
 
-	"github.com/brittonhayes/warhammer"
-	"github.com/brittonhayes/warhammer/api"
-	"github.com/brittonhayes/warhammer/internal/logging"
-	"github.com/brittonhayes/warhammer/sqlite/migrations"
+	"github.com/brittonhayes/aos"
+	"github.com/brittonhayes/aos/api"
+	"github.com/brittonhayes/aos/internal/logging"
+	"github.com/brittonhayes/aos/sqlite/migrations"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dbfixture"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
@@ -18,18 +18,18 @@ import (
 	"github.com/uptrace/bun/migrate"
 )
 
-type warhammerRepository struct {
+type repository struct {
 	m  *migrate.Migrator
 	db *bun.DB
 }
 
 const (
-	DB_NAME        = "warhammer"
+	DB_NAME        = "aos"
 	DEFAULT_LIMIT  = 100
 	DEFAULT_OFFSET = 0
 )
 
-func NewWarhammerRepository(connection string) warhammer.WarhammerRepository {
+func NewRepository(connection string) aos.Repository {
 	sqldb, err := sql.Open(sqliteshim.ShimName, connection)
 	if err != nil {
 		panic(err)
@@ -43,18 +43,18 @@ func NewWarhammerRepository(connection string) warhammer.WarhammerRepository {
 
 	migrator := migrate.NewMigrator(db, migrations.Migrations)
 
-	return &warhammerRepository{
+	return &repository{
 		m:  migrator,
 		db: db,
 	}
 }
 
-func (r *warhammerRepository) Init(ctx context.Context) error {
+func (r *repository) Init(ctx context.Context) error {
 	logging.NewLogrus(ctx).Info("initializing database")
 	return r.m.Init(ctx)
 }
 
-func (r *warhammerRepository) Generate(ctx context.Context, name string) error {
+func (r *repository) Generate(ctx context.Context, name string) error {
 
 	name = strings.ReplaceAll(name, " ", "_")
 	m, err := r.m.CreateGoMigration(ctx, name)
@@ -67,7 +67,7 @@ func (r *warhammerRepository) Generate(ctx context.Context, name string) error {
 	return nil
 }
 
-func (r *warhammerRepository) Migrate(ctx context.Context) error {
+func (r *repository) Migrate(ctx context.Context) error {
 
 	logger := logging.NewLogrus(ctx)
 
@@ -91,7 +91,7 @@ func (r *warhammerRepository) Migrate(ctx context.Context) error {
 	return nil
 }
 
-func (r *warhammerRepository) Seed(ctx context.Context, fsys fs.FS, names ...string) error {
+func (r *repository) Seed(ctx context.Context, fsys fs.FS, names ...string) error {
 	logger := logging.NewLogrus(ctx)
 
 	models := []interface{}{
@@ -116,17 +116,17 @@ func (r *warhammerRepository) Seed(ctx context.Context, fsys fs.FS, names ...str
 	return f.Load(ctx, fsys, names...)
 }
 
-func (r *warhammerRepository) Lock(ctx context.Context) error {
+func (r *repository) Lock(ctx context.Context) error {
 	logging.NewLogrus(ctx).Info("locking database")
 	return r.m.Lock(ctx)
 }
 
-func (r *warhammerRepository) Unlock(ctx context.Context) error {
+func (r *repository) Unlock(ctx context.Context) error {
 	logging.NewLogrus(ctx).Info("unlocking database")
 	return r.m.Unlock(ctx)
 }
 
-func (r *warhammerRepository) Rollback(ctx context.Context) error {
+func (r *repository) Rollback(ctx context.Context) error {
 	logger := logging.NewLogrus(ctx)
 
 	err := r.m.Lock(ctx)

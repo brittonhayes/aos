@@ -3,11 +3,11 @@ package sqlite
 import (
 	"context"
 
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/aos/api"
 	"github.com/uptrace/bun"
 )
 
-func (r *warhammerRepository) citiesFilterQuery(query *bun.SelectQuery, params api.GetCitiesParams) (*bun.SelectQuery, error) {
+func (r *repository) citiesFilterQuery(query *bun.SelectQuery, params api.GetCitiesParams) (*bun.SelectQuery, error) {
 
 	if params.Name != nil {
 		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
@@ -16,7 +16,7 @@ func (r *warhammerRepository) citiesFilterQuery(query *bun.SelectQuery, params a
 	return query, nil
 }
 
-func (r *warhammerRepository) GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error) {
+func (r *repository) GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error) {
 	var cities []api.City
 
 	query, err := r.citiesFilterQuery(r.db.NewSelect().Model(&cities), params)
@@ -32,7 +32,7 @@ func (r *warhammerRepository) GetCities(ctx context.Context, params api.GetCitie
 	return cities, nil
 }
 
-func (r *warhammerRepository) GetCityByID(ctx context.Context, id string) (*api.City, error) {
+func (r *repository) GetCityByID(ctx context.Context, id string) (*api.City, error) {
 	var city api.City
 
 	err := r.db.NewSelect().Model(&city).Where("id = ?", id).Scan(ctx)

@@ -1,14 +1,14 @@
 openapi: "3.1.0"
 info:
-  title: Warhammer Age of Sigmar API (Unofficial)
+  title: AoS API (Unofficial)
   version: 1.0.0
-  description: API specification for a Warhammer Age of Sigmar API (Unofficial)
+  description: API specification for an AoS REST API (Unofficial)
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 security: []
 servers:
-- url: http://warhammer.localhost
+- url: http://aos-api.localhost
   description: Local server
 - url: https://aos-api.com
   description: Production server

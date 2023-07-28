@@ -1,4 +1,4 @@
-package warhammer
+package aos
 
 import (
 	"embed"

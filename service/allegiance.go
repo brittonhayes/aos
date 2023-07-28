@@ -3,8 +3,8 @@ package service
 import (
 	"net/http"
 
-	"github.com/brittonhayes/warhammer/api"
-	"github.com/brittonhayes/warhammer/internal/logging"
+	"github.com/brittonhayes/aos/api"
+	"github.com/brittonhayes/aos/internal/logging"
 	"github.com/sirupsen/logrus"
 )
 
@@ -13,7 +13,7 @@ const (
 	ErrAllegiancesNotFound = "No allegiances found"
 )
 
-func (s *WarhammerService) GetAllegianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetAllegianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":         "GetAllegianceByID",
@@ -28,7 +28,7 @@ func (s *WarhammerService) GetAllegianceByID(w http.ResponseWriter, r *http.Requ
 	return api.GetAllegianceByIDJSON200Response(*allegiance)
 }
 
-func (s *WarhammerService) GetAllegiances(w http.ResponseWriter, r *http.Request, params api.GetAllegiancesParams) *api.Response {
+func (s *Service) GetAllegiances(w http.ResponseWriter, r *http.Request, params api.GetAllegiancesParams) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetAllegiances",

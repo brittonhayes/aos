@@ -3,8 +3,8 @@ package service
 import (
 	"net/http"
 
-	"github.com/brittonhayes/warhammer/api"
-	"github.com/brittonhayes/warhammer/internal/logging"
+	"github.com/brittonhayes/aos/api"
+	"github.com/brittonhayes/aos/internal/logging"
 	"github.com/sirupsen/logrus"
 )
 
@@ -13,7 +13,7 @@ const (
 	ErrGrandStrategiesNotFound = "No strategys found"
 )
 
-func (s *WarhammerService) GetGrandStrategyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetGrandStrategyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":       "GetStrategyByID",
@@ -28,7 +28,7 @@ func (s *WarhammerService) GetGrandStrategyByID(w http.ResponseWriter, r *http.R
 	return api.GetGrandStrategyByIDJSON200Response(api.GrandStrategy(*strategy))
 }
 
-func (s *WarhammerService) GetGrandStrategies(w http.ResponseWriter, r *http.Request) *api.Response {
+func (s *Service) GetGrandStrategies(w http.ResponseWriter, r *http.Request) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetStrategies",

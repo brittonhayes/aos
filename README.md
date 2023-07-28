@@ -1,9 +1,9 @@
-# Warhammer
+# AoS 
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/brittonhayes/warhammer.svg)](https://pkg.go.dev/github.com/brittonhayes/warhammer)
-[![Go Report Card](https://goreportcard.com/badge/github.com/brittonhayes/warhammer)](https://goreportcard.com/report/github.com/brittonhayes/warhammer)
+[![Go Reference](https://pkg.go.dev/badge/github.com/brittonhayes/aos.svg)](https://pkg.go.dev/github.com/brittonhayes/aos)
+[![Go Report Card](https://goreportcard.com/badge/github.com/brittonhayes/aos)](https://goreportcard.com/report/github.com/brittonhayes/aos)
 
-> A Warhammer: Age of Sigmar REST API built with Go and Sqlite.
+> An unnoficial AoS REST API built with Go and Sqlite.
 
 ## ✨ Try the API (hosted)
 
@@ -28,11 +28,11 @@ task up
 
 API documentation is available in YAML format within the repository. The OpenAPI spec is used to generate the transport logic thanks to [goapi-gen](https://github.com/discord-gophers/goapi-gen).
 
-- [View the OpenAPI Spec](https://github.com/brittonhayes/warhammer/blob/main/api/openapi.yaml)
+- [View the OpenAPI Spec](https://github.com/brittonhayes/aos/blob/main/api/openapi.yaml)
 
 ## 🗄️ Adding or Editing Data
 
-All application data used to seed the database is editable in the [fixtures/](https://github.com/brittonhayes/warhammer/blob/main/fixtures/) directory. The API is built to be self-seeding and read-only, so if there is a need to add more data, simply add it to the fixtures files, rebuild and redeploy the API.
+All application data used to seed the database is editable in the [fixtures/](https://github.com/brittonhayes/aos/blob/main/fixtures/) directory. The API is built to be self-seeding and read-only, so if there is a need to add more data, simply add it to the fixtures files, rebuild and redeploy the API.
 
 ### Example - Adding a new alliance
 
@@ -50,7 +50,7 @@ To add a new entry to the database, just add a new object to the appropriate yam
 +         description: The forces of Chaos seek to corrupt and dominate the Mortal Realms. Made up of daemons, monsters, and twisted beings, they spread destruction wherever theygo.
 ```
 
-- [View the data](https://github.com/brittonhayes/warhammer/blob/main/fixtures/fixtures.yaml)
+- [View the data](https://github.com/brittonhayes/aos/blob/main/fixtures/fixtures.yaml)
 
 ## API Endpoints
 
@@ -76,15 +76,15 @@ Application observability is instrumented with OpenTelemetry. Telemetry is avail
 
 When running with docker-compose, the following services are available:
 
-- API is available at [http://warhammer.localhost:8090](http://warhammer.localhost:8090)
-- Documentation is available at [http://warhammer.localhost:8090/docs](http://warhammer.localhost:8090/docs)
+- API is available at [http://aos.localhost:8090](http://aos.localhost:8090)
+- Documentation is available at [http://aos.localhost:8090/docs](http://aos.localhost:8090/docs)
 - Traefik Dashboard is available at [http://localhost:8080](http://localhost:8080)
 - Prometheus is available at [http://prometheus.localhost:8090](http://prometheus.localhost:8090)
 - Grafana is available at [http://grafana.localhost:8090](http://grafana.localhost:8090)
 
 ## 🙋 FAQ
 
-- **Q: Where is X {unit,alliance,etc}?** - A: Waiting for you to add it! See the [fixtures/](https://github.com/brittonhayes/warhammer/blob/main/fixtures/) directory for more information.
+- **Q: Where is X {unit,alliance,etc}?** - A: Waiting for you to add it! See the [fixtures/](https://github.com/brittonhayes/aos/blob/main/fixtures/) directory for more information.
 
 ## ⚖️ Copyright and Data Ownership
 
@@ -99,4 +99,4 @@ through a REST interface rather than the usual PDF.
 If you consume the data served through this API, be aware that you are also obligated to respect
 [Games Workshop's](https://www.games-workshop.com) [intellectual property guidelines](https://www.games-workshop.com/en-US/Intellectual-Property-Guidelines).
 
-For more information, view our [Contributing Guidelines](https://github.com/brittonhayes/warhammer/blob/main/CONTRIBUTING.md).
+For more information, view our [Contributing Guidelines](https://github.com/brittonhayes/aos/blob/main/CONTRIBUTING.md).

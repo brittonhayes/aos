@@ -3,11 +3,11 @@ package sqlite
 import (
 	"context"
 
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/aos/api"
 	"github.com/uptrace/bun"
 )
 
-func (r *warhammerRepository) warscrollFilterQuery(query *bun.SelectQuery, params api.GetWarscrollsParams) (*bun.SelectQuery, error) {
+func (r *repository) warscrollFilterQuery(query *bun.SelectQuery, params api.GetWarscrollsParams) (*bun.SelectQuery, error) {
 	if params.Name != nil {
 		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
 	}
@@ -31,7 +31,7 @@ func (r *warhammerRepository) warscrollFilterQuery(query *bun.SelectQuery, param
 	return query, nil
 }
 
-func (r *warhammerRepository) GetWarscrolls(ctx context.Context, params api.GetWarscrollsParams) ([]api.Warscroll, error) {
+func (r *repository) GetWarscrolls(ctx context.Context, params api.GetWarscrollsParams) ([]api.Warscroll, error) {
 	var warscrolls []api.Warscroll
 
 	query, err := r.warscrollFilterQuery(r.db.NewSelect().Model(&warscrolls), params)
@@ -47,7 +47,7 @@ func (r *warhammerRepository) GetWarscrolls(ctx context.Context, params api.GetW
 	return warscrolls, nil
 }
 
-func (r *warhammerRepository) GetWarscrollByID(ctx context.Context, id string) (*api.Warscroll, error) {
+func (r *repository) GetWarscrollByID(ctx context.Context, id string) (*api.Warscroll, error) {
 	var warscroll api.Warscroll
 
 	err := r.db.NewSelect().Model(&warscroll).Where("id = ?", id).Scan(ctx)

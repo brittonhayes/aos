@@ -1,17 +1,17 @@
-// Package warhammer provides the WarhammerRepository interface for the Warhammer REST API and services
+// Package aos provides the Repository interface for the AoS REST API and services
 //
-//go:generate goapi-gen -generate types,server,spec -package api --out api/warhammer.gen.go ./api/openapi.yaml
+//go:generate goapi-gen -generate types,server,spec -package api --out api/api.gen.go ./api/openapi.yaml
 //go:generate npx @redocly/cli build-docs api/openapi.yaml -o web/index.html
-package warhammer
+package aos
 
 import (
 	"context"
 	"io/fs"
 
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/aos/api"
 )
 
-type WarhammerRepository interface {
+type Repository interface {
 	GetArmyByID(ctx context.Context, id string) (*api.Army, error)
 	GetArmies(ctx context.Context) ([]api.Army, error)
 

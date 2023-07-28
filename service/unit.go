@@ -3,7 +3,7 @@ package service
 import (
 	"net/http"
 
-	"github.com/brittonhayes/warhammer/api"
+	"github.com/brittonhayes/aos/api"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 	ErrUnitsNotFound = "No units found"
 )
 
-func (s *WarhammerService) GetUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	unit, err := s.repo.GetUnitByID(r.Context(), id)
 	if err != nil {
 		return api.GetUnitByIDJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrUnitNotFound})
@@ -20,7 +20,7 @@ func (s *WarhammerService) GetUnitByID(w http.ResponseWriter, r *http.Request, i
 	return api.GetUnitByIDJSON200Response(*unit)
 }
 
-func (s *WarhammerService) GetUnits(w http.ResponseWriter, r *http.Request, params api.GetUnitsParams) *api.Response {
+func (s *Service) GetUnits(w http.ResponseWriter, r *http.Request, params api.GetUnitsParams) *api.Response {
 	units, err := s.repo.GetUnits(r.Context(), params)
 	if err != nil {
 		return api.GetUnitsJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrUnitsNotFound})
@@ -29,7 +29,7 @@ func (s *WarhammerService) GetUnits(w http.ResponseWriter, r *http.Request, para
 	return api.GetUnitsJSON200Response(units)
 }
 
-func (s *WarhammerService) GetAbilitiesForUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetAbilitiesForUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	abilities, err := s.repo.GetAbilitiesForUnitByID(r.Context(), id)
 	if err != nil {
 		return api.GetAbilitiesForUnitByIDJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrUnitNotFound})

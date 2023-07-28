@@ -24,6 +24,6 @@ scrape_configs:
   static_configs:
   - targets: ['prometheus:9090']  
   
-- job_name: 'warhammer'
+- job_name: 'aos'
   static_configs:
-  - targets: ['warhammer:8080']
+  - targets: ['aos:8080']

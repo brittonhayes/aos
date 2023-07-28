@@ -8,13 +8,13 @@ import (
 	"sort"
 	"time"
 
-	"github.com/brittonhayes/warhammer"
-	"github.com/brittonhayes/warhammer/api"
-	"github.com/brittonhayes/warhammer/fixtures"
-	"github.com/brittonhayes/warhammer/internal/logging"
-	"github.com/brittonhayes/warhammer/internal/tracing"
-	"github.com/brittonhayes/warhammer/service"
-	"github.com/brittonhayes/warhammer/sqlite"
+	"github.com/brittonhayes/aos"
+	"github.com/brittonhayes/aos/api"
+	"github.com/brittonhayes/aos/fixtures"
+	"github.com/brittonhayes/aos/internal/logging"
+	"github.com/brittonhayes/aos/internal/tracing"
+	"github.com/brittonhayes/aos/service"
+	"github.com/brittonhayes/aos/sqlite"
 
 	apimw "github.com/discord-gophers/goapi-gen/middleware"
 	"github.com/go-chi/chi/v5"
@@ -29,16 +29,16 @@ import (
 func main() {
 
 	var (
-		repo warhammer.WarhammerRepository
+		repo aos.Repository
 	)
 
 	app := &cli.App{
-		Name:    "warhammerd",
-		Usage:   "the warhammer api server",
+		Name:    "aos",
+		Usage:   "AoS api server",
 		Suggest: true,
 		Before: func(c *cli.Context) error {
 			if c.Bool("migrate") {
-				repo = sqlite.NewWarhammerRepository(c.String("db"))
+				repo = sqlite.NewRepository(c.String("db"))
 
 				err := repo.Init(c.Context)
 				if err != nil {
@@ -59,7 +59,7 @@ func main() {
 					fixtures.WARSCROLLS,
 				}
 
-				err = repo.Seed(c.Context, warhammer.FIXTURES, data...)
+				err = repo.Seed(c.Context, aos.FIXTURES, data...)
 				if err != nil {
 					return err
 				}
@@ -67,10 +67,10 @@ func main() {
 			return nil
 		},
 		Action: func(c *cli.Context) error {
-			repo = sqlite.NewWarhammerRepository(c.String("db"))
+			repo = sqlite.NewRepository(c.String("db"))
 
 			// Create an instance of our handler which satisfies the generated interface
-			s := service.NewWarhammerService(repo)
+			s := service.New(repo)
 
 			swagger, err := api.GetSwagger()
 			if err != nil {
@@ -158,14 +158,14 @@ func main() {
 				Name:    "port",
 				Aliases: []string{"p"},
 				Value:   8080,
-				EnvVars: []string{"WARHAMMER_SERVICE_PORT", "PORT"},
+				EnvVars: []string{"PORT"},
 				Usage:   "port to listen on",
 			},
 			&cli.StringFlag{
 				Name:    "service",
 				Aliases: []string{"s"},
-				Value:   "warhammerd",
-				EnvVars: []string{"WARHAMMER_SERVICE_NAME", "SERVICE_NAME"},
+				Value:   "aos",
+				EnvVars: []string{"SERVICE_NAME"},
 				Usage:   "customize the service name",
 			},
 			&cli.StringFlag{
@@ -176,14 +176,14 @@ func main() {
 			},
 			&cli.StringFlag{
 				Name:    "db",
-				Value:   "file:warhammer.db",
+				Value:   "file:aos.db",
 				EnvVars: []string{"DATABASE_URL"},
 				Usage:   "database url",
 			},
 			&cli.BoolFlag{
 				Name:    "tracing",
 				Aliases: []string{"t"},
-				Value:   true,
+				Value:   false,
 				EnvVars: []string{"TRACING"},
 				Usage:   "enable tracing",
 			},
@@ -203,7 +203,7 @@ func main() {
 					return repo.Migrate(c.Context)
 				},
 				Before: func(c *cli.Context) error {
-					repo = sqlite.NewWarhammerRepository(c.String("db"))
+					repo = sqlite.NewRepository(c.String("db"))
 					return nil
 				},
 				Subcommands: []*cli.Command{
@@ -258,7 +258,7 @@ func main() {
 								fixtures.WARSCROLLS,
 							}
 
-							return repo.Seed(c.Context, warhammer.FIXTURES, data...)
+							return repo.Seed(c.Context, aos.FIXTURES, data...)
 						},
 					},
 				},
