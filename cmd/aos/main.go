@@ -70,7 +70,7 @@ func main() {
 			repo = sqlite.NewaosRepository(c.String("db"))
 
 			// Create an instance of our handler which satisfies the generated interface
-			s := service.NewaosService(repo)
+			s := service.New(repo)
 
 			swagger, err := api.GetSwagger()
 			if err != nil {
@@ -183,7 +183,7 @@ func main() {
 			&cli.BoolFlag{
 				Name:    "tracing",
 				Aliases: []string{"t"},
-				Value:   true,
+				Value:   false,
 				EnvVars: []string{"TRACING"},
 				Usage:   "enable tracing",
 			},

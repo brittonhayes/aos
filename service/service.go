@@ -5,14 +5,14 @@ import (
 	"github.com/brittonhayes/aos/api"
 )
 
-type aosService struct {
-	repo aos.HammerRepository
+type Service struct {
+	repo aos.Repository
 }
 
-var _ api.ServerInterface = (*aosService)(nil)
+var _ api.ServerInterface = (*Service)(nil)
 
-func NewaosService(repository aos.HammerRepository) api.ServerInterface {
-	return &aosService{
+func New(repository aos.Repository) api.ServerInterface {
+	return &Service{
 		repo: repository,
 	}
 }

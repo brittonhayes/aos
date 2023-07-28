@@ -13,7 +13,7 @@ const (
 	ErrAllegiancesNotFound = "No allegiances found"
 )
 
-func (s *aosService) GetAllegianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetAllegianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":         "GetAllegianceByID",
@@ -28,7 +28,7 @@ func (s *aosService) GetAllegianceByID(w http.ResponseWriter, r *http.Request, i
 	return api.GetAllegianceByIDJSON200Response(*allegiance)
 }
 
-func (s *aosService) GetAllegiances(w http.ResponseWriter, r *http.Request, params api.GetAllegiancesParams) *api.Response {
+func (s *Service) GetAllegiances(w http.ResponseWriter, r *http.Request, params api.GetAllegiancesParams) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetAllegiances",

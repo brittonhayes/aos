@@ -3,7 +3,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/brittonhayes/aos.svg)](https://pkg.go.dev/github.com/brittonhayes/aos)
 [![Go Report Card](https://goreportcard.com/badge/github.com/brittonhayes/aos)](https://goreportcard.com/report/github.com/brittonhayes/aos)
 
-> An unnoficial Warhammer: Age of Sigmar REST API built with Go and Sqlite.
+> An unnoficial AoS REST API built with Go and Sqlite.
 
 ## ✨ Try the API (hosted)
 

@@ -14,7 +14,7 @@ const (
 	ErrWarscrollsNotFound = "No warscrolls found"
 )
 
-func (s *aosService) GetWarscrollByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetWarscrollByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 	span := trace.SpanFromContext(r.Context())
 	defer span.End()
 
@@ -40,7 +40,7 @@ func (s *aosService) GetWarscrollByID(w http.ResponseWriter, r *http.Request, id
 	return api.GetWarscrollByIDJSON200Response(*warscroll)
 }
 
-func (s *aosService) GetWarscrolls(w http.ResponseWriter, r *http.Request, params api.GetWarscrollsParams) *api.Response {
+func (s *Service) GetWarscrolls(w http.ResponseWriter, r *http.Request, params api.GetWarscrollsParams) *api.Response {
 	span := trace.SpanFromContext(r.Context())
 	defer span.End()
 

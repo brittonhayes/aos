@@ -7,7 +7,7 @@ import (
 	"github.com/brittonhayes/aos/api"
 )
 
-func (s *aosService) GetDocs(w http.ResponseWriter, r *http.Request) *api.Response {
+func (s *Service) GetDocs(w http.ResponseWriter, r *http.Request) *api.Response {
 	resp := api.Response{}
 	resp.ContentType("text/html")
 	resp.Status(http.StatusOK)

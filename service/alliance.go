@@ -13,7 +13,7 @@ const (
 	ErrAlliancesNotFound = "No alliances found"
 )
 
-func (s *aosService) GetGrandAllianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetGrandAllianceByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":       "GetGrandAllianceByID",
@@ -28,7 +28,7 @@ func (s *aosService) GetGrandAllianceByID(w http.ResponseWriter, r *http.Request
 	return api.GetGrandAllianceByIDJSON200Response(*alliance)
 }
 
-func (s *aosService) GetGrandAlliances(w http.ResponseWriter, r *http.Request) *api.Response {
+func (s *Service) GetGrandAlliances(w http.ResponseWriter, r *http.Request) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetGrandAlliances",

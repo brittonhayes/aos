@@ -13,7 +13,7 @@ const (
 	ErrArmiesNotFound = "No armies found"
 )
 
-func (s *aosService) GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetArmyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":   "GetArmyByID",
@@ -28,7 +28,7 @@ func (s *aosService) GetArmyByID(w http.ResponseWriter, r *http.Request, id stri
 	return api.GetArmyByIDJSON200Response(*army)
 }
 
-func (s *aosService) GetArmies(w http.ResponseWriter, r *http.Request) *api.Response {
+func (s *Service) GetArmies(w http.ResponseWriter, r *http.Request) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetArmies",

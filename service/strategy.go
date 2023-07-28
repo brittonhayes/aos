@@ -13,7 +13,7 @@ const (
 	ErrGrandStrategiesNotFound = "No strategys found"
 )
 
-func (s *aosService) GetGrandStrategyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+func (s *Service) GetGrandStrategyByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event":       "GetStrategyByID",
@@ -28,7 +28,7 @@ func (s *aosService) GetGrandStrategyByID(w http.ResponseWriter, r *http.Request
 	return api.GetGrandStrategyByIDJSON200Response(api.GrandStrategy(*strategy))
 }
 
-func (s *aosService) GetGrandStrategies(w http.ResponseWriter, r *http.Request) *api.Response {
+func (s *Service) GetGrandStrategies(w http.ResponseWriter, r *http.Request) *api.Response {
 
 	logging.NewLogrus(r.Context()).WithFields(logrus.Fields{
 		"event": "GetStrategies",
