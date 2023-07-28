@@ -7,7 +7,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *aosRepository) GetAllegianceByID(ctx context.Context, id string) (*api.Allegiance, error) {
+func (r *repository) GetAllegianceByID(ctx context.Context, id string) (*api.Allegiance, error) {
 	var allegiance api.Allegiance
 	err := r.db.NewSelect().Model(&allegiance).Where("id = ?", id).Scan(ctx)
 	if err != nil {
@@ -17,7 +17,7 @@ func (r *aosRepository) GetAllegianceByID(ctx context.Context, id string) (*api.
 	return &allegiance, nil
 }
 
-func (r *aosRepository) allegiancesFilterQuery(query *bun.SelectQuery, params api.GetAllegiancesParams) (*bun.SelectQuery, error) {
+func (r *repository) allegiancesFilterQuery(query *bun.SelectQuery, params api.GetAllegiancesParams) (*bun.SelectQuery, error) {
 	if params.GrandAlliance != nil {
 		query = query.Where("grand_alliance = ?", params.GrandAlliance)
 	}
@@ -29,7 +29,7 @@ func (r *aosRepository) allegiancesFilterQuery(query *bun.SelectQuery, params ap
 	return query, nil
 }
 
-func (r *aosRepository) GetAllegiances(ctx context.Context, params api.GetAllegiancesParams) ([]api.Allegiance, error) {
+func (r *repository) GetAllegiances(ctx context.Context, params api.GetAllegiancesParams) ([]api.Allegiance, error) {
 	var allegiances []api.Allegiance
 
 	query, err := r.allegiancesFilterQuery(r.db.NewSelect().Model(&allegiances), params)

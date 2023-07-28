@@ -7,7 +7,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *aosRepository) citiesFilterQuery(query *bun.SelectQuery, params api.GetCitiesParams) (*bun.SelectQuery, error) {
+func (r *repository) citiesFilterQuery(query *bun.SelectQuery, params api.GetCitiesParams) (*bun.SelectQuery, error) {
 
 	if params.Name != nil {
 		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
@@ -16,7 +16,7 @@ func (r *aosRepository) citiesFilterQuery(query *bun.SelectQuery, params api.Get
 	return query, nil
 }
 
-func (r *aosRepository) GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error) {
+func (r *repository) GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error) {
 	var cities []api.City
 
 	query, err := r.citiesFilterQuery(r.db.NewSelect().Model(&cities), params)
@@ -32,7 +32,7 @@ func (r *aosRepository) GetCities(ctx context.Context, params api.GetCitiesParam
 	return cities, nil
 }
 
-func (r *aosRepository) GetCityByID(ctx context.Context, id string) (*api.City, error) {
+func (r *repository) GetCityByID(ctx context.Context, id string) (*api.City, error) {
 	var city api.City
 
 	err := r.db.NewSelect().Model(&city).Where("id = ?", id).Scan(ctx)

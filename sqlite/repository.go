@@ -18,7 +18,7 @@ import (
 	"github.com/uptrace/bun/migrate"
 )
 
-type aosRepository struct {
+type repository struct {
 	m  *migrate.Migrator
 	db *bun.DB
 }
@@ -43,18 +43,18 @@ func NewRepository(connection string) aos.Repository {
 
 	migrator := migrate.NewMigrator(db, migrations.Migrations)
 
-	return &aosRepository{
+	return &repository{
 		m:  migrator,
 		db: db,
 	}
 }
 
-func (r *aosRepository) Init(ctx context.Context) error {
+func (r *repository) Init(ctx context.Context) error {
 	logging.NewLogrus(ctx).Info("initializing database")
 	return r.m.Init(ctx)
 }
 
-func (r *aosRepository) Generate(ctx context.Context, name string) error {
+func (r *repository) Generate(ctx context.Context, name string) error {
 
 	name = strings.ReplaceAll(name, " ", "_")
 	m, err := r.m.CreateGoMigration(ctx, name)
@@ -67,7 +67,7 @@ func (r *aosRepository) Generate(ctx context.Context, name string) error {
 	return nil
 }
 
-func (r *aosRepository) Migrate(ctx context.Context) error {
+func (r *repository) Migrate(ctx context.Context) error {
 
 	logger := logging.NewLogrus(ctx)
 
@@ -91,7 +91,7 @@ func (r *aosRepository) Migrate(ctx context.Context) error {
 	return nil
 }
 
-func (r *aosRepository) Seed(ctx context.Context, fsys fs.FS, names ...string) error {
+func (r *repository) Seed(ctx context.Context, fsys fs.FS, names ...string) error {
 	logger := logging.NewLogrus(ctx)
 
 	models := []interface{}{
@@ -116,17 +116,17 @@ func (r *aosRepository) Seed(ctx context.Context, fsys fs.FS, names ...string) e
 	return f.Load(ctx, fsys, names...)
 }
 
-func (r *aosRepository) Lock(ctx context.Context) error {
+func (r *repository) Lock(ctx context.Context) error {
 	logging.NewLogrus(ctx).Info("locking database")
 	return r.m.Lock(ctx)
 }
 
-func (r *aosRepository) Unlock(ctx context.Context) error {
+func (r *repository) Unlock(ctx context.Context) error {
 	logging.NewLogrus(ctx).Info("unlocking database")
 	return r.m.Unlock(ctx)
 }
 
-func (r *aosRepository) Rollback(ctx context.Context) error {
+func (r *repository) Rollback(ctx context.Context) error {
 	logger := logging.NewLogrus(ctx)
 
 	err := r.m.Lock(ctx)

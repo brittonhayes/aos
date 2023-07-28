@@ -6,7 +6,7 @@ import (
 	"github.com/brittonhayes/aos/api"
 )
 
-func (r *aosRepository) GetGrandStrategyByID(ctx context.Context, id string) (*api.GrandStrategy, error) {
+func (r *repository) GetGrandStrategyByID(ctx context.Context, id string) (*api.GrandStrategy, error) {
 	var strategy api.GrandStrategy
 	err := r.db.NewSelect().Model(&strategy).Where("id = ?", id).Scan(ctx)
 	if err != nil {
@@ -16,7 +16,7 @@ func (r *aosRepository) GetGrandStrategyByID(ctx context.Context, id string) (*a
 	return &strategy, nil
 }
 
-func (r *aosRepository) GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error) {
+func (r *repository) GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error) {
 	var strategies []api.GrandStrategy
 	err := r.db.NewSelect().Model(&strategies).Scan(ctx)
 	if err != nil {

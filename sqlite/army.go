@@ -6,7 +6,7 @@ import (
 	"github.com/brittonhayes/aos/api"
 )
 
-func (r *aosRepository) GetArmyByID(ctx context.Context, id string) (*api.Army, error) {
+func (r *repository) GetArmyByID(ctx context.Context, id string) (*api.Army, error) {
 	var army api.Army
 	err := r.db.NewSelect().Model(&army).Where("id = ?", id).Scan(ctx)
 	if err != nil {
@@ -16,7 +16,7 @@ func (r *aosRepository) GetArmyByID(ctx context.Context, id string) (*api.Army, 
 	return &army, nil
 }
 
-func (r *aosRepository) GetArmies(ctx context.Context) ([]api.Army, error) {
+func (r *repository) GetArmies(ctx context.Context) ([]api.Army, error) {
 	var armies []api.Army
 	err := r.db.NewSelect().Model(&armies).Scan(ctx)
 	if err != nil {
@@ -26,7 +26,7 @@ func (r *aosRepository) GetArmies(ctx context.Context) ([]api.Army, error) {
 	return armies, nil
 }
 
-func (r *aosRepository) UpdateArmyByID(ctx context.Context, id string, army *api.Army) (*api.Army, error) {
+func (r *repository) UpdateArmyByID(ctx context.Context, id string, army *api.Army) (*api.Army, error) {
 	_, err := r.db.NewUpdate().Model(army).Where("id = ?", id).Exec(ctx)
 	if err != nil {
 		return nil, err

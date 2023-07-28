@@ -7,7 +7,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *aosRepository) GetUnitByID(ctx context.Context, id string) (*api.Unit, error) {
+func (r *repository) GetUnitByID(ctx context.Context, id string) (*api.Unit, error) {
 	var unit api.Unit
 	err := r.db.NewSelect().Model(&unit).Where("id = ?", id).Scan(ctx)
 	if err != nil {
@@ -17,7 +17,7 @@ func (r *aosRepository) GetUnitByID(ctx context.Context, id string) (*api.Unit, 
 	return &unit, nil
 }
 
-func (r *aosRepository) unitsFilterQuery(query *bun.SelectQuery, params api.GetUnitsParams) (*bun.SelectQuery, error) {
+func (r *repository) unitsFilterQuery(query *bun.SelectQuery, params api.GetUnitsParams) (*bun.SelectQuery, error) {
 	if params.Name != nil {
 		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
 	}
@@ -37,7 +37,7 @@ func (r *aosRepository) unitsFilterQuery(query *bun.SelectQuery, params api.GetU
 	return query, nil
 }
 
-func (r *aosRepository) GetUnits(ctx context.Context, params api.GetUnitsParams) ([]api.Unit, error) {
+func (r *repository) GetUnits(ctx context.Context, params api.GetUnitsParams) ([]api.Unit, error) {
 	var units []api.Unit
 
 	query, err := r.unitsFilterQuery(r.db.NewSelect().Model(&units), params)
@@ -53,7 +53,7 @@ func (r *aosRepository) GetUnits(ctx context.Context, params api.GetUnitsParams)
 	return units, nil
 }
 
-func (r *aosRepository) GetAbilitiesForUnitByID(ctx context.Context, id string) ([]api.Ability, error) {
+func (r *repository) GetAbilitiesForUnitByID(ctx context.Context, id string) ([]api.Ability, error) {
 	var unit api.Unit
 	err := r.db.NewSelect().Model(&unit).Where("id = ?", id).Scan(ctx)
 	if err != nil {
