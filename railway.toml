@@ -1,4 +1,4 @@
 [deploy]
-startCommand = "/bin/aos --migrate --tracing=false"
+startCommand = "/bin/aos --migrate"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 5
