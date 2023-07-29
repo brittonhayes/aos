@@ -43,12 +43,6 @@ type Army struct {
 	Units []Unit  `json:"units,omitempty"`
 }
 
-// Attribute defines model for Attribute.
-type Attribute struct {
-	Name  *string `json:"name,omitempty"`
-	Value *int64  `json:"value,omitempty"`
-}
-
 // City defines model for City.
 type City struct {
 	ID          *string `bun:"id,pk" json:"_id,omitempty"`
@@ -60,7 +54,7 @@ type City struct {
 type DamageTable struct {
 	ID                 *string `bun:"id,pk" json:"_id,omitempty"`
 	MinWoundsSuffered  *int64  `json:"min_wounds_suffered,omitempty"`
-	Move               *Move   `json:"move,omitempty"`
+	Move               *string `json:"move,omitempty"`
 	WoundTrackPosition *int64  `json:"wound_track_position,omitempty"`
 }
 
@@ -89,38 +83,26 @@ type Health struct {
 	Status string `json:"status"`
 }
 
-// Move defines model for Move.
-type Move struct {
-	Name  *string `json:"name,omitempty"`
-	Value *int64  `json:"value,omitempty"`
-}
-
-// Size defines model for Size.
-type Size struct {
-	Unit  *string `json:"unit,omitempty"`
-	Value *int64  `json:"value,omitempty"`
-}
-
 // Unit defines model for Unit.
 type Unit struct {
 	ID               *string       `bun:"id,pk" json:"_id,omitempty"`
 	Abilities        []Ability     `json:"abilities,omitempty"`
 	Bravery          *int64        `json:"bravery,omitempty"`
 	Champion         *string       `json:"champion,omitempty"`
-	CommandAbilities []Attribute   `json:"command_abilities,omitempty"`
+	CommandAbilities []Ability     `json:"command_abilities,omitempty"`
 	DamageTable      []DamageTable `json:"damage_table,omitempty"`
 	Description      *string       `json:"description,omitempty"`
 	GrandAlliance    *string       `json:"grand_alliance,omitempty"`
 	Keywords         []string      `json:"keywords,omitempty"`
-	Magic            []Attribute   `json:"magic,omitempty"`
+	Magic            []Ability     `json:"magic,omitempty"`
 	MeleeWeapons     []Weapon      `json:"melee_weapons,omitempty"`
 	MissileWeapons   []Weapon      `json:"missile_weapons,omitempty"`
 	Models           *int64        `json:"models,omitempty"`
-	Move             *Move         `json:"move,omitempty"`
+	Move             *string       `json:"move,omitempty"`
 	Name             string        `json:"name"`
 	Points           *int64        `json:"points,omitempty"`
 	Save             *int64        `json:"save,omitempty"`
-	Size             *Size         `json:"size,omitempty"`
+	Size             *string       `json:"size,omitempty"`
 	Wounds           *int64        `json:"wounds,omitempty"`
 }
 
@@ -1321,35 +1303,34 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"AA==",
+	"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",
+	"//+3kaI95DMAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

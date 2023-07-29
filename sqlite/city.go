@@ -7,7 +7,10 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *repository) citiesFilterQuery(query *bun.SelectQuery, params api.GetCitiesParams) (*bun.SelectQuery, error) {
+func (r *repository) citiesFilterQuery(query *bun.SelectQuery, params *api.GetCitiesParams) (*bun.SelectQuery, error) {
+	if params == nil {
+		return query, nil
+	}
 
 	if params.Name != nil {
 		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
@@ -16,7 +19,7 @@ func (r *repository) citiesFilterQuery(query *bun.SelectQuery, params api.GetCit
 	return query, nil
 }
 
-func (r *repository) GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error) {
+func (r *repository) GetCities(ctx context.Context, params *api.GetCitiesParams) ([]api.City, error) {
 	var cities []api.City
 
 	query, err := r.citiesFilterQuery(r.db.NewSelect().OrderExpr("id ASC").Model(&cities), params)

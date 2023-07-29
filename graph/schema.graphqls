@@ -1,0 +1,101 @@
+type Size {
+  unit: String!
+  value: Int! 
+}
+
+type Ability {
+  name: String!
+  description: String! 
+}
+
+type GrandAlliance {
+  id: String!
+  name: String!
+  description: String!
+}
+
+type Allegiance {
+  id: String!
+  name: String!
+  description: String!
+  grandAlliance: String!
+  mortalRealm: String!
+}
+
+type DamageTable {
+  id: String!
+  woundTrackPosition: Int!
+  move: String!
+  minWoundsSuffered: Int!
+}
+
+type Weapon {
+  id: String!
+  name: String!
+  range: String!
+  attacks: String!
+  toHit: String!
+  toWound: String!
+  rend: String!
+  damage: String!
+}
+
+type Unit {
+  id: String!
+  name: String!
+  grandAlliance: String
+  champion: String
+  size: String 
+  move: String 
+  description: String
+  save: Int
+  bravery: Int
+  models: Int
+  points: Int
+  wounds: Int
+  abilities: [Ability]
+  keywords: [String]
+  commandAbilities: [Ability]
+  magic: [Ability]
+  damageTable: [DamageTable]
+  missileWeapons: [Weapon]
+  meleeWeapons: [Weapon]
+}
+
+type Warscroll {
+  id: String!
+  name: String!
+  allegianceId: String
+  grandAllianceId: String
+  size: Int
+  points: Int
+  battlefieldRole: String
+  notes: String
+}
+
+input AllegianceFilters {
+  name: String
+  grandAlliance: String
+}
+
+input UnitFilters {
+  name: String
+  grandAlliance: String
+  grandStrategy: String
+  points: Int
+}
+
+input WarscrollFilters {
+  name: String
+  points: Int
+  battlefieldRole: String
+  size: String
+  notes: String
+}
+
+type Query {
+  allegiances(filter: AllegianceFilters): [Allegiance!]!
+  grandAlliances: [GrandAlliance!]!
+  units(filter: UnitFilters): [Unit!]!
+  warscrolls(filter: WarscrollFilters): [Warscroll!]! 
+}

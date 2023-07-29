@@ -9,5 +9,6 @@ package tools
 // This ensures that all systems use the same version of tools in addition to regular dependencies.
 
 import (
+	_ "github.com/99designs/gqlgen"
 	_ "github.com/discord-gophers/goapi-gen"
 )

@@ -7,7 +7,11 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func (r *repository) warscrollFilterQuery(query *bun.SelectQuery, params api.GetWarscrollsParams) (*bun.SelectQuery, error) {
+func (r *repository) warscrollFilterQuery(query *bun.SelectQuery, params *api.GetWarscrollsParams) (*bun.SelectQuery, error) {
+	if params == nil {
+		return query, nil
+	}
+
 	if params.Name != nil {
 		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
 	}
@@ -31,7 +35,7 @@ func (r *repository) warscrollFilterQuery(query *bun.SelectQuery, params api.Get
 	return query, nil
 }
 
-func (r *repository) GetWarscrolls(ctx context.Context, params api.GetWarscrollsParams) ([]api.Warscroll, error) {
+func (r *repository) GetWarscrolls(ctx context.Context, params *api.GetWarscrollsParams) ([]api.Warscroll, error) {
 	var warscrolls []api.Warscroll
 
 	query, err := r.warscrollFilterQuery(r.db.NewSelect().OrderExpr("id ASC").Model(&warscrolls), params)

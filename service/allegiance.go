@@ -34,7 +34,7 @@ func (s *Service) GetAllegiances(w http.ResponseWriter, r *http.Request, params 
 		"event": "GetAllegiances",
 	}).Info()
 
-	allegiances, err := s.repo.GetAllegiances(r.Context(), params)
+	allegiances, err := s.repo.GetAllegiances(r.Context(), &params)
 	if err != nil {
 		return api.GetAllegiancesJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrAllegiancesNotFound})
 	}

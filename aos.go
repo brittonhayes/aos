@@ -1,6 +1,7 @@
 // Package aos provides the Repository interface for the AoS REST API and services
 //
 //go:generate goapi-gen -generate types,server,spec -package api --out api/api.gen.go ./api/openapi.yaml
+//go:generate go run github.com/99designs/gqlgen generate
 //go:generate npx @redocly/cli build-docs api/openapi.yaml -o web/index.html
 package aos
 
@@ -16,9 +17,9 @@ type Repository interface {
 	GetArmies(ctx context.Context) ([]api.Army, error)
 
 	GetAllegianceByID(ctx context.Context, id string) (*api.Allegiance, error)
-	GetAllegiances(ctx context.Context, params api.GetAllegiancesParams) ([]api.Allegiance, error)
+	GetAllegiances(ctx context.Context, params *api.GetAllegiancesParams) ([]api.Allegiance, error)
 
-	GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error)
+	GetCities(ctx context.Context, params *api.GetCitiesParams) ([]api.City, error)
 	GetCityByID(ctx context.Context, id string) (*api.City, error)
 
 	GetGrandAllianceByID(ctx context.Context, id string) (*api.GrandAlliance, error)
@@ -28,12 +29,12 @@ type Repository interface {
 	GetGrandStrategies(ctx context.Context) ([]api.GrandStrategy, error)
 
 	GetUnitByID(ctx context.Context, id string) (*api.Unit, error)
-	GetUnits(ctx context.Context, params api.GetUnitsParams) ([]api.Unit, error)
+	GetUnits(ctx context.Context, params *api.GetUnitsParams) ([]api.Unit, error)
 	GetAbilitiesForUnitByID(ctx context.Context, id string) ([]api.Ability, error)
 	GetWeaponsForUnitByID(ctx context.Context, id string) (*api.WeaponsGroup, error)
 
 	GetWarscrollByID(ctx context.Context, id string) (*api.Warscroll, error)
-	GetWarscrolls(ctx context.Context, params api.GetWarscrollsParams) ([]api.Warscroll, error)
+	GetWarscrolls(ctx context.Context, params *api.GetWarscrollsParams) ([]api.Warscroll, error)
 
 	Init(ctx context.Context) error
 	Generate(ctx context.Context, name string) error

@@ -44,7 +44,7 @@ func (s *Service) GetWarscrolls(w http.ResponseWriter, r *http.Request, params a
 	span := trace.SpanFromContext(r.Context())
 	defer span.End()
 
-	response, err := s.repo.GetWarscrolls(r.Context(), params)
+	response, err := s.repo.GetWarscrolls(r.Context(), &params)
 	if err != nil {
 		return api.GetWarscrollsJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrWarscrollsNotFound})
 	}
