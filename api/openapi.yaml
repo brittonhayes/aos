@@ -8,10 +8,10 @@ info:
     url: https://opensource.org/licenses/MIT
 security: []
 servers:
-- url: http://aos-api.localhost
-  description: Local server
-- url: https://aos-api.com
-  description: Production server
+  - url: http://aos-api.localhost
+    description: Local server
+  - url: https://aos-api.com
+    description: Production server
 paths:
   /healthz:
     get:
@@ -37,18 +37,18 @@ paths:
       description: Get all allegiances
       operationId: getAllegiances
       parameters:
-      - name: name
-        in: query
-        description: name of allegiance to filter by
-        required: false
-        schema:
-          type: string
-      - name: grand_alliance
-        in: query
-        description: id of grand alliance to filter by
-        required: false
-        schema:
-          type: string
+        - name: name
+          in: query
+          description: name of allegiance to filter by
+          required: false
+          schema:
+            type: string
+        - name: grand_alliance
+          in: query
+          description: id of grand alliance to filter by
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -70,12 +70,12 @@ paths:
       description: Get allegiance by id
       operationId: getAllegianceById
       parameters:
-      - name: id
-        in: path
-        description: id of allegiance to return
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: id of allegiance to return
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -115,12 +115,12 @@ paths:
       description: Get army by id
       operationId: getArmyById
       parameters:
-      - name: id
-        in: path
-        description: id of army to return
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: id of army to return
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -140,12 +140,12 @@ paths:
       description: Get all cities
       operationId: getCities
       parameters:
-      - name: name
-        in: query
-        description: name of city to filter by
-        required: false
-        schema:
-          type: string
+        - name: name
+          in: query
+          description: name of city to filter by
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -167,12 +167,12 @@ paths:
       description: Get city by id
       operationId: getCityById
       parameters:
-      - name: id
-        in: path
-        description: id of city to return
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: id of city to return
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -231,12 +231,12 @@ paths:
       description: Get grand alliance by id
       operationId: getGrandAllianceById
       parameters:
-      - name: id
-        in: path
-        description: id of grand alliance to return
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: id of grand alliance to return
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -276,12 +276,12 @@ paths:
       description: Get grand strategy by id
       operationId: getGrandStrategyById
       parameters:
-      - name: id
-        in: path
-        description: id of grand strategy to return
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: id of grand strategy to return
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -301,30 +301,30 @@ paths:
       description: Get all units
       operationId: getUnits
       parameters:
-      - name: name
-        in: query
-        description: name of unit to filter by
-        required: false
-        schema:
-          type: string
-      - name: grand_alliance
-        in: query
-        description: grand alliance of unit to filter by
-        required: false
-        schema:
-          type: string
-      - name: grand_strategy
-        in: query
-        description: grand strategy of unit to filter by
-        required: false
-        schema:
-          type: string
-      - name: points
-        in: query
-        description: points of unit to filter by
-        required: false
-        schema:
-          type: integer
+        - name: name
+          in: query
+          description: name of unit to filter by
+          required: false
+          schema:
+            type: string
+        - name: grand_alliance
+          in: query
+          description: grand alliance of unit to filter by
+          required: false
+          schema:
+            type: string
+        - name: grand_strategy
+          in: query
+          description: grand strategy of unit to filter by
+          required: false
+          schema:
+            type: string
+        - name: points
+          in: query
+          description: points of unit to filter by
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
           description: OK
@@ -346,12 +346,12 @@ paths:
       description: Get unit by id
       operationId: getUnitById
       parameters:
-      - name: id
-        in: path
-        description: id of unit to return
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: id of unit to return
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -371,12 +371,12 @@ paths:
       description: Get abilities for unit by id
       operationId: getAbilitiesForUnitById
       parameters:
-      - name: id
-        in: path
-        description: id of unit to return abilities for
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: id of unit to return abilities for
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -398,36 +398,36 @@ paths:
       description: Get all warscrolls
       operationId: getWarscrolls
       parameters:
-      - name: name
-        in: query
-        description: name of warscroll to filter by
-        required: false
-        schema:
-          type: string
-      - name: points
-        in: query
-        description: points of warscroll to filter by
-        required: false
-        schema:
-          type: integer
-      - name: battlefield_role
-        in: query
-        description: battlefield_role of warscroll to filter by
-        required: false
-        schema:
-          type: string
-      - name: size
-        in: query
-        description: size of warscroll to filter by
-        required: false
-        schema:
-          type: string
-      - name: notes
-        in: query
-        description: notes of warscroll to filter by
-        required: false
-        schema:
-          type: string
+        - name: name
+          in: query
+          description: name of warscroll to filter by
+          required: false
+          schema:
+            type: string
+        - name: points
+          in: query
+          description: points of warscroll to filter by
+          required: false
+          schema:
+            type: integer
+        - name: battlefield_role
+          in: query
+          description: battlefield_role of warscroll to filter by
+          required: false
+          schema:
+            type: string
+        - name: size
+          in: query
+          description: size of warscroll to filter by
+          required: false
+          schema:
+            type: string
+        - name: notes
+          in: query
+          description: notes of warscroll to filter by
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -449,12 +449,12 @@ paths:
       description: Get warscroll by id
       operationId: getWarscrollById
       parameters:
-      - name: id
-        in: path
-        description: id of warscroll to return
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: id of warscroll to return
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -468,20 +468,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
 components:
   schemas:
     Health:
       required:
-      - status
+        - status
       type: object
       properties:
         status:
           type: string
     Error:
       required:
-      - code
-      - message
+        - code
+        - message
       type: object
       properties:
         code:
@@ -589,28 +588,23 @@ components:
             bun: ',pk'
         name:
           type: string
+          example: "Lance and Sword"
         range:
-          type: integer
-          format: int64
+          type: string
         attacks:
-          type: integer
-          format: int64
+          type: string
         to_hit:
-          type: integer
-          format: int64
+          type: string
         to_wound:
-          type: integer
-          format: int64
+          type: string
         rend:
-          type: integer
-          format: int64
+          type: string
         damage:
-          type: integer
-          format: int64
+          type: string
     GrandAlliance:
       type: object
       required:
-      - name
+        - name
       properties:
         _id:
           type: string
@@ -623,7 +617,7 @@ components:
     GrandStrategy:
       type: object
       required:
-      - name
+        - name
       properties:
         _id:
           type: string
@@ -636,7 +630,7 @@ components:
     Allegiance:
       type: object
       required:
-      - name
+        - name
       properties:
         _id:
           type: string
@@ -653,7 +647,7 @@ components:
     Unit:
       type: object
       required:
-      - name
+        - name
       properties:
         _id:
           type: string
@@ -696,20 +690,14 @@ components:
             type: string
         command_abilities:
           type: array
-          # x-go-extra-tags:
-          #   bun: "rel:has-many,join:id=unit_id"
           items:
             $ref: '#/components/schemas/Attribute'
         magic:
           type: array
-          # x-go-extra-tags:
-          #   bun: "rel:has-many,join:id=unit_id"
           items:
             $ref: '#/components/schemas/Attribute'
         damage_table:
           type: array
-          # x-go-extra-tags:
-          #   bun: "rel:has-many,join:id=unit_id"
           items:
             $ref: '#/components/schemas/DamageTable'
         missile_weapons:
@@ -720,11 +708,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Weapon'
-
     Army:
       type: object
       required:
-      - name
+        - name
       properties:
         _id:
           type: string
