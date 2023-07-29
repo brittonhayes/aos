@@ -121,7 +121,7 @@ func main() {
 			// We now register our server above as the handler for the interface
 			api.Handler(s, api.WithRouter(r))
 			r.Post("/query", graphQLHandler(repo))
-			r.Get("/*", playgroundQLHandler("/query"))
+			r.Get("/", playgroundQLHandler("/query"))
 
 			if c.Bool("tracing") {
 				traceProvider, err := tracing.InitTracer(c.String("service"), c.String("environment"))
