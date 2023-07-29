@@ -34,7 +34,7 @@ func (r *repository) warscrollFilterQuery(query *bun.SelectQuery, params api.Get
 func (r *repository) GetWarscrolls(ctx context.Context, params api.GetWarscrollsParams) ([]api.Warscroll, error) {
 	var warscrolls []api.Warscroll
 
-	query, err := r.warscrollFilterQuery(r.db.NewSelect().Model(&warscrolls), params)
+	query, err := r.warscrollFilterQuery(r.db.NewSelect().OrderExpr("id ASC").Model(&warscrolls), params)
 	if err != nil {
 		return nil, err
 	}

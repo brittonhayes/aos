@@ -55,7 +55,7 @@ func (r *repository) GetUnits(ctx context.Context, params api.GetUnitsParams) ([
 
 func (r *repository) GetAbilitiesForUnitByID(ctx context.Context, id string) ([]api.Ability, error) {
 	var unit api.Unit
-	err := r.db.NewSelect().Model(&unit).Where("id = ?", id).Scan(ctx)
+	err := r.db.NewSelect().OrderExpr("id ASC").Model(&unit).Where("id = ?", id).Scan(ctx)
 	if err != nil {
 		return nil, err
 	}

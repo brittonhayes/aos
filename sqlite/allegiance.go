@@ -32,7 +32,7 @@ func (r *repository) allegiancesFilterQuery(query *bun.SelectQuery, params api.G
 func (r *repository) GetAllegiances(ctx context.Context, params api.GetAllegiancesParams) ([]api.Allegiance, error) {
 	var allegiances []api.Allegiance
 
-	query, err := r.allegiancesFilterQuery(r.db.NewSelect().Model(&allegiances), params)
+	query, err := r.allegiancesFilterQuery(r.db.NewSelect().OrderExpr("id ASC").Model(&allegiances), params)
 	if err != nil {
 		return nil, err
 	}
