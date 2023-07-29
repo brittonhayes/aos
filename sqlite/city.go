@@ -19,7 +19,7 @@ func (r *repository) citiesFilterQuery(query *bun.SelectQuery, params api.GetCit
 func (r *repository) GetCities(ctx context.Context, params api.GetCitiesParams) ([]api.City, error) {
 	var cities []api.City
 
-	query, err := r.citiesFilterQuery(r.db.NewSelect().Model(&cities), params)
+	query, err := r.citiesFilterQuery(r.db.NewSelect().OrderExpr("id ASC").Model(&cities), params)
 	if err != nil {
 		return nil, err
 	}

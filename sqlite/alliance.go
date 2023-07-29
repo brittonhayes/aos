@@ -18,7 +18,7 @@ func (r *repository) GetGrandAllianceByID(ctx context.Context, id string) (*api.
 
 func (r *repository) GetGrandAlliances(ctx context.Context) ([]api.GrandAlliance, error) {
 	var grandAlliances []api.GrandAlliance
-	err := r.db.NewSelect().Model(&grandAlliances).Scan(ctx)
+	err := r.db.NewSelect().OrderExpr("id ASC").Model(&grandAlliances).Scan(ctx)
 	if err != nil {
 		return nil, err
 	}
