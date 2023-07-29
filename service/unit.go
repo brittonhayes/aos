@@ -21,7 +21,7 @@ func (s *Service) GetUnitByID(w http.ResponseWriter, r *http.Request, id string)
 }
 
 func (s *Service) GetUnits(w http.ResponseWriter, r *http.Request, params api.GetUnitsParams) *api.Response {
-	units, err := s.repo.GetUnits(r.Context(), params)
+	units, err := s.repo.GetUnits(r.Context(), &params)
 	if err != nil {
 		return api.GetUnitsJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrUnitsNotFound})
 	}

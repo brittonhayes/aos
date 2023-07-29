@@ -3,12 +3,7 @@
     - id: lord_celestant
       name: Lord-Celestant
       grand_alliance: order
-      size:
-        unit: Single
-        value: 1
-      move:
-        name: Move
-        value: 5
+      move: 5in
       description: A mighty warrior and leader of the Stormcast Eternals, wielding a powerful weapon and inspiring nearby units.
       save: 3
       bravery: 9
@@ -29,9 +24,7 @@
       magic: []
       damage_table:
         - wound_track_position: 0
-          move:
-            name: Move
-            value: 5
+          move: 5in
           min_wounds_suffered: 0
       melee_weapons:
         - name: Celestine Hammer
@@ -59,12 +52,7 @@
     - id: liberators
       name: Liberators
       grand_alliance: order
-      size:
-        unit: Multiple
-        value: 5
-      move:
-        name: Move
-        value: 5
+      move: 5in
       description: Mighty warriors armed with powerful warhammers and shields, forming the backbone of the Stormcast Eternals forces.
       save: 4
       bravery: 7
@@ -83,9 +71,7 @@
       magic: []
       damage_table:
         - wound_track_position: 0
-          move:
-            name: Move
-            value: 5
+          move: 5in
           min_wounds_suffered: 0
       melee_weapons:
         - name: Warhammer

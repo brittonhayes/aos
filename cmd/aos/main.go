@@ -8,15 +8,18 @@ import (
 	"sort"
 	"time"
 
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/extension"
+	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/brittonhayes/aos"
 	"github.com/brittonhayes/aos/api"
 	"github.com/brittonhayes/aos/fixtures"
+	"github.com/brittonhayes/aos/graph"
 	"github.com/brittonhayes/aos/internal/logging"
 	"github.com/brittonhayes/aos/internal/tracing"
 	"github.com/brittonhayes/aos/service"
 	"github.com/brittonhayes/aos/sqlite"
 
-	apimw "github.com/discord-gophers/goapi-gen/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/urfave/cli/v2"
@@ -89,8 +92,8 @@ func main() {
 			r.Use(middleware.Recoverer)
 			r.Use(middleware.RedirectSlashes)
 			r.Use(middleware.Timeout(5 * time.Second))
-			r.Use(apimw.OAPIValidator(swagger))
 			r.Use(logging.Middleware)
+			// r.Use(apimw.OAPIValidator(swagger))
 
 			// Use the OpenTelemetry middleware to trace all requests
 			if c.Bool("tracing") {
@@ -117,6 +120,8 @@ func main() {
 
 			// We now register our server above as the handler for the interface
 			api.Handler(s, api.WithRouter(r))
+			r.Post("/query", graphQLHandler(repo))
+			r.Get("/*", playgroundQLHandler("/query"))
 
 			if c.Bool("tracing") {
 				traceProvider, err := tracing.InitTracer(c.String("service"), c.String("environment"))
@@ -272,4 +277,19 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func graphQLHandler(repository aos.Repository) http.HandlerFunc {
+	h := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+		Repo: repository,
+	}}))
+
+	h.Use(extension.FixedComplexityLimit(50))
+	h.Use(extension.Introspection{})
+	return h.ServeHTTP
+}
+
+func playgroundQLHandler(endpoint string) http.HandlerFunc {
+	playgroundHandler := playground.Handler("GraphQL", endpoint)
+	return playgroundHandler
 }

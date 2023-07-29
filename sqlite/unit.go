@@ -17,7 +17,11 @@ func (r *repository) GetUnitByID(ctx context.Context, id string) (*api.Unit, err
 	return &unit, nil
 }
 
-func (r *repository) unitsFilterQuery(query *bun.SelectQuery, params api.GetUnitsParams) (*bun.SelectQuery, error) {
+func (r *repository) unitsFilterQuery(query *bun.SelectQuery, params *api.GetUnitsParams) (*bun.SelectQuery, error) {
+	if params == nil {
+		return query, nil
+	}
+
 	if params.Name != nil {
 		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
 	}
@@ -37,7 +41,7 @@ func (r *repository) unitsFilterQuery(query *bun.SelectQuery, params api.GetUnit
 	return query, nil
 }
 
-func (r *repository) GetUnits(ctx context.Context, params api.GetUnitsParams) ([]api.Unit, error) {
+func (r *repository) GetUnits(ctx context.Context, params *api.GetUnitsParams) ([]api.Unit, error) {
 	var units []api.Unit
 
 	query, err := r.unitsFilterQuery(r.db.NewSelect().Model(&units), params)
