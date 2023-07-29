@@ -468,7 +468,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
 components:
   schemas:
     Health:
@@ -589,24 +588,19 @@ components:
             bun: ',pk'
         name:
           type: string
+          example: "Lance and Sword"
         range:
-          type: integer
-          format: int64
+          type: string
         attacks:
-          type: integer
-          format: int64
+          type: string
         to_hit:
-          type: integer
-          format: int64
+          type: string
         to_wound:
-          type: integer
-          format: int64
+          type: string
         rend:
-          type: integer
-          format: int64
+          type: string
         damage:
-          type: integer
-          format: int64
+          type: string
     GrandAlliance:
       type: object
       required:
@@ -696,20 +690,14 @@ components:
             type: string
         command_abilities:
           type: array
-          # x-go-extra-tags:
-          #   bun: "rel:has-many,join:id=unit_id"
           items:
             $ref: '#/components/schemas/Attribute'
         magic:
           type: array
-          # x-go-extra-tags:
-          #   bun: "rel:has-many,join:id=unit_id"
           items:
             $ref: '#/components/schemas/Attribute'
         damage_table:
           type: array
-          # x-go-extra-tags:
-          #   bun: "rel:has-many,join:id=unit_id"
           items:
             $ref: '#/components/schemas/DamageTable'
         missile_weapons:
@@ -720,7 +708,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Weapon'
-
     Army:
       type: object
       required:

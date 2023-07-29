@@ -35,12 +35,26 @@
           min_wounds_suffered: 0
       melee_weapons:
         - name: Celestine Hammer
-          range: 1
-          attacks: 4
-          to_hit: 3
-          to_wound: 3
-          rend: -1
-          damage: 2
+          range: '1'
+          attacks: '4+'
+          to_hit: '3+'
+          to_wound: '3+'
+          rend: '-1'
+          damage: 'D3'
+        - name: Stormbound Blade
+          range: '1'
+          attacks: '1'
+          to_hit: '3+'
+          to_wound: '4+'
+          rend: '-1'
+          damage: '2'
+        - name: Great Claws
+          range: '1'
+          attacks: '2'
+          to_hit: '3+'
+          to_wound: '3+'
+          rend: '-1'
+          damage: '1'
       missile_weapons: []
     - id: liberators
       name: Liberators
@@ -75,10 +89,10 @@
           min_wounds_suffered: 0
       melee_weapons:
         - name: Warhammer
-          range: 1
-          attacks: 1
-          to_hit: 4
-          to_wound: 3
-          rend: -1
-          damage: 1
+          range: '1'
+          attacks: '1+'
+          to_hit: '4+'
+          to_wound: '3+'
+          rend: '-1'
+          damage: '1'
       missile_weapons: []
