@@ -365,6 +365,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /units/{id}/weapons:
+    get:
+      summary: Get weapons for unit by id
+      description: Get weapons for unit by id
+      operationId: getWeaponsForUnitById
+      parameters:
+      - name: id
+        in: path
+        description: id of unit to return weapons for
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeaponsGroup"
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
   /units/{id}/abilities:
     get:
       summary: Get abilities for unit by id
@@ -601,6 +627,17 @@ components:
           type: string
         damage:
           type: string
+    WeaponsGroup:
+      type: object
+      properties:
+        melee_weapons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Weapon'
+        missile_weapons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Weapon'
     GrandAlliance:
       type: object
       required:

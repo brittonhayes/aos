@@ -37,3 +37,12 @@ func (s *Service) GetAbilitiesForUnitByID(w http.ResponseWriter, r *http.Request
 
 	return api.GetAbilitiesForUnitByIDJSON200Response(abilities)
 }
+
+func (s *Service) GetWeaponsForUnitByID(w http.ResponseWriter, r *http.Request, id string) *api.Response {
+	weapons, err := s.repo.GetWeaponsForUnitByID(r.Context(), id)
+	if err != nil {
+		return api.GetWeaponsForUnitByIDJSON404Response(api.Error{Code: http.StatusNotFound, Message: ErrUnitNotFound})
+	}
+
+	return api.GetWeaponsForUnitByIDJSON200Response(*weapons)
+}

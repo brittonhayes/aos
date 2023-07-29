@@ -150,6 +150,12 @@ type Weapon struct {
 	ToWound *string `json:"to_wound,omitempty"`
 }
 
+// WeaponsGroup defines model for WeaponsGroup.
+type WeaponsGroup struct {
+	MeleeWeapons   []Weapon `json:"melee_weapons,omitempty"`
+	MissileWeapons []Weapon `json:"missile_weapons,omitempty"`
+}
+
 // GetAllegiancesParams defines parameters for GetAllegiances.
 type GetAllegiancesParams struct {
 	// name of allegiance to filter by
@@ -529,6 +535,26 @@ func GetAbilitiesForUnitByIDJSON404Response(body Error) *Response {
 	}
 }
 
+// GetWeaponsForUnitByIDJSON200Response is a constructor method for a GetWeaponsForUnitByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetWeaponsForUnitByIDJSON200Response(body WeaponsGroup) *Response {
+	return &Response{
+		body:        body,
+		Code:        200,
+		contentType: "application/json",
+	}
+}
+
+// GetWeaponsForUnitByIDJSON404Response is a constructor method for a GetWeaponsForUnitByID response.
+// A *Response is returned with the configured status code and content type from the spec.
+func GetWeaponsForUnitByIDJSON404Response(body Error) *Response {
+	return &Response{
+		body:        body,
+		Code:        404,
+		contentType: "application/json",
+	}
+}
+
 // GetWarscrollsJSON200Response is a constructor method for a GetWarscrolls response.
 // A *Response is returned with the configured status code and content type from the spec.
 func GetWarscrollsJSON200Response(body []Warscroll) *Response {
@@ -616,6 +642,9 @@ type ServerInterface interface {
 	// Get abilities for unit by id
 	// (GET /units/{id}/abilities)
 	GetAbilitiesForUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
+	// Get weapons for unit by id
+	// (GET /units/{id}/weapons)
+	GetWeaponsForUnitByID(w http.ResponseWriter, r *http.Request, id string) *Response
 	// Get all warscrolls
 	// (GET /warscrolls)
 	GetWarscrolls(w http.ResponseWriter, r *http.Request, params GetWarscrollsParams) *Response
@@ -1021,6 +1050,32 @@ func (siw *ServerInterfaceWrapper) GetAbilitiesForUnitByID(w http.ResponseWriter
 	handler(w, r.WithContext(ctx))
 }
 
+// GetWeaponsForUnitByID operation middleware
+func (siw *ServerInterfaceWrapper) GetWeaponsForUnitByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	if err := runtime.BindStyledParameter("simple", false, "id", chi.URLParam(r, "id"), &id); err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "id"})
+		return
+	}
+
+	var handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := siw.Handler.GetWeaponsForUnitByID(w, r, id)
+		if resp != nil {
+			if resp.body != nil {
+				render.Render(w, r, resp)
+			} else {
+				w.WriteHeader(resp.Code)
+			}
+		}
+	})
+
+	handler(w, r.WithContext(ctx))
+}
+
 // GetWarscrolls operation middleware
 func (siw *ServerInterfaceWrapper) GetWarscrolls(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -1238,6 +1293,7 @@ func Handler(si ServerInterface, opts ...ServerOption) http.Handler {
 		r.Get("/units", wrapper.GetUnits)
 		r.Get("/units/{id}", wrapper.GetUnitByID)
 		r.Get("/units/{id}/abilities", wrapper.GetAbilitiesForUnitByID)
+		r.Get("/units/{id}/weapons", wrapper.GetWeaponsForUnitByID)
 		r.Get("/warscrolls", wrapper.GetWarscrolls)
 		r.Get("/warscrolls/{id}", wrapper.GetWarscrollByID)
 	})
@@ -1265,34 +1321,35 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"Xx/+CQAA//8al0M9jDIAAA==",
+	"H4sIAAAAAAAC/9RaW2/buBL+KwLPeTgHcKK0DfbBb9leg213i02DPhSFQUtjmw0vKkklUYv89wUpybpR",
+	"FtXYWfmpqTWcIef75uNI5E8UCZYIDlwrNP+JVLQBhu2fF0tCic7Mn4kUCUhNwD6IQUWSJJoIbv6rswTQ",
+	"HCktCV+jhxnimIHjwcOs/EUsv0GkjekFpbAmmEfQDbMgcdfLDN2frMUJ3GuJTzReW8tlytEckXiW3Ngw",
+	"QxNcS8zjBaZ0G7ljwoTUmC4kYMpGLlLC95RIiNH8S2711bVwybJ9LrlnOjOUcpIjSzQw+8d/JazQHP0n",
+	"rJAPC9jDa07s9Ao3WEqcjViU1pIsU+0As3d+t5im9slKSIa1WRTXv52jrXvCNaxBuvnz0knQwzFnBLVf",
+	"YYbX8Akv6V65zQhf3ImUx2qh0tUKLCYe2TOUvoUh/D8Ym4cZshEWWuLoZpEIRcqE/BJIr6UU0oyGe8yS",
+	"PB2RiAHNz8/OZ4iBUnhthvwpdPDGRDajmgnL7ZsTePHcvc7S31BxWp+VvYvRb41SXNSE4nEwPp5mXnVo",
+	"Z32lJdawzo5m1u8AU73pTldprFM17Liwc7n+UFD/STTpivxwBDM6fIBg14XbfckLtpt+4cZryyjbhM6u",
+	"MUNLiW9BZp76FG0wS/q4FQnG7KY9fn7bTckxw9iK9EKXKu3lsa7sLp+P7z5uILsTMm4usmPVDszwmkT7",
+	"yQsDCrC4A5wI7p/qz9be6Y8oRehePYoYqDrA1terCokgRZPsEVHhW/A1LfRi1+SsppT7svJVCy/Z/Yyl",
+	"iqSgdH8bBW509TtJWFk2xjkjG0XBWlNYEaDxQgoKngW2awrNLb4zvG8mvTThQoPaA4EKVvzSrlCUzf4A",
+	"1RpHN+5V5RK6M0fbvg+9NykNMI+DKyNw1XKqQRLzHncSuBsLLRabnt1Vi7xb9mza88Spt1KkSTd9U1fF",
+	"7orMT4SvROe1HV18vAxUAhFZkQib34KVkAHmwYW4Cv5+ffUpMBb/u+ZitSIRwfT/aIYoiYArqJon9OHy",
+	"E5qhVFI0RxutEzUPQ5EAVyKVEZwKuQ6LQSo0tmaKRFsumECOGLcgVT7FZ6dnp2dmhHGIE4Lm6MXps9Mz",
+	"NEMJ1hubprDSDPv/NejuWt+CDjClQd3WepV25ZdxbnPReJxgiRlokArNv7Q9mtUHYlXzGGgRrAjVIINl",
+	"hkzW0Rx9T037UxZC/s+s+MbiZGQ7DolNFKtIQalIPpFaErgr5ldTWMrwL8/g87Oz/IWLa+A2mThJaEGS",
+	"8JvKdaXy59dsNHS+xdp2z4T++sNYnZ+dj5rIrvj5K6gjVO2V04huyhg2DauTMsaizrfwJ4kfhkhX0mOZ",
+	"BSTezbrfs8tXQ8TLCdGknQSdSl4ywZRGRQQbs+oDtEzhkGTw5cCUMW8iloMuGfHRl9zMBXL55AlKTbLs",
+	"2Iosz04t1R6lJVm2o6gky0aUk/F1RIVkEZ4uohUyFtFo+76+s3gKMweYL8snXltyRHS2l834STbGl85P",
+	"J5Ou1gKoGrbD1WpB6a1WkwT/ai0BPpJqzRGeLKI1ZCyisYh216pp2WMRpQy4trN0IfrKeBlMqoZ7HW40",
+	"o801bl95l4RjW7JtvKaazG5ubE5tN35SduPDUtjs952a2Phq8TSNRedDyRFpVjujLliGVaz1HtarZ41M",
+	"+Qtb9zXvSCSuxYzJMsGJX40KKj8yI94lWhvQR4OruskTFen26O8Yi7SWUyc0vmVajMgGyrTM1dgy3bo/",
+	"sjKtuDHxMm3hZ7mwsUfEP3ain9sExWmwA/Z3hZMDZro4yp5uiptJsrndXhTaqXu5lSOr18UDr3c04+Uw",
+	"H0xbEj8i1ohPpj1Rt4wdHbUcOS5qfp40JlpxAuWIUh0nPclrb889synvTjnzq1IZ3ocsKr27j0mB/6ZT",
+	"InwkW02O72TxrCHTAjRsXDDpl8LSyp6a7Qb6orR9I+RjQG8GnQQFHndBaLrl3odumyy1g9teqhQ2HkQp",
+	"Dp8fS5NawMnrROO8fbqE6MHQ0uGuvD8z3DzVTF3w1596tVFbf4fppar+YlQgnyajE6t9sWd01M7NoFFL",
+	"VeTH+JD2is6oMPZu0Hjk7I2if13Hq4tix9W41aquVbDDLVyFU79qlyb+gt1A/0g6uhr605XpFlp2uAJ5",
+	"6wbjvYgwDfLnjUtM8zDEQp3ghJxSY7MRyryttMd/lCJOI3t3yuFE1bxEgqGHrw//BAAA///BPdNQbTUA",
+	"AA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
