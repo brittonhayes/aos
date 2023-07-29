@@ -30,6 +30,7 @@ type Repository interface {
 	GetUnitByID(ctx context.Context, id string) (*api.Unit, error)
 	GetUnits(ctx context.Context, params api.GetUnitsParams) ([]api.Unit, error)
 	GetAbilitiesForUnitByID(ctx context.Context, id string) ([]api.Ability, error)
+	GetWeaponsForUnitByID(ctx context.Context, id string) (*api.WeaponsGroup, error)
 
 	GetWarscrollByID(ctx context.Context, id string) (*api.Warscroll, error)
 	GetWarscrolls(ctx context.Context, params api.GetWarscrollsParams) ([]api.Warscroll, error)

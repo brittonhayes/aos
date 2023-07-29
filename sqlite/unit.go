@@ -62,3 +62,18 @@ func (r *repository) GetAbilitiesForUnitByID(ctx context.Context, id string) ([]
 
 	return unit.Abilities, nil
 }
+
+func (r *repository) GetWeaponsForUnitByID(ctx context.Context, id string) (*api.WeaponsGroup, error) {
+	var unit api.Unit
+	err := r.db.NewSelect().Model(&unit).Where("id = ?", id).Scan(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	group := &api.WeaponsGroup{
+		MeleeWeapons:   unit.MeleeWeapons,
+		MissileWeapons: unit.MissileWeapons,
+	}
+
+	return group, nil
+}
