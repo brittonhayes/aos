@@ -3,30 +3,17 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"sort"
-	"time"
 
-	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/handler/extension"
-	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/brittonhayes/aos"
-	"github.com/brittonhayes/aos/api"
 	"github.com/brittonhayes/aos/fixtures"
-	"github.com/brittonhayes/aos/graph"
 	"github.com/brittonhayes/aos/internal/logging"
-	"github.com/brittonhayes/aos/internal/tracing"
+	"github.com/brittonhayes/aos/server"
 	"github.com/brittonhayes/aos/service"
 	"github.com/brittonhayes/aos/sqlite"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/urfave/cli/v2"
-	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-
-	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
-	"go.opentelemetry.io/otel/trace"
 )
 
 func main() {
@@ -70,96 +57,19 @@ func main() {
 			return nil
 		},
 		Action: func(c *cli.Context) error {
-			repo = sqlite.NewRepository(c.String("db"))
-
-			// Create an instance of our handler which satisfies the generated interface
-			s := service.New(repo)
-
-			swagger, err := api.GetSwagger()
-			if err != nil {
-				return err
+			config := &server.Config{
+				Repository:  sqlite.NewRepository(c.String("db")),
+				Service:     service.New(repo),
+				ServiceName: c.String("service"),
+				Environment: c.String("environment"),
+				Port:        c.Int("port"),
+				Tracing:     c.Bool("tracing"),
 			}
 
-			// Clear out the servers array in the swagger spec, that skips validating
-			// that server names match. We don't know how this thing will be run.
-			swagger.Servers = nil
+			s := server.New(c.Context, config)
 
-			// Create a new chi router
-			r := chi.NewRouter()
-
-			// Use our validation middleware to check all requests against the
-			// OpenAPI schema.
-			r.Use(middleware.Recoverer)
-			r.Use(middleware.RedirectSlashes)
-			r.Use(middleware.Timeout(5 * time.Second))
-			r.Use(logging.Middleware)
-			// r.Use(apimw.OAPIValidator(swagger))
-
-			// Use the OpenTelemetry middleware to trace all requests
-			if c.Bool("tracing") {
-				r.Use(func(h http.Handler) http.Handler {
-					return otelhttp.NewHandler(
-						http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-							h.ServeHTTP(w, r)
-
-							routePattern := chi.RouteContext(r.Context()).RoutePattern()
-
-							span := trace.SpanFromContext(r.Context())
-							span.SetName(routePattern)
-							span.SetAttributes(semconv.HTTPTarget(r.URL.String()), semconv.HTTPRoute(routePattern))
-
-							labeler, ok := otelhttp.LabelerFromContext(r.Context())
-							if ok {
-								labeler.Add(semconv.HTTPRoute(routePattern))
-							}
-						}),
-						"",
-					)
-				})
-			}
-
-			// We now register our server above as the handler for the interface
-			api.Handler(s, api.WithRouter(r))
-			r.Post("/query", graphQLHandler(repo))
-			r.Get("/graphql", apolloHandler("/query"))
-			r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-				w.Write(aos.HTML_HOME)
-			})
-
-			if c.Bool("tracing") {
-				traceProvider, err := tracing.InitTracer(c.String("service"), c.String("environment"))
-				if err != nil {
-					return err
-				}
-				defer func() {
-					if err := traceProvider.Shutdown(c.Context); err != nil {
-						log.Printf("Error shutting down tracer provider: %v", err)
-					}
-				}()
-
-				meterProvider, err := tracing.InitMeter()
-				if err != nil {
-					return err
-				}
-				defer func() {
-					if err := meterProvider.Shutdown(c.Context); err != nil {
-						log.Printf("Error shutting down meter provider: %v", err)
-					}
-				}()
-			}
-
-			port := c.Int("port")
-			if port == 0 {
-				port = 8080
-			}
-
-			httpsrv := &http.Server{
-				Handler: r,
-				Addr:    fmt.Sprintf("0.0.0.0:%d", port),
-			}
-
-			logging.NewLogrus(c.Context).Infof("Starting server on port %d", port)
-			return httpsrv.ListenAndServe()
+			logging.NewLogrus(c.Context).Infof("Starting server on port %d", config.Port)
+			return s.ListenAndServe()
 		},
 		Flags: []cli.Flag{
 			&cli.IntFlag{
@@ -280,19 +190,4 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func graphQLHandler(repository aos.Repository) http.HandlerFunc {
-	h := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-		Repo: repository,
-	}}))
-
-	h.Use(extension.FixedComplexityLimit(50))
-	h.Use(extension.Introspection{})
-	return h.ServeHTTP
-}
-
-func apolloHandler(endpoint string) http.HandlerFunc {
-	playgroundHandler := playground.ApolloSandboxHandler("GraphQL Playground", endpoint)
-	return playgroundHandler
 }
