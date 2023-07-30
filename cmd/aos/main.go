@@ -122,6 +122,7 @@ func main() {
 			api.Handler(s, api.WithRouter(r))
 			r.Post("/query", graphQLHandler(repo))
 			r.Get("/graphql", playgroundQLHandler("/query"))
+			r.Get("/apollo", apolloHandler("/query"))
 			r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 				w.Write(aos.HOMEPAGE)
 			})
@@ -294,5 +295,10 @@ func graphQLHandler(repository aos.Repository) http.HandlerFunc {
 
 func playgroundQLHandler(endpoint string) http.HandlerFunc {
 	playgroundHandler := playground.Handler("GraphQL", endpoint)
+	return playgroundHandler
+}
+
+func apolloHandler(endpoint string) http.HandlerFunc {
+	playgroundHandler := playground.ApolloSandboxHandler("Apollo", endpoint)
 	return playgroundHandler
 }

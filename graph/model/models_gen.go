@@ -7,11 +7,6 @@ type AllegianceFilters struct {
 	GrandAlliance *string `json:"grandAlliance,omitempty"`
 }
 
-type Size struct {
-	Unit  string `json:"unit"`
-	Value int    `json:"value"`
-}
-
 type UnitFilters struct {
 	Name          *string `json:"name,omitempty"`
 	GrandAlliance *string `json:"grandAlliance,omitempty"`

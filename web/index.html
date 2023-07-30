@@ -39,9 +39,16 @@
     />
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(90deg, #0f0c18 21px, transparent 1%) center,
+          linear-gradient(#0f0c18 21px, transparent 1%) center, #29374d;
+        background-size: 22px 22px;
+      }
+    </style>
   </head>
   <body>
-    <section class="bg-gray-900 h-screen text-white">
+    <section class="h-screen">
       <div
         class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
       >
@@ -51,38 +58,57 @@
           >
             AOS
           </h1>
-          <p class="mx-auto mt-4 max-w-xl sm:text-3xl/relaxed">
-            Unofficial REST + GraphQL API
+          <p class="mx-auto text-white mt-4 max-w-xl sm:text-3xl/relaxed">
+            Tabletop Wargame REST/GraphQL API
           </p>
 
           <div class="mt-8 flex flex-wrap justify-center gap-4">
             <a
-              class="block w-full rounded border border-blue-500 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+              class="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring"
               href="/graphql"
               target="_blank"
             >
-              Try GraphQL Playground
+              <span
+                class="absolute inset-0 border border-blue-500 group-active:border-blue-500"
+              ></span>
+              <span
+                class="block border border-blue-500 bg-blue-600 hover:border-white px-12 py-3 transition-transform active:border-blue-500 active:bg-white group-hover:-translate-x-1 group-hover:-translate-y-1"
+              >
+                Try GraphQL Playground
+              </span>
             </a>
             <a
-              class="block w-full rounded border border-blue-500 px-12 py-3 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
+              class="group relative inline-block text-sm font-medium text-blue-500 focus:outline-none focus:ring active:text-white"
               href="/docs"
               target="_blank"
             >
-              Documentation
+              <span class="absolute inset-0 border border-current"></span>
+              <span
+                class="block border border-current hover:bg-blue-600 hover:text-white px-12 py-3 transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1"
+              >
+                Documentation
+              </span>
             </a>
             <a
-              class="block rounded md:border border-blue-600 py-3 px-6 text-white hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
+              class="block rounded md:border border-blue-500 py-3 px-6 text-white hover:bg-blue-600 hover:border-white focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
               href="https://github.com/brittonhayes/aos"
               target="_blank"
             >
-              <i data-feather="github">
-              </i>
+              <i data-feather="github"></i>
             </a>
-          </div>
+            <p
+              class="block w-full mt-24 px-6 sm:w-2/3 italic md:text-lg text-md text-gray-500 break-words"
+            >
+              *The AOS API is not affiliated with Games Workshop in any way and
+              is not an official product.
+            </p>
+          </div> 
         </div>
       </div>
     </section>
-    <script>
+
+  </div>
+    <script type="application/javascript">
       feather.replace();
     </script>
   </body>

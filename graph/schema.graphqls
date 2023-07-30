@@ -1,8 +1,3 @@
-type Size {
-  unit: String!
-  value: Int! 
-}
-
 type Ability {
   name: String!
   description: String! 
@@ -11,33 +6,33 @@ type Ability {
 type GrandAlliance {
   id: String!
   name: String!
-  description: String!
+  description: String
 }
 
 type Allegiance {
   id: String!
   name: String!
-  description: String!
-  grandAlliance: String!
-  mortalRealm: String!
+  description: String
+  grandAlliance: String
+  mortalRealm: String
 }
 
 type DamageTable {
   id: String!
-  woundTrackPosition: Int!
-  move: String!
-  minWoundsSuffered: Int!
+  woundTrackPosition: Int
+  move: String
+  minWoundsSuffered: Int
 }
 
 type Weapon {
   id: String!
   name: String!
-  range: String!
-  attacks: String!
-  toHit: String!
-  toWound: String!
-  rend: String!
-  damage: String!
+  range: String
+  attacks: String
+  toHit: String
+  toWound: String
+  rend: String
+  damage: String
 }
 
 type Unit {
