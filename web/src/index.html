@@ -42,7 +42,7 @@
     <style>
       body {
         background: linear-gradient(90deg, #0f0c18 21px, transparent 1%) center,
-          linear-gradient(#0f0c18 21px, transparent 1%) center, #29374d;
+          linear-gradient(#0f0c18 21px, transparent 1%) center, #314057;
         background-size: 22px 22px;
       }
     </style>
@@ -62,39 +62,41 @@
             Tabletop Wargame REST/GraphQL API
           </p>
 
-          <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <div class="mt-8 flex flex-wrap justify-evenly md:justify-center gap-4">
             <a
-              class="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring"
+              class="group relative inline-block w-3/4 md:w-auto text-sm font-medium text-white focus:outline-none focus:ring"
               href="/graphql"
               target="_blank"
             >
               <span
-                class="absolute inset-0 border border-blue-500 group-active:border-blue-500"
+                class="absolute inset-0 border w-full group-active:border-blue-500"
               ></span>
               <span
-                class="block border border-blue-500 bg-blue-600 hover:border-white px-12 py-3 transition-transform active:border-blue-500 active:bg-white group-hover:-translate-x-1 group-hover:-translate-y-1"
+                class="block border min-w-full border-blue-500 bg-blue-600 hover:border-white px-6 sm:px-12 py-3 transition-transform active:border-blue-500 active:bg-white group-hover:-translate-x-1 group-hover:-translate-y-1"
               >
                 Try GraphQL Playground
               </span>
             </a>
             <a
-              class="group relative inline-block text-sm font-medium text-blue-500 focus:outline-none focus:ring active:text-white"
+              class="group relative inline-block text-sm w-3/4 md:w-auto font-medium text-blue-500 focus:outline-none focus:ring active:text-white"
               href="/docs"
               target="_blank"
             >
               <span class="absolute inset-0 border border-current"></span>
               <span
-                class="block border border-current hover:bg-blue-600 hover:text-white px-12 py-3 transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1"
+                class="block border border-current hover:bg-blue-600 hover:text-white px-6 sm:px-12 py-3 transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1"
               >
                 Documentation
               </span>
             </a>
             <a
-              class="block rounded md:border border-blue-500 py-3 px-6 text-white hover:bg-blue-600 hover:border-white focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
+              class="block rounded w-3/4 md:w-auto py-3 px-6 inset-0 md:border text-white hover:bg-blue-600 hover:border hover:border-white focus:outline-none focus:ring active:bg-blue-500 "
               href="https://github.com/brittonhayes/aos"
               target="_blank"
             >
-              <i data-feather="github"></i>
+              <span class="flex justify-center items-center">
+                <i data-feather="github"></i>
+              </span>
             </a>
             <p
               class="block w-full mt-24 px-6 sm:w-2/3 italic md:text-lg text-md text-gray-500 break-words"

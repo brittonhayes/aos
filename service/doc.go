@@ -12,7 +12,7 @@ func (s *Service) GetDocs(w http.ResponseWriter, r *http.Request) *api.Response 
 	resp.ContentType("text/html")
 	resp.Status(http.StatusOK)
 
-	w.Write(aos.OPEN_API_DOCS)
+	w.Write(aos.HTML_DOCS)
 
 	return &resp
 }

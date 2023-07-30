@@ -123,7 +123,7 @@ func main() {
 			r.Post("/query", graphQLHandler(repo))
 			r.Get("/graphql", apolloHandler("/query"))
 			r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-				w.Write(aos.HOMEPAGE)
+				w.Write(aos.HTML_HOME)
 			})
 
 			if c.Bool("tracing") {
