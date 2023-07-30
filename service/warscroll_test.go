@@ -15,7 +15,8 @@ func TestGetWarscrolls(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	got := []api.Unit{{Name: "test"}}
+	name := "test"
+	got := []api.Warscroll{{Name: &name}}
 
 	m := setupMockServer(t)
 	defer m.ctrl.Finish()
