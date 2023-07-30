@@ -121,8 +121,7 @@ func main() {
 			// We now register our server above as the handler for the interface
 			api.Handler(s, api.WithRouter(r))
 			r.Post("/query", graphQLHandler(repo))
-			r.Get("/graphql", playgroundQLHandler("/query"))
-			r.Get("/apollo", apolloHandler("/query"))
+			r.Get("/graphql", apolloHandler("/query"))
 			r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 				w.Write(aos.HOMEPAGE)
 			})
@@ -293,12 +292,7 @@ func graphQLHandler(repository aos.Repository) http.HandlerFunc {
 	return h.ServeHTTP
 }
 
-func playgroundQLHandler(endpoint string) http.HandlerFunc {
-	playgroundHandler := playground.Handler("GraphQL", endpoint)
-	return playgroundHandler
-}
-
 func apolloHandler(endpoint string) http.HandlerFunc {
-	playgroundHandler := playground.ApolloSandboxHandler("Apollo", endpoint)
+	playgroundHandler := playground.ApolloSandboxHandler("GraphQL Playground", endpoint)
 	return playgroundHandler
 }
