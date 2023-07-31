@@ -22,6 +22,14 @@ func (r *repository) allegiancesFilterQuery(query *bun.SelectQuery, params *api.
 		return query, nil
 	}
 
+	if params.Limit != nil {
+		query = query.Limit(*params.Limit)
+	}
+
+	if params.Offset != nil {
+		query = query.Offset(*params.Offset)
+	}
+
 	if params.GrandAlliance != nil {
 		query = query.Where("grand_alliance = ?", params.GrandAlliance)
 	}

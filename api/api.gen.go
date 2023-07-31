@@ -140,6 +140,12 @@ type WeaponsGroup struct {
 
 // GetAllegiancesParams defines parameters for GetAllegiances.
 type GetAllegiancesParams struct {
+	// number of allegiances to return
+	Limit *int `json:"limit,omitempty"`
+
+	// number of allegiances to skip
+	Offset *int `json:"offset,omitempty"`
+
 	// name of allegiance to filter by
 	Name *string `json:"name,omitempty"`
 
@@ -149,12 +155,24 @@ type GetAllegiancesParams struct {
 
 // GetCitiesParams defines parameters for GetCities.
 type GetCitiesParams struct {
+	// number of cities to return
+	Limit *int `json:"limit,omitempty"`
+
+	// number of cities to skip
+	Offset *int `json:"offset,omitempty"`
+
 	// name of city to filter by
 	Name *string `json:"name,omitempty"`
 }
 
 // GetUnitsParams defines parameters for GetUnits.
 type GetUnitsParams struct {
+	// number of units to return
+	Limit *int `json:"limit,omitempty"`
+
+	// number of units to skip
+	Offset *int `json:"offset,omitempty"`
+
 	// name of unit to filter by
 	Name *string `json:"name,omitempty"`
 
@@ -170,6 +188,12 @@ type GetUnitsParams struct {
 
 // GetWarscrollsParams defines parameters for GetWarscrolls.
 type GetWarscrollsParams struct {
+	// number of warscrolls to return
+	Limit *int `json:"limit,omitempty" validate:"lte=100"`
+
+	// number of warscrolls to skip
+	Offset *int `json:"offset,omitempty" validate:"lte=100"`
+
 	// name of warscroll to filter by
 	Name *string `json:"name,omitempty"`
 
@@ -648,6 +672,22 @@ func (siw *ServerInterfaceWrapper) GetAllegiances(w http.ResponseWriter, r *http
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetAllegiancesParams
 
+	// ------------- Optional query parameter "limit" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "limit", r.URL.Query(), &params.Limit); err != nil {
+		err = fmt.Errorf("invalid format for parameter limit: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "limit"})
+		return
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "offset", r.URL.Query(), &params.Offset); err != nil {
+		err = fmt.Errorf("invalid format for parameter offset: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "offset"})
+		return
+	}
+
 	// ------------- Optional query parameter "name" -------------
 
 	if err := runtime.BindQueryParameter("form", true, false, "name", r.URL.Query(), &params.Name); err != nil {
@@ -754,6 +794,22 @@ func (siw *ServerInterfaceWrapper) GetCities(w http.ResponseWriter, r *http.Requ
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetCitiesParams
+
+	// ------------- Optional query parameter "limit" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "limit", r.URL.Query(), &params.Limit); err != nil {
+		err = fmt.Errorf("invalid format for parameter limit: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "limit"})
+		return
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "offset", r.URL.Query(), &params.Offset); err != nil {
+		err = fmt.Errorf("invalid format for parameter offset: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "offset"})
+		return
+	}
 
 	// ------------- Optional query parameter "name" -------------
 
@@ -934,6 +990,22 @@ func (siw *ServerInterfaceWrapper) GetUnits(w http.ResponseWriter, r *http.Reque
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetUnitsParams
 
+	// ------------- Optional query parameter "limit" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "limit", r.URL.Query(), &params.Limit); err != nil {
+		err = fmt.Errorf("invalid format for parameter limit: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "limit"})
+		return
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "offset", r.URL.Query(), &params.Offset); err != nil {
+		err = fmt.Errorf("invalid format for parameter offset: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "offset"})
+		return
+	}
+
 	// ------------- Optional query parameter "name" -------------
 
 	if err := runtime.BindQueryParameter("form", true, false, "name", r.URL.Query(), &params.Name); err != nil {
@@ -1064,6 +1136,22 @@ func (siw *ServerInterfaceWrapper) GetWarscrolls(w http.ResponseWriter, r *http.
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params GetWarscrollsParams
+
+	// ------------- Optional query parameter "limit" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "limit", r.URL.Query(), &params.Limit); err != nil {
+		err = fmt.Errorf("invalid format for parameter limit: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "limit"})
+		return
+	}
+
+	// ------------- Optional query parameter "offset" -------------
+
+	if err := runtime.BindQueryParameter("form", true, false, "offset", r.URL.Query(), &params.Offset); err != nil {
+		err = fmt.Errorf("invalid format for parameter offset: %w", err)
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{err, "offset"})
+		return
+	}
 
 	// ------------- Optional query parameter "name" -------------
 
@@ -1303,34 +1391,35 @@ func WithErrorHandler(handler func(w http.ResponseWriter, r *http.Request, err e
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"AP//0P9o7OQzAAA=",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

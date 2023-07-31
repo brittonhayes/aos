@@ -12,6 +12,14 @@ func (r *repository) warscrollFilterQuery(query *bun.SelectQuery, params *api.Ge
 		return query, nil
 	}
 
+	if params.Limit != nil {
+		query = query.Limit(*params.Limit)
+	}
+
+	if params.Offset != nil {
+		query = query.Offset(*params.Offset)
+	}
+
 	if params.Name != nil {
 		query = query.Where("? LIKE ?", bun.Ident("name"), *params.Name+"%")
 	}
