@@ -37,6 +37,18 @@ paths:
       description: Get all allegiances
       operationId: getAllegiances
       parameters:
+      - name: limit
+        in: query
+        description: number of allegiances to return
+        required: false
+        schema:
+          type: integer
+      - name: offset 
+        in: query
+        description: number of allegiances to skip
+        required: false
+        schema:
+          type: integer
       - name: name
         in: query
         description: name of allegiance to filter by
@@ -140,6 +152,18 @@ paths:
       description: Get all cities
       operationId: getCities
       parameters:
+      - name: limit
+        in: query
+        description: number of cities to return
+        required: false
+        schema:
+          type: integer
+      - name: offset 
+        in: query
+        description: number of cities to skip
+        required: false
+        schema:
+          type: integer
       - name: name
         in: query
         description: name of city to filter by
@@ -301,6 +325,18 @@ paths:
       description: Get all units
       operationId: getUnits
       parameters:
+      - name: limit
+        in: query
+        description: number of units to return
+        required: false
+        schema:
+          type: integer
+      - name: offset 
+        in: query
+        description: number of units to skip
+        required: false
+        schema:
+          type: integer
       - name: name
         in: query
         description: name of unit to filter by
@@ -424,6 +460,18 @@ paths:
       description: Get all warscrolls
       operationId: getWarscrolls
       parameters:
+      - name: limit
+        in: query
+        description: number of warscrolls to return
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: number of warscrolls to skip
+        required: false
+        schema:
+          type: integer
       - name: name
         in: query
         description: name of warscroll to filter by
