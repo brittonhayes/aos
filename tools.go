@@ -11,4 +11,5 @@ package tools
 import (
 	_ "github.com/99designs/gqlgen"
 	_ "github.com/discord-gophers/goapi-gen"
+	_ "go.uber.org/mock/mockgen"
 )

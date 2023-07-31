@@ -1,8 +1,9 @@
 // Package aos provides the Repository interface for the AoS REST API and services
 //
+//go:generate mockgen -destination=internal/mocks/mock_repository.go -package=mocks github.com/brittonhayes/aos Repository
 //go:generate goapi-gen -generate types,server,spec -package api --out api/api.gen.go ./api/openapi.yaml
 //go:generate go run github.com/99designs/gqlgen generate
-//go:generate npx @redocly/cli build-docs api/openapi.yaml -o web/docs.html
+//go:generate npx @redocly/cli build-docs api/openapi.yaml -o web/src/docs.html
 package aos
 
 import (
