@@ -100,3 +100,14 @@ If you consume the data served through this API, be aware that you are also obli
 [Games Workshop's](https://www.games-workshop.com) [intellectual property guidelines](https://www.games-workshop.com/en-US/Intellectual-Property-Guidelines).
 
 For more information, view our [Contributing Guidelines](https://github.com/brittonhayes/aos/blob/main/CONTRIBUTING.md).
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
