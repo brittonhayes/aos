@@ -32,6 +32,12 @@
               "pattern": "^[a-z_]+$",
               "enum": ["order", "chaos", "destruction", "death"]
             },
+            "champion": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            },
             "move": {
               "type": "string",
               "description": "The unit's move characteristics in inches.",
