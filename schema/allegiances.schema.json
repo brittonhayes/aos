@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "$id": "https://aos-api.com/schema/allegiances.schema.json",
+  "title": "Allegiances",
+  "type": "array",
+  "items": {
+    "properties": {
+      "model": {
+        "type": "string"
+      },
+      "rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "name"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z_]+$"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "grand_alliance": {
+              "type": "string",
+              "pattern": "^[a-z_]+$",
+              "enum": ["order", "chaos", "destruction", "death"]
+            },
+            "mortal_realm": {
+              "type": "string",
+              "pattern": "^[a-z_]+$",
+              "enum": [
+                "aqshy",
+                "azyr",
+                "chamon",
+                "ghur",
+                "ghyran",
+                "hysh",
+                "shyish",
+                "ulgu"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

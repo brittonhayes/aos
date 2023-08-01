@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "$id": "https://aos-api.com/schema/warscrolls.schema.json",
+  "title": "Warscrolls",
+  "type": "array",
+  "items": {
+    "properties": {
+      "model": {
+        "type": "string"
+      },
+      "rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "name", "size", "points"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z_]+$"
+            },
+            "name": {
+              "type": "string"
+            },
+            "allegiance_id": {
+              "type": "string"
+            },
+            "grand_alliance_id": {
+              "type": "string",
+              "enum": ["order", "chaos", "destruction", "death"]
+            },
+            "size": {
+              "type": "number"
+            },
+            "points": {
+              "type": "number"
+            },
+            "battlefield_role": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
