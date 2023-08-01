@@ -30,7 +30,6 @@ services:
     image: ghcr.io/brittonhayes/aos:latest
     build:
       context: .
-      dockerfile: ./docker/Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=web"

@@ -1,5 +1,5 @@
 [deploy]
-dockerfilePath = "./docker/Dockerfile"
+dockerfilePath = "Dockerfile"
 startCommand = "/bin/aos --migrate"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 5
