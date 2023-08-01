@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "$id": "https://aos-api.com/schema/cities.schema.json",
+  "title": "Cities",
+  "type": "array",
+  "items": {
+    "properties": {
+      "model": {
+        "type": "string"
+      },
+      "rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "name"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z_]+$"
+            },
+            "name": {
+              "type": "string",
+              "description": "The name of the city."
+            },
+            "description": {
+              "type": "string",
+              "description": "A description of the city."
+            }
+          }
+        }
+      }
+    }
+  }
+}

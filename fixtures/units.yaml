@@ -1,9 +1,11 @@
+# yaml-language-server: $schema=../schema/units.schema.json
+
 - model: Unit
   rows:
     - id: lord_celestant
       name: Lord-Celestant
       grand_alliance: order
-      move: 5in
+      move: 5"
       description: A mighty warrior and leader of the Stormcast Eternals, wielding a powerful weapon and inspiring nearby units.
       save: 3
       bravery: 9
@@ -24,25 +26,25 @@
       magic: []
       damage_table:
         - wound_track_position: 0
-          move: 5in
+          move: 5"
           min_wounds_suffered: 0
       melee_weapons:
         - name: Celestine Hammer
-          range: '1'
+          range: 1"
           attacks: '4+'
           to_hit: '3+'
           to_wound: '3+'
           rend: '-1'
           damage: 'D3'
         - name: Stormbound Blade
-          range: '1'
+          range: 1"
           attacks: '1'
           to_hit: '3+'
           to_wound: '4+'
           rend: '-1'
           damage: '2'
         - name: Great Claws
-          range: '1'
+          range: 1"
           attacks: '2'
           to_hit: '3+'
           to_wound: '3+'
@@ -52,7 +54,7 @@
     - id: liberators
       name: Liberators
       grand_alliance: order
-      move: 5in
+      move: 5"
       description: Mighty warriors armed with powerful warhammers and shields, forming the backbone of the Stormcast Eternals forces.
       save: 4
       bravery: 7
@@ -71,11 +73,11 @@
       magic: []
       damage_table:
         - wound_track_position: 0
-          move: 5in
+          move: 5"
           min_wounds_suffered: 0
       melee_weapons:
         - name: Warhammer
-          range: '1'
+          range: 1"
           attacks: '1+'
           to_hit: '4+'
           to_wound: '3+'

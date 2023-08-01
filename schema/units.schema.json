@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "$id": "https://aos-api.com/schema/units.schema.json",
+  "title": "Units",
+  "type": "array",
+  "items": {
+    "properties": {
+      "model": {
+        "type": "string"
+      },
+      "rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "name"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z_]+$"
+            },
+            "name": {
+              "type": "string",
+              "description": "The name of the unit."
+            },
+            "description": {
+              "type": "string",
+              "description": "A description of the unit."
+            },
+            "grand_alliance": {
+              "type": "string",
+              "description": "The Grand Alliance the unit belongs to.",
+              "pattern": "^[a-z_]+$",
+              "enum": ["order", "chaos", "destruction", "death"]
+            },
+            "move": {
+              "type": "string",
+              "description": "The unit's move characteristics in inches.",
+              "pattern": "[0-9]+\""
+            },
+            "save": {
+              "type": "number"
+            },
+            "bravery": {
+              "type": "number"
+            },
+            "models": {
+              "type": "number"
+            },
+            "points": {
+              "type": "number"
+            },
+            "wounds": {
+              "type": "number"
+            },
+            "abilities": {
+              "type": "array",
+              "description": "The abilities the unit has.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the ability."
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "command_abilities": {
+              "type": "array",
+              "description": "The command abilities the unit has.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "magic": {
+              "type": "array",
+              "description": "The magic abilities the unit has.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "damage_table": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "wound_track_position": {
+                    "type": "number"
+                  },
+                  "move": {
+                    "type": "string",
+                    "pattern": "[0-9]+\""
+                  },
+                  "min_wounds_suffered": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "melee_weapons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "range": {
+                    "type": "string",
+                    "pattern": "[0-9]+\""
+                  },
+                  "attacks": {
+                    "type": "string",
+                    "pattern": "^[0-9+-D]+$"
+                  },
+                  "to_hit": {
+                    "type": "string"
+                  },
+                  "to_wound": {
+                    "type": "string"
+                  },
+                  "rend": {
+                    "type": "string"
+                  },
+                  "damage": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "missile_weapons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "range": {
+                    "type": "string",
+                    "pattern": "[0-9]+\""
+                  },
+                  "attacks": {
+                    "type": "string",
+                    "pattern": "^[0-9+-D]+$"
+                  },
+                  "to_hit": {
+                    "type": "string"
+                  },
+                  "to_wound": {
+                    "type": "string"
+                  },
+                  "rend": {
+                    "type": "string"
+                  },
+                  "damage": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
