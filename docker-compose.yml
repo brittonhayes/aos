@@ -27,10 +27,10 @@ services:
 
   aos:
     container_name: aos
-    image: ghcr.io:brittonhayes/aos:latest
+    image: ghcr.io/brittonhayes/aos:latest
     build:
-      dockerfile: ./docker/Dockerfile
       context: .
+      dockerfile: ./docker/Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=web"
@@ -53,18 +53,18 @@ services:
       options:
         fluentd-address: localhost:24224
     depends_on:
-      otel_collector:
+      otel:
         condition: service_started
 
-  otel_collector:
+  otel:
     image: otel/opentelemetry-collector-contrib:0.76.1
-    container_name: otel_collector
+    container_name: otel 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.otel_collector.rule=Host(`otel_collector.localhost`)"
-      - "traefik.http.routers.otel_collector.entrypoints=web"
+      - "traefik.http.routers.otel.rule=Host(`otel.localhost`)"
+      - "traefik.http.routers.otel.entrypoints=web"
       - "traefik.docker.network=web"
-      - "traefik.http.services.otel_collector.loadbalancer.server.port=4318"
+      - "traefik.http.services.otel.loadbalancer.server.port=4318"
     deploy:
       resources:
         limits:
