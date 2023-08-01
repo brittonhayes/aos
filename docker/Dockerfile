@@ -15,6 +15,9 @@ RUN CGO_ENABLED=0 go build -o /bin/aos cmd/aos/main.go
 FROM gcr.io/distroless/static-debian11:nonroot
 
 LABEL maintainer="brittonhayes"
+LABEL org.opencontainers.image.source="https://github.com/brittonhayes/aos"
+LABEL org.opencontainers.image.description="An unnoficial AoS REST API built with Go and Sqlite."
+LABEL org.opencontainers.image.licenses="MIT"
 
 COPY --from=builder --chown=nonroot:nonroot /bin/aos /bin/aos
 

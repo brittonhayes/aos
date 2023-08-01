@@ -3,9 +3,6 @@
 
 
 receivers:
-  httpcheck/warhammer:
-    endpoint: http://warhammer:8080/healthz
-    method: GET
   otlp:
     protocols:
       grpc:
@@ -20,26 +17,26 @@ processors:
   batch:
   attributes:
     actions:
-      - action: insert
-        key: loki.attribute.labels
-        value: container
-      - action: insert
-        key: loki.format
-        value: raw
- 
+    - action: insert
+      key: loki.attribute.labels
+      value: container
+    - action: insert
+      key: loki.format
+      value: raw
+
 exporters:
   logging:
   otlp:
-    endpoint: "tempo:4317"
+    endpoint: "${env:OTEL_EXPORTER_OTLP_ENDPOINT}"
     tls:
       insecure: true
   prometheus:
-    endpoint: "otel_collector:9464"
+    endpoint: "${env:OTEL_EXPORTER_PROMETHEUS_ENDPOINT}"
     resource_to_telemetry_conversion:
       enabled: true
     enable_open_metrics: true
   loki:
-    endpoint: http://loki:3100/loki/api/v1/push
+    endpoint: "${env:OTEL_EXPORTER_LOKI_ENDPOINT}}"
 
 service:
   pipelines:
@@ -48,7 +45,7 @@ service:
       processors: [batch, attributes]
       exporters: [logging, loki]
     metrics:
-      receivers: [otlp, httpcheck/warhammer]
+      receivers: [otlp]
       processors: [batch]
       exporters: [prometheus, logging]
     traces:
