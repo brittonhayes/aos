@@ -1,0 +1,39 @@
+# Copyright The OpenTelemetry Authors
+# SPDX-License-Identifier: Apache-2.0
+
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch:
+
+exporters:
+  logging:
+  # otlp:
+  #   endpoint: "${env:OTEL_EXPORTER_OTLP_ENDPOINT}"
+  #   tls:
+  #     insecure: true
+  # prometheus:
+  #   endpoint: "${env:OTEL_EXPORTER_PROMETHEUS_ENDPOINT}"
+  #   resource_to_telemetry_conversion:
+  #     enabled: true
+  #   enable_open_metrics: true
+
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging]

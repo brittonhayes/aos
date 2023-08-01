@@ -7,10 +7,11 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: brittonhayes/aos
+  IMAGE_NAME_AOS: brittonhayes/aos
+  IMAGE_NAME_OTEL: brittonhayes/aos-otel
 
 jobs:
-  build-and-push-image:
+  release-image-aos:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,12 +32,45 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_AOS }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: ./docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  release-image-otel:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_OTEL }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/otel.Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
