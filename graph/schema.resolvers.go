@@ -20,6 +20,8 @@ func (r *queryResolver) Allegiances(ctx context.Context, filter *model.Allegianc
 	return r.Repo.GetAllegiances(ctx, &api.GetAllegiancesParams{
 		Name:          filter.Name,
 		GrandAlliance: filter.GrandAlliance,
+		Limit:         filter.Limit,
+		Offset:        filter.Offset,
 	})
 }
 
@@ -39,6 +41,8 @@ func (r *queryResolver) Units(ctx context.Context, filter *model.UnitFilters) ([
 		GrandAlliance: filter.GrandAlliance,
 		GrandStrategy: filter.GrandStrategy,
 		Points:        filter.Points,
+		Limit:         filter.Limit,
+		Offset:        filter.Offset,
 	})
 }
 
@@ -54,6 +58,8 @@ func (r *queryResolver) Warscrolls(ctx context.Context, filter *model.WarscrollF
 		BattlefieldRole: filter.BattlefieldRole,
 		Size:            filter.Size,
 		Notes:           filter.Notes,
+		Limit:           filter.Limit,
+		Offset:          filter.Offset,
 	})
 }
 

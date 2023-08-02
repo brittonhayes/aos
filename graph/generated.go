@@ -5049,7 +5049,7 @@ func (ec *executionContext) unmarshalInputAllegianceFilters(ctx context.Context,
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "grandAlliance"}
+	fieldsInOrder := [...]string{"name", "grandAlliance", "limit", "offset"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -5074,6 +5074,24 @@ func (ec *executionContext) unmarshalInputAllegianceFilters(ctx context.Context,
 				return it, err
 			}
 			it.GrandAlliance = data
+		case "limit":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Limit = data
+		case "offset":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Offset = data
 		}
 	}
 
@@ -5087,7 +5105,7 @@ func (ec *executionContext) unmarshalInputUnitFilters(ctx context.Context, obj i
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "grandAlliance", "grandStrategy", "points"}
+	fieldsInOrder := [...]string{"name", "grandAlliance", "grandStrategy", "points", "limit", "offset"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -5130,6 +5148,24 @@ func (ec *executionContext) unmarshalInputUnitFilters(ctx context.Context, obj i
 				return it, err
 			}
 			it.Points = data
+		case "limit":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Limit = data
+		case "offset":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Offset = data
 		}
 	}
 
@@ -5143,7 +5179,7 @@ func (ec *executionContext) unmarshalInputWarscrollFilters(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "points", "battlefieldRole", "size", "notes"}
+	fieldsInOrder := [...]string{"name", "points", "battlefieldRole", "size", "notes", "limit", "offset"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -5195,6 +5231,24 @@ func (ec *executionContext) unmarshalInputWarscrollFilters(ctx context.Context, 
 				return it, err
 			}
 			it.Notes = data
+		case "limit":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Limit = data
+		case "offset":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Offset = data
 		}
 	}
 

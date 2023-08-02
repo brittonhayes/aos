@@ -71,6 +71,8 @@ type Warscroll {
 input AllegianceFilters {
   name: String
   grandAlliance: String
+  limit: Int
+  offset: Int
 }
 
 input UnitFilters {
@@ -78,6 +80,8 @@ input UnitFilters {
   grandAlliance: String
   grandStrategy: String
   points: Int
+  limit: Int
+  offset: Int
 }
 
 input WarscrollFilters {
@@ -86,6 +90,8 @@ input WarscrollFilters {
   battlefieldRole: String
   size: String
   notes: String
+  limit: Int
+  offset: Int
 }
 
 type Query {
