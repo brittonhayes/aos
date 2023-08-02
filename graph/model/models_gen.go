@@ -5,6 +5,8 @@ package model
 type AllegianceFilters struct {
 	Name          *string `json:"name,omitempty"`
 	GrandAlliance *string `json:"grandAlliance,omitempty"`
+	Limit         *int    `json:"limit,omitempty"`
+	Offset        *int    `json:"offset,omitempty"`
 }
 
 type UnitFilters struct {
@@ -12,6 +14,8 @@ type UnitFilters struct {
 	GrandAlliance *string `json:"grandAlliance,omitempty"`
 	GrandStrategy *string `json:"grandStrategy,omitempty"`
 	Points        *int    `json:"points,omitempty"`
+	Limit         *int    `json:"limit,omitempty"`
+	Offset        *int    `json:"offset,omitempty"`
 }
 
 type WarscrollFilters struct {
@@ -20,4 +24,6 @@ type WarscrollFilters struct {
 	BattlefieldRole *string `json:"battlefieldRole,omitempty"`
 	Size            *string `json:"size,omitempty"`
 	Notes           *string `json:"notes,omitempty"`
+	Limit           *int    `json:"limit,omitempty"`
+	Offset          *int    `json:"offset,omitempty"`
 }
