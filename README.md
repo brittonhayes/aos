@@ -54,21 +54,93 @@ To add a new entry to the database, just add a new object to the appropriate yam
 
 ## API Endpoints
 
-*The API is read-only so all endpoints are GET requests.*
+*The API is read-only*
 
 ✅=Available
 🚧=Under Construction
 
-- ✅ `/api/cities` - Get all cities
-- ✅ `/api/cities/{id}` - Get a city by ID
-- ✅ `/api/grand-alliances` - Get all grand alliances
-- ✅ `/api/grand-alliances/{id}` - Get a grand alliance by ID
-- ✅ `/api/grand-strategies/` - Get all grand strategies
-- ✅ `/api/grand-strategies/{id}` - Get a grand strategy by ID
-- 🚧 `/api/units` - Get all units
-- 🚧 `/api/units/{id}` - Get a unit by ID
-- 🚧 `/api/warscrolls/` - Get all warscrolls
-- 🚧 `/api/warscrolls/{id}` - Get a warscroll by ID
+- ✅ `/cities` - Get all cities
+- ✅ `/cities/{id}` - Get a city by ID
+- ✅ `/grand-alliances` - Get all grand alliances
+- ✅ `/grand-alliances/{id}` - Get a grand alliance by ID
+- ✅ `/grand-strategies/` - Get all grand strategies
+- ✅ `/grand-strategies/{id}` - Get a grand strategy by ID
+- ✅ `/units` - Get all units
+- ✅ `/units/{id}` - Get a unit by ID
+- ✅ `/warscrolls/` - Get all warscrolls
+- ✅ `/warscrolls/{id}` - Get a warscroll by ID
+- ✅ `/graphql` - GraphQL playground
+- ✅ `/query` - GraphQL query endpoint
+
+
+## 🔎 Querying
+
+The API supports GraphQL queries. The GraphQL playground is available at `/graphql` and the query endpoint is available at `/query`.
+
+### Example - Get all units
+
+```graphql
+query {
+  units {
+    id
+    name
+    description
+    grandAlliance
+    points
+  }
+}
+```
+
+### Example - Get all units, filtering for a specific name
+
+```graphql
+query {
+  units(filter: { name: "Lord" }) {
+    id
+    name
+    description
+    grandAlliance
+    points
+  }
+}
+```
+
+
+## 📦 Go Client
+
+A Go client is available for the API. More examples are available in the [example/](https://github.com/brittonhayes/aos/tree/main/example) directory.
+
+```go
+package main
+
+import (
+	"context"
+	"net/http"
+	"time"
+
+	"github.com/brittonhayes/aos/client"
+)
+
+func main() {
+	//	Setup a context with a timeout so we're covered in case of a slow response
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Create a new http client
+	c := client.NewClient(&http.Client{}, "https://aos-api.com/query", nil)
+
+	// Get all allegiances
+	resp, err := c.GetAllegiances(ctx, client.AllegianceFilters{})
+	if err != nil {
+		panic(err)
+	}
+
+	// List the allegiances
+	for _, a := range resp.Allegiances {
+		println(a.Name)
+	}
+}
+```
 
 ## 📈 Monitoring (self-hosted)
 

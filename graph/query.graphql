@@ -1,0 +1,23 @@
+query GetUnits($filter: UnitFilters!) {
+  units(filter: $filter) {
+    ...UnitFragment
+  }
+}
+
+query GetAllegiances($filter: AllegianceFilters!) {
+  allegiances(filter: $filter) {
+    ...AllegianceFragment
+  }
+}
+
+query GetGrandAlliances() {
+  grandAlliances {
+    ...GrandAllianceFragment
+  }
+}
+
+query GetWarscrolls($filter: WarscrollFilters!) {
+  warscrolls(filter: $filter) {
+    ...WarscrollFragment
+  }
+}

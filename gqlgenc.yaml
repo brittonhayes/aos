@@ -1,0 +1,31 @@
+model:
+  package: client
+  filename: ./client/model.go
+client:
+  package: client
+  filename: ./client/client.go
+query:
+  - "./graph/*.graphql"
+schema:
+  - "./graph/schema.graphqls"
+generate:
+  clientV2: true 
+models:
+  Unit:
+    model: github.com/brittonhayes/aos/api.Unit
+  Allegiance:
+    model: github.com/brittonhayes/aos/api.Allegiance
+  GrandAlliance:
+    model: github.com/brittonhayes/aos/api.GrandAlliance
+  Ability:
+    model: github.com/brittonhayes/aos/api.Ability
+  DamageTable:
+    model: github.com/brittonhayes/aos/api.DamageTable
+  Warscroll:
+    model: github.com/brittonhayes/aos/api.Warscroll
+  Weapon:
+    model: github.com/brittonhayes/aos/api.Weapon
+  ID:
+    model: github.com/99designs/gqlgen/graphql.Int64
+  Int:
+    model: github.com/99designs/gqlgen/graphql.Int64
