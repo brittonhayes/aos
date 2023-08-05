@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "https://aos-api.com/schema/warscrolls.schema.json",
   "title": "Warscrolls",
   "type": "array",
@@ -10,6 +10,7 @@
       },
       "rows": {
         "type": "array",
+        "uniqueItems": true,
         "items": {
           "type": "object",
           "required": ["id", "name", "size", "points"],
