@@ -1,0 +1,46 @@
+fragment UnitFragment on Unit {
+  id,
+  name,
+  grandAlliance,
+  champion,
+  size,
+  move,
+  description,
+  save,
+  bravery,
+  models,
+  points,
+  wounds,
+  keywords,
+  missileWeapons {
+    id
+  },
+  meleeWeapons {
+    id
+  },
+}
+
+fragment AllegianceFragment on Allegiance {
+  id,
+  name,
+  description,
+  grandAlliance,
+  mortalRealm
+}
+
+fragment GrandAllianceFragment on GrandAlliance {
+  id,
+  name,
+  description,
+}
+
+fragment WarscrollFragment on Warscroll {
+    id,
+    name,
+    allegianceId,
+    grandAllianceId,
+    size,
+    points,
+    battlefieldRole,
+    notes
+}

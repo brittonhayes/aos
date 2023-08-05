@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/99designs/gqlgen v0.17.36
+	github.com/Yamashou/gqlgenc v0.14.0
 	github.com/discord-gophers/goapi-gen v0.3.0
 	github.com/getkin/kin-openapi v0.118.0
 	github.com/go-chi/chi/v5 v5.0.8
