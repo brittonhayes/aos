@@ -38,6 +38,7 @@ type Weapon {
 type Unit {
   id: String!
   name: String!
+  allegiance: String
   grandAlliance: String
   champion: String
   size: String 

@@ -80,6 +80,7 @@ type ComplexityRoot struct {
 
 	Unit struct {
 		Abilities        func(childComplexity int) int
+		Allegiance       func(childComplexity int) int
 		Bravery          func(childComplexity int) int
 		Champion         func(childComplexity int) int
 		CommandAbilities func(childComplexity int) int
@@ -292,6 +293,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Unit.Abilities(childComplexity), true
+
+	case "Unit.allegiance":
+		if e.complexity.Unit.Allegiance == nil {
+			break
+		}
+
+		return e.complexity.Unit.Allegiance(childComplexity), true
 
 	case "Unit.bravery":
 		if e.complexity.Unit.Bravery == nil {
@@ -1498,6 +1506,8 @@ func (ec *executionContext) fieldContext_Query_units(ctx context.Context, field 
 				return ec.fieldContext_Unit_id(ctx, field)
 			case "name":
 				return ec.fieldContext_Unit_name(ctx, field)
+			case "allegiance":
+				return ec.fieldContext_Unit_allegiance(ctx, field)
 			case "grandAlliance":
 				return ec.fieldContext_Unit_grandAlliance(ctx, field)
 			case "champion":
@@ -1828,6 +1838,47 @@ func (ec *executionContext) _Unit_name(ctx context.Context, field graphql.Collec
 }
 
 func (ec *executionContext) fieldContext_Unit_name(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Unit",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Unit_allegiance(ctx context.Context, field graphql.CollectedField, obj *api.Unit) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Unit_allegiance(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Allegiance, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Unit_allegiance(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Unit",
 		Field:      field,
@@ -5607,6 +5658,8 @@ func (ec *executionContext) _Unit(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "allegiance":
+			out.Values[i] = ec._Unit_allegiance(ctx, field, obj)
 		case "grandAlliance":
 			out.Values[i] = ec._Unit_grandAlliance(ctx, field, obj)
 		case "champion":
