@@ -38,6 +38,10 @@ func (r *repository) unitsFilterQuery(query *bun.SelectQuery, params *api.GetUni
 		query = query.Where("? LIKE ?", bun.Ident("points"), *params.Points)
 	}
 
+	if params.Allegiance != nil {
+		query = query.Where("? LIKE ?", bun.Ident("allegiance"), *params.Allegiance+"%")
+	}
+
 	if params.GrandAlliance != nil {
 		query = query.Where("? LIKE ?", bun.Ident("grand_alliance"), *params.GrandAlliance+"%")
 	}

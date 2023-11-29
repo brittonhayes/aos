@@ -1,6 +1,7 @@
 fragment UnitFragment on Unit {
   id,
   name,
+  allegiance,
   grandAlliance,
   champion,
   size,

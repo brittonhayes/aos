@@ -2,11 +2,25 @@ openapi: "3.1.0"
 info:
   title: AoS API (Unofficial)
   version: 1.0.0
+  contact:
+    name: AoS API (Unofficial)
+    url: "https://aos-api.com"
   description: API specification for an AoS REST API (Unofficial)
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 security: []
+tags:
+- name: allegiances
+- name: armies
+- name: cities
+- name: docs
+- name: grand-alliances
+- name: grand-strategies
+- name: health
+- name: units
+- name: warscrolls
+
 servers:
 - url: http://aos-api.localhost
   description: Local server
@@ -18,6 +32,8 @@ paths:
       summary: Get health status
       description: Get health status
       operationId: getHealthz
+      tags:
+      - "health"
       responses:
         '200':
           description: OK
@@ -36,6 +52,8 @@ paths:
       summary: Get all allegiances
       description: Get all allegiances
       operationId: getAllegiances
+      tags:
+      - "allegiances"
       parameters:
       - name: limit
         in: query
@@ -43,7 +61,7 @@ paths:
         required: false
         schema:
           type: integer
-      - name: offset 
+      - name: offset
         in: query
         description: number of allegiances to skip
         required: false
@@ -81,6 +99,8 @@ paths:
       summary: Get allegiance by id
       description: Get allegiance by id
       operationId: getAllegianceById
+      tags:
+      - "allegiances"
       parameters:
       - name: id
         in: path
@@ -106,6 +126,8 @@ paths:
       summary: Get all armies
       description: Get all armies
       operationId: getArmies
+      tags:
+      - "armies"
       responses:
         '200':
           description: OK
@@ -126,6 +148,8 @@ paths:
       summary: Get army by id
       description: Get army by id
       operationId: getArmyById
+      tags:
+      - "armies"
       parameters:
       - name: id
         in: path
@@ -151,6 +175,8 @@ paths:
       summary: Get all cities
       description: Get all cities
       operationId: getCities
+      tags:
+      - "cities"
       parameters:
       - name: limit
         in: query
@@ -158,7 +184,7 @@ paths:
         required: false
         schema:
           type: integer
-      - name: offset 
+      - name: offset
         in: query
         description: number of cities to skip
         required: false
@@ -190,6 +216,8 @@ paths:
       summary: Get city by id
       description: Get city by id
       operationId: getCityById
+      tags:
+      - "cities"
       parameters:
       - name: id
         in: path
@@ -215,6 +243,8 @@ paths:
       summary: Get API documentation
       description: Get API documentation
       operationId: getDocs
+      tags:
+      - "docs"
       responses:
         '200':
           description: OK
@@ -234,6 +264,8 @@ paths:
       summary: Get all grand alliances
       description: Get all grand alliances
       operationId: getGrandAlliances
+      tags:
+      - "grand-alliances"
       responses:
         '200':
           description: OK
@@ -254,6 +286,8 @@ paths:
       summary: Get grand alliance by id
       description: Get grand alliance by id
       operationId: getGrandAllianceById
+      tags:
+      - "grand-alliances"
       parameters:
       - name: id
         in: path
@@ -279,6 +313,8 @@ paths:
       summary: Get all grand strategies
       description: Get all grand strategies
       operationId: getGrandStrategies
+      tags:
+      - "grand-strategies"
       responses:
         '200':
           description: OK
@@ -299,6 +335,8 @@ paths:
       summary: Get grand strategy by id
       description: Get grand strategy by id
       operationId: getGrandStrategyById
+      tags:
+      - "grand-strategies"
       parameters:
       - name: id
         in: path
@@ -324,6 +362,8 @@ paths:
       summary: Get all units
       description: Get all units
       operationId: getUnits
+      tags:
+      - "units"
       parameters:
       - name: limit
         in: query
@@ -331,7 +371,7 @@ paths:
         required: false
         schema:
           type: integer
-      - name: offset 
+      - name: offset
         in: query
         description: number of units to skip
         required: false
@@ -340,6 +380,12 @@ paths:
       - name: name
         in: query
         description: name of unit to filter by
+        required: false
+        schema:
+          type: string
+      - name: allegiance
+        in: query
+        description: allegiance of unit to filter by
         required: false
         schema:
           type: string
@@ -381,6 +427,8 @@ paths:
       summary: Get unit by id
       description: Get unit by id
       operationId: getUnitById
+      tags:
+      - "units"
       parameters:
       - name: id
         in: path
@@ -406,6 +454,8 @@ paths:
       summary: Get weapons for unit by id
       description: Get weapons for unit by id
       operationId: getWeaponsForUnitById
+      tags:
+      - "units"
       parameters:
       - name: id
         in: path
@@ -426,12 +476,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    
   /units/{id}/abilities:
     get:
       summary: Get abilities for unit by id
       description: Get abilities for unit by id
       operationId: getAbilitiesForUnitById
+      tags:
+      - "units"
       parameters:
       - name: id
         in: path
@@ -459,6 +510,7 @@ paths:
       summary: Get all warscrolls
       description: Get all warscrolls
       operationId: getWarscrolls
+      tags: ["warscrolls"]
       parameters:
       - name: limit
         in: query
@@ -522,6 +574,8 @@ paths:
       summary: Get warscroll by id
       description: Get warscroll by id
       operationId: getWarscrollById
+      tags:
+      - "warscrolls"
       parameters:
       - name: id
         in: path
@@ -618,7 +672,7 @@ components:
           type: integer
           format: int64
         move:
-          type: string 
+          type: string
         min_wounds_suffered:
           type: integer
           format: int64
@@ -715,6 +769,8 @@ components:
           x-go-extra-tags:
             bun: 'id,pk'
         name:
+          type: string
+        allegiance:
           type: string
         grand_alliance:
           type: string

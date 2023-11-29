@@ -5,6 +5,7 @@
     - id: lord_celestant
       name: Lord-Celestant
       grand_alliance: order
+      allegiance: stormcast_eternals
       move: 5"
       description: A mighty warrior and leader of the Stormcast Eternals, wielding a powerful weapon and inspiring nearby units.
       save: 3
@@ -53,6 +54,7 @@
       missile_weapons: []
     - id: liberators
       name: Liberators
+      allegiance: stormcast_eternals
       grand_alliance: order
       move: 5"
       description: Mighty warriors armed with powerful warhammers and shields, forming the backbone of the Stormcast Eternals forces.

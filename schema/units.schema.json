@@ -26,6 +26,38 @@
               "type": "string",
               "description": "A description of the unit."
             },
+            "allegiance": {
+              "type": "string",
+              "description": "The allegiance the unit belongs to.",
+              "enum": [
+                "cities_of_sigmar",
+                "daughters_of_khaine",
+                "fyreslayers",
+                "idoneth_deepkin",
+                "kharadron_overlords",
+                "lumineth_realmlords",
+                "seraphon",
+                "stormcast_eternals",
+                "sylvaneth",
+                "beasts_of_chaos",
+                "blades_of_khorne",
+                "disciples_of_tzeentch",
+                "hedonites_of_slaanesh",
+                "maggotkin_of_nurgle",
+                "skaven",
+                "slaves_to_darkness",
+                "flesheater_courts",
+                "nighthaunt",
+                "ossiarch_bonereapers",
+                "soulblight_gravelords",
+                "gloomspite_gitz",
+                "ogor_mawtribes",
+                "orruk_warclans",
+                "sons_of_behemat",
+                "endless_spells",
+                "incarnates"
+              ]
+            },
             "grand_alliance": {
               "type": "string",
               "description": "The Grand Alliance the unit belongs to.",
