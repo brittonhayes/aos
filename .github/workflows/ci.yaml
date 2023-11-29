@@ -54,6 +54,8 @@ jobs:
 
     - name: Setup tools
       run: |
+        pwd
+        ls -lah
         go install github.com/discord-gophers/goapi-gen@latest
         go install go.uber.org/mock/mockgen@latest
 
