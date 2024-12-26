@@ -5,12 +5,7 @@
 
 > An unnoficial AoS REST API built with Go and Sqlite.
 
-## ✨ Try the API (hosted)
-
-- API: https://aos-api.com/
-- Documentation: https://aos-api.com/docs
-
-## ⚡ Quick Start (self-hosted)
+## ⚡ Quick Start
 
 Get started with docker-compose to seed the database and start the API server.
 
@@ -72,7 +67,6 @@ To add a new entry to the database, just add a new object to the appropriate yam
 - ✅ `/graphql` - GraphQL playground
 - ✅ `/query` - GraphQL query endpoint
 
-
 ## 🔎 Querying
 
 The API supports GraphQL queries. The GraphQL playground is available at `/graphql` and the query endpoint is available at `/query`.
@@ -104,7 +98,6 @@ query {
   }
 }
 ```
-
 
 ## 📦 Go Client
 
@@ -142,7 +135,7 @@ func main() {
 }
 ```
 
-## 📈 Monitoring (self-hosted)
+## 📈 Monitoring
 
 Application observability is instrumented with OpenTelemetry. Telemetry is available in [Grafana](https://grafana.com/grafana/) and [Prometheus](https://prometheus.io/). Application tracing is powered by [Grafana Tempo](https://grafana.com/oss/tempo/). All application services are behind [Traefik](https://doc.traefik.io/traefik/) reverse proxy.
 
