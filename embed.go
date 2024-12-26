@@ -12,3 +12,6 @@ var HTML_DOCS []byte
 
 //go:embed web/src/index.html
 var HTML_HOME []byte
+
+//go:embed web/src/sunset.html
+var HTML_SUNSET []byte

@@ -1,117 +1,133 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Primary Meta Tags -->
-    <title>AOS</title>
-    <meta name="title" content="AOS" />
-    <meta
-      name="description"
-      content="AoS REST API (Unofficial) built with Go and Sqlite. Including OpenTelemetry, Grafana, and Jaeger for logs, metrics, and traces. "
-    />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://aos-api.com" />
-    <meta property="og:title" content="AOS" />
-    <meta
-      property="og:description"
-      content="AoS REST API (Unofficial) built with Go and Sqlite. Including OpenTelemetry, Grafana, and Jaeger for logs, metrics, and traces. "
-    />
-    <meta
-      property="og:image"
-      content="https://repository-images.githubusercontent.com/664956613/93c85453-04e1-4820-896c-8c5c3e95345c"
-    />
-    <meta name="theme-color" content="#2563eb">
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://aos-api.com" />
-    <meta property="twitter:title" content="AOS" />
-    <meta
-      property="twitter:description"
-      content="AoS REST API (Unofficial) built with Go and Sqlite. Including OpenTelemetry, Grafana, and Jaeger for logs, metrics, and traces. "
-    />
-    <meta
-      property="twitter:image"
-      content="https://repository-images.githubusercontent.com/664956613/93c85453-04e1-4820-896c-8c5c3e95345c"
-    />
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-        background: linear-gradient(90deg, #0f0c18 21px, transparent 1%) center,
-          linear-gradient(#0f0c18 21px, transparent 1%) center, #314057;
-        background-size: 22px 22px;
-      }
-    </style>
-  </head>
-  <body>
-    <section class="h-screen">
-      <div
-        class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
-      >
-        <div class="mx-auto max-w-3xl text-center">
-          <h1
-            class="title bg-gradient-to-r from-green-300 via-blue-400 to-purple-500 bg-clip-text text-transparent text-7xl font-extrabold sm:text-8xl"
-          >
-            AOS
-          </h1>
-          <p class="mx-auto text-white mt-4 max-w-xl sm:text-3xl/relaxed">
-            Tabletop Wargame REST/GraphQL API
-          </p>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Primary Meta Tags -->
+  <title>AOS API - Unofficial Battle Data Engine</title>
+  <meta name="title" content="AOS API - Unofficial Battle Data Engine" />
+  <meta name="description"
+    content="An unofficial REST & GraphQL API for tabletop warfare. Access warscrolls, grand strategies, and allegiance data for your gaming applications." />
 
-          <div class="mt-8 flex flex-wrap justify-evenly md:justify-center gap-4">
-            <a
-              class="group relative inline-block w-3/4 md:w-auto text-sm font-medium text-white focus:outline-none focus:ring"
-              href="/graphql"
-              target="_blank"
-            >
-              <span
-                class="absolute inset-0 border w-full group-active:border-blue-500"
-              ></span>
-              <span
-                class="block border min-w-full border-blue-500 bg-blue-600 hover:border-white px-6 sm:px-12 py-3 transition-transform active:border-blue-500 active:bg-white group-hover:-translate-x-1 group-hover:-translate-y-1"
-              >
-                Try GraphQL Playground
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aos-api.com" />
+  <meta property="og:title" content="AOS API - Unofficial Battle Data Engine" />
+  <meta property="og:description"
+    content="An unofficial REST & GraphQL API for tabletop warfare. Access warscrolls, grand strategies, and allegiance data for your gaming applications." />
+  <meta property="og:image"
+    content="https://repository-images.githubusercontent.com/664956613/93c85453-04e1-4820-896c-8c5c3e95345c" />
+  <meta name="theme-color" content="#2563eb">
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://aos-api.com" />
+  <meta property="twitter:title" content="AOS API - Unofficial Battle Data Engine" />
+  <meta property="twitter:description"
+    content="An unofficial REST & GraphQL API for tabletop warfare. Access warscrolls, grand strategies, and allegiance data for your gaming applications." />
+  <meta property="twitter:image"
+    content="https://repository-images.githubusercontent.com/664956613/93c85453-04e1-4820-896c-8c5c3e95345c" />
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap">
+  <style>
+    body {
+      background: #080808;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, rgba(8, 8, 8, 0.98) 0%, rgba(16, 20, 16, 0.99) 100%);
+      z-index: -1;
+    }
+
+    .title {
+      font-family: 'Cinzel', serif;
+      color: #50fa7b;
+      /* Poison/toxic green */
+      text-shadow:
+        1px 1px 2px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(80, 250, 123, 0.3);
+      /* Subtle green glow */
+    }
+
+    .battle-border {
+      position: relative;
+      border: 1px solid rgba(80, 250, 123, 0.15);
+      /* Updated border color to match */
+    }
+
+    .battle-border:hover {
+      border-color: rgba(80, 250, 123, 0.3);
+      /* Brighter on hover */
+    }
+  </style>
+</head>
+
+<body>
+  <section class="h-screen relative">
+    <!-- Decorative elements -->
+    <!-- Removing the green blur elements -->
+
+    <div class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
+      <div class="mx-auto max-w-4xl text-center">
+        <h1 class="title text-7xl font-extrabold sm:text-8xl mb-4 relative">
+          AOS API
+        </h1>
+        <p class="mx-auto text-white mt-4 max-w-xl sm:text-3xl/relaxed font-cinzel mb-8">
+          Unofficial Grand Data Engine
+        </p>
+
+        <div class="mt-8 flex flex-wrap justify-evenly md:justify-center gap-6">
+          <a class="battle-border group relative inline-block w-3/4 md:w-auto text-sm font-medium text-white focus:outline-none focus:ring"
+            href="/graphql" target="_blank">
+            <span class="block bg-[#0A0A0A] px-8 sm:px-12 py-4 transition-colors hover:bg-[#111111]">
+              <span class="flex items-center justify-center gap-2">
+                <i data-feather="compass"></i>
+                Playground
               </span>
-            </a>
-            <a
-              class="group relative inline-block text-sm w-3/4 md:w-auto font-medium text-blue-500 focus:outline-none focus:ring active:text-white"
-              href="/docs"
-              target="_blank"
-            >
-              <span class="absolute inset-0 border border-current"></span>
-              <span
-                class="block border border-current hover:bg-blue-600 hover:text-white px-6 sm:px-12 py-3 transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1"
-              >
+            </span>
+          </a>
+
+          <a class="battle-border group relative inline-block w-3/4 md:w-auto text-sm font-medium text-white focus:outline-none focus:ring"
+            href="/docs" target="_blank">
+            <span class="block bg-[#0A0A0A] px-8 sm:px-12 py-4 transition-colors hover:bg-[#111111]">
+              <span class="flex items-center justify-center gap-2">
+                <i data-feather="book"></i>
                 Documentation
               </span>
-            </a>
-            <a
-              class="block rounded w-3/4 md:w-auto py-3 px-6 inset-0 md:border text-white hover:bg-blue-600 hover:border hover:border-white focus:outline-none focus:ring active:bg-blue-500 "
-              href="https://github.com/brittonhayes/aos"
-              target="_blank"
-            >
-              <span class="flex justify-center items-center">
+            </span>
+          </a>
+
+          <a class="battle-border group relative inline-block w-3/4 md:w-auto text-sm font-medium text-white focus:outline-none focus:ring"
+            href="https://github.com/brittonhayes/aos" target="_blank">
+            <span class="block bg-[#0A0A0A] px-8 sm:px-12 py-4 transition-colors hover:bg-[#111111]">
+              <span class="flex items-center justify-center gap-2">
                 <i data-feather="github"></i>
               </span>
-            </a>
-            <p
-              class="block w-full mt-24 px-6 sm:w-2/3 italic md:text-lg text-md text-gray-500 break-words"
-            >
-              *The AOS API is not affiliated with Games Workshop in any way and
-              is not an official product.
-            </p>
-          </div> 
+            </span>
+          </a>
         </div>
-      </div>
-    </section>
 
-  </div>
-    <script type="application/javascript">
-      feather.replace();
-    </script>
-  </body>
+        <p class="block w-full mt-24 px-6 sm:w-2/3 mx-auto italic md:text-lg text-md text-gray-400 break-words">
+          *This is an unofficial fan project. Not affiliated with any tabletop gaming company. All game terms and data
+          are used under fair use for reference purposes only.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/javascript">
+    feather.replace();
+  </script>
+</body>
+
 </html>

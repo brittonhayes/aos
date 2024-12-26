@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>API Sunset Notice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0f;
+            --card-bg: rgba(20, 20, 25, 0.98);
+            --text-color: #ffffff;
+            --accent-color: #d4a853;
+            --accent-secondary: #8b0000;
+            --border-color: #2a2a35;
+            --hover-color: rgba(212, 168, 83, 0.1);
+            --text-secondary: #9898a3;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 1rem;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent-secondary);
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 1rem 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .important-notice {
+            background: var(--hover-color);
+            border: 1px solid var(--accent-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        .important-notice a {
+            color: var(--accent-color);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: grid;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .action-link {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: transparent;
+        }
+
+        .action-link:hover {
+            border-color: var(--accent-color);
+            background: var(--hover-color);
+        }
+
+        .action-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .action-title {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .action-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>API Sunset Notice</h1>
+        <p>We want to inform you that the public API instance has been discontinued as of {{.SunsetDate}}.</p>
+
+        <div class="important-notice">
+            Please read our <a href="https://github.com/brittonhayes/aos/discussions">sunset announcement</a> for
+            detailed information about this decision and its impact.
+        </div>
+
+        <div class="actions">
+            <a href="https://github.com/brittonhayes/aos#-quick-start" class="action-link">
+                <div class="action-text">
+                    <span class="action-title">Self-Host Guide</span>
+                    <span class="action-description">Instructions for running your own instance</span>
+                </div>
+                →
+            </a>
+            <a href="https://github.com/brittonhayes/aos" class="action-link">
+                <div class="action-text">
+                    <span class="action-title">Open Source Project</span>
+                    <span class="action-description">View source code and contribute</span>
+                </div>
+                →
+            </a>
+        </div>
+
+        <div class="footer">
+            Thank you for your understanding and support of this project.
+        </div>
+    </div>
+</body>
+
+</html>

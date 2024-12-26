@@ -14,6 +14,7 @@ import (
 	"github.com/brittonhayes/aos/api"
 	"github.com/brittonhayes/aos/graph"
 	"github.com/brittonhayes/aos/internal/logging"
+	"github.com/brittonhayes/aos/internal/sunset"
 	"github.com/brittonhayes/aos/internal/tracing"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -52,6 +53,10 @@ func New(ctx context.Context, config *Config) *Server {
 	swagger.Servers = nil
 
 	r := chi.NewRouter()
+
+	// Add sunset middleware before all other middleware
+	// to display a sunset notice if the current date is after the sunset date
+	r.Use(sunset.Middleware)
 
 	// Use our validation middleware to check all requests against the
 	// OpenAPI schema.
