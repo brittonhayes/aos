@@ -57,7 +57,9 @@ func New(ctx context.Context, config *Config) *Server {
 	// OpenAPI schema.
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RedirectSlashes)
-	r.Use(middleware.Timeout(5 * time.Second))
+	r.Use(middleware.CleanPath)
+	r.Use(middleware.SetHeader("Cache-Control", "public, max-age=86400, s-maxage=31536000, stale-while-revalidate=60"))
+	r.Use(middleware.Timeout(4 * time.Second))
 	r.Use(logging.Middleware)
 	// r.Use(apimw.OAPIValidator(swagger))
 
