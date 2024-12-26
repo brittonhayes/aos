@@ -45,7 +45,7 @@ To add a new entry to the database, just add a new object to the appropriate yam
 +         description: The forces of Chaos seek to corrupt and dominate the Mortal Realms. Made up of daemons, monsters, and twisted beings, they spread destruction wherever theygo.
 ```
 
-- [View the data](https://github.com/brittonhayes/aos/blob/main/fixtures/fixtures.yaml)
+- [View the data](https://github.com/brittonhayes/aos/blob/main/fixtures/)
 
 ## API Endpoints
 
