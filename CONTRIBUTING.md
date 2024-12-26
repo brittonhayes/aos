@@ -7,16 +7,29 @@ Please note we have a [code of conduct](#code-of-conduct), please follow it in a
 
 ## Copyright and Data Ownership
 
-Any changes to the data hosted by this repository must respect the licensing rules documented by Games Workshop
-here [Intellectual Property Policy](https://www.games-workshop.com/en-US/Intellectual-Property-Policy).
+This project provides a self-hosted API solution for Warhammer Age of Sigmar data. Any contributions to this repository must strictly adhere to Games Workshop's [Intellectual Property Guidelines](https://www.warhammer.com/en-GB/legal#IntellectualPropertyGuidlines).
 
-We are in no way affiliated with Games Workshop and the Warhammer Age of Sigmar data is the sole property of Games
-Workshop. We are abiding by their `Celebrating the Hobby` section of the agreement and not commercializing this data in
-any way. This API is purely to help allow users to engage with the wonderful world of Warhammer in a programattic way
-through a REST interface rather than the usual PDF.
+As a contributor, you must ensure that:
+1. All contributed data respects Games Workshop's intellectual property rights
+2. No commercial use is made of the data
+3. Contributions fall under the `Celebrating the Hobby` section of the IP guidelines
+4. No content is copied directly from official Games Workshop materials without proper attribution
 
-If you consume the data served through this API in your own application, be aware that you are also obligated to respect
-[Games Workshop's](https://www.games-workshop.com) licensing agreements.
+We are in no way affiliated with Games Workshop, and all Warhammer Age of Sigmar data is the sole property of Games Workshop. This project exists to help hobbyists engage with the Warhammer universe in a programmatic way through a REST interface.
+
+### Legal Considerations
+
+Contributors should be aware that:
+1. Games Workshop actively protects their intellectual property
+2. Contributing to this project does not grant any rights to Games Workshop's intellectual property
+3. Games Workshop may request removal of content at any time
+4. Contributors are responsible for ensuring their contributions comply with all applicable laws and Games Workshop's guidelines
+
+If you plan to use this API in your own application, you must:
+1. Review and comply with Games Workshop's [Intellectual Property Guidelines](https://www.warhammer.com/en-GB/legal#IntellectualPropertyGuidlines)
+2. Ensure your usage is non-commercial and falls under `Celebrating the Hobby`
+3. Properly attribute Games Workshop's intellectual property
+4. Operate your instance in accordance with all guidelines
 
 ## Pull Request Process
 
