@@ -120,7 +120,7 @@ func main() {
 	defer cancel()
 
 	// Create a new http client
-	c := client.NewClient(&http.Client{}, "https://aos-api.com/query", nil)
+	c := client.NewClient(&http.Client{}, "http://aos-api.localhost/query", nil)
 
 	// Get all allegiances
 	resp, err := c.GetAllegiances(ctx, client.AllegianceFilters{})
@@ -153,16 +153,15 @@ When running with docker-compose, the following services are available:
 
 ## ⚖️ Copyright and Data Ownership
 
-Any changes to the data hosted by this repository must respect the licensing rules documented by Games Workshop
-here [Intellectual Property Policy](https://www.games-workshop.com/en-US/Intellectual-Property-Policy).
+This project provides a self-hosted API solution for Warhammer Age of Sigmar data. We are in no way affiliated with Games Workshop, and all Warhammer Age of Sigmar data is the sole property of Games Workshop. 
 
-We are in no way affiliated with Games Workshop and the Warhammer Age of Sigmar data is the sole property of Games
-Workshop. We are abiding by their `Celebrating the Hobby` section of the agreement and not commercializing this data in
-any way. This API is purely to help allow users to engage with the wonderful world of Warhammer in a programattic way
-through a REST interface rather than the usual PDF.
+As the operator of your own instance of this API, you are responsible for:
+1. Reviewing and complying with Games Workshop's [Intellectual Property Guidelines](https://www.warhammer.com/en-GB/legal#IntellectualPropertyGuidlines)
+2. Ensuring your usage falls under the `Celebrating the Hobby` section of the agreement
+3. Not commercializing the data in any way
+4. Operating the API in accordance with Games Workshop's guidelines
 
-If you consume the data served through this API, be aware that you are also obligated to respect
-[Games Workshop's](https://www.games-workshop.com) [intellectual property guidelines](https://www.games-workshop.com/en-US/Intellectual-Property-Guidelines).
+This project aims to help users engage with the wonderful world of Warhammer in a programmatic way through a REST interface rather than the usual PDF format. Any changes to the data in your instance must respect the licensing rules documented by Games Workshop.
 
 For more information, view our [Contributing Guidelines](https://github.com/brittonhayes/aos/blob/main/CONTRIBUTING.md).
 

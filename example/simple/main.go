@@ -14,7 +14,7 @@ func main() {
 	defer cancel()
 
 	// Create a new http client
-	c := client.NewClient(&http.Client{}, "https://aos-api.com/query", nil)
+	c := client.NewClient(&http.Client{}, "http://aos-api.localhost/query", nil)
 
 	// Get all allegiances
 	resp, err := c.GetAllegiances(ctx, client.AllegianceFilters{})
